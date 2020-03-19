@@ -21,7 +21,8 @@
 \usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{listings}
-
+\usepackage{tikz}
+\usepackage{tikz-timing}
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
@@ -67,5 +68,17 @@ Damian Koper,  241292\\
 \maketitle
 
 \newpage
-
+\begin{figure}[H]
+  \centering
+  \begin{tikztimingtable}
+    Clk\_XT   & H 46{C};[dotted]2C \\
+    DO\_Rdy   & L 2C G 6C G 2C G 14C G 2C G 6C G 2C G 12C;[dotted]2L \\
+    F0 & 9L G 16C G 8C G 14C;[dotted]2H
+    \\
+    X   & U 24D{ZNAK\_1} 22 D;[dotted]2D{ZNAK\_2} \\
+  \end{tikztimingtable}
+  \caption{Przebieg czasów w symulacji automatu dla dwóch znaku.}
+  \label{timing}
+  to dla jaj z innego sprawka
+\end{figure}
 \end{document}
