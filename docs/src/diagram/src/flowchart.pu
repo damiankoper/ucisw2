@@ -1,0 +1,194 @@
+@startuml flow_chart
+title Signal Flow Chart
+left to right direction
+skinparam linetype ortho
+
+
+class "RotaryEnc" as rot {
+    <b>IN:</b>
+    // Original
+    ===
+    <b>OUT:</b>
+    RotL
+    RotR
+}
+
+class "PS2_Kbd" as ps2 {
+    <b>IN:</b>
+    // Original
+    ===
+    <b>OUT:</b>
+    DO(7:0)
+    E0
+    F0
+    DO_Rdy
+}
+
+' class "LCDWrite" as lcd {
+    '     <b>IN:</b>
+    '     ===
+    '     <b>OUT:</b>
+    '
+    '
+    '
+
+
+    class "DACWrite" as dac {
+        <b>IN:</b>
+        Start
+        Clk
+        Cmd(3:0)
+        Addr(3:0)
+        Data(11:0)
+        ===
+        <b>OUT:</b>
+        // Original
+        Busy
+    }
+
+
+    class "ToneFSM" as tone_fsm{
+        <b>IN:</b>
+        Clk
+        DO(7:0)
+        F0
+        DO_Rdy
+        ===
+        <b>OUT:</b>
+        Tone(7:0)
+    }
+
+
+    note top of tone_fsm
+        Mapuje klawisz do tonu
+    end note
+
+
+    class "OctaveMapper" as oct_mapper{
+        <b>IN:</b>
+        Tone(7:0)
+        OctNum(7:0)
+        ===
+        <b>OUT:</b>
+        Freq(15:0)
+    }
+
+
+    note top of oct_mapper
+        Dokonuje transpozycji oktawy
+    end note
+
+    class "OctaveFSM" as oct_fsm{
+        <b>IN:</b>
+        Clk
+        DO(7:0)
+        F0
+        DO_Rdy
+        ===
+        <b>OUT:</b>
+        OctNum(7:0)
+    }
+
+    note bottom of oct_fsm
+        Przechowuje transpozycję oktawy
+    end note
+
+    class "WaveTypeFSM" as wave_type_fsm{
+        <b>IN:</b>
+        Clk
+        RotL
+        RotR
+        ===
+        <b>OUT:</b>
+        WaveNum(7:0)
+    }
+
+    note top of wave_type_fsm
+        Saw, Sine, Square, Triangle
+    end note
+
+
+    package "Signal Generators"{
+        class "GeneratorSaw" as gen_saw{
+            <b>IN:</b>
+            Clk
+            Freq(15:0)
+            ===
+            <b>OUT:</b>
+            Sample(11:0)
+        }
+
+        class "GeneratorSine" as gen_sin{
+            <b>IN:</b>
+            Clk
+            Freq(15:0)
+            ===
+            <b>OUT:</b>
+            Sample(11:0)
+        }
+
+        class "GeneratorSquare" as gen_square{
+            <b>IN:</b>
+            Clk
+            Freq(15:0)
+            ===
+            <b>OUT:</b>
+            Sample(11:0)
+        }
+
+        class "GeneratorTriangle" as gen_tri{
+            <b>IN:</b>
+            Clk
+            Freq(15:0)
+            ===
+            <b>OUT:</b>
+            Sample(11:0)
+        }
+    }
+
+    class "GeneratorSignalSwitch" as signal_switch{
+        <b>IN:</b>
+        WaveType(7:0)
+        SampleSaw(11:0)
+        SampleSine(11:0)
+        SampleSquare(11:0)
+        SampleTriangle(11:0)
+        ===
+        <b>OUT:</b>
+        Sample(11:0)
+    }
+
+
+    class "Clock 32kHz" as clock_32 {
+        <b>IN:</b>
+        Clk
+        ===
+        <b>OUT:</b>
+        Clk_32
+    }
+
+
+    ps2 -[#0000FF]-> tone_fsm
+    ps2 --> oct_fsm
+    tone_fsm -[#0000FF]-> oct_mapper
+    oct_fsm --> oct_mapper
+
+    ' Signal generators
+    rot --> wave_type_fsm
+
+    oct_mapper -[#0000FF]-> gen_saw
+    oct_mapper --> gen_tri
+    oct_mapper --> gen_sin
+    oct_mapper --> gen_square
+
+    wave_type_fsm -[#0000FF]-> signal_switch
+
+    gen_saw  -[#0000FF]-> signal_switch
+    gen_tri --> signal_switch
+    gen_sin --> signal_switch
+    gen_square --> signal_switch
+
+    signal_switch -[#0000FF]-> dac
+    clock_32 -[#0000FF]-> dac
+
+    @enduml
