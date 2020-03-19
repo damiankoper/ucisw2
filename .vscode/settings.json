@@ -1,0 +1,11 @@
+{
+    "latex-workshop.latex.outDir": "../out",
+    "spellright.language": [
+        "Polish"
+    ],
+    "spellright.documentTypes": [
+        "markdown",
+        "latex",
+        "plaintext"
+    ]
+}
