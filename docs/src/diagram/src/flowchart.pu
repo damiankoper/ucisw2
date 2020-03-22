@@ -64,7 +64,7 @@ class "PS2_Kbd" as ps2 {
     end note
 
 
-    class "OctaveMapper" as oct_mapper{
+    class "FreqMapper" as oct_mapper{
         <b>IN:</b>
         Tone(7:0)
         OctNum(7:0)
