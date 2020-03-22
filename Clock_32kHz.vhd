@@ -9,7 +9,7 @@
 -- Target Devices: 
 -- Tool versions: 
 -- Description: 
--- Implements 31250Hz clock.
+-- Implements 32010Hz clock.
 --
 -- Dependencies: 
 --
@@ -34,23 +34,16 @@ entity Clock_32kHz is
     Port ( 
 	 CLK_IN	: in STD_LOGIC;
 	 RESET	: in STD_LOGIC;
-	 CLK_OUT : out  STD_LOGIC;
-	 COUNTER_OUT : out SIGNED(10 downto 0)
+	 CLK_OUT : out  STD_LOGIC
 	 );
 	 
 end Clock_32kHz;
 
 architecture Behavioral of Clock_32kHz is
 	signal COUNTER_INTERNAL : SIGNED(10 downto 0) := (others => '0');
-	constant COUNTER_MAX_VALUE : SIGNED(10 downto 0) := b"110_0011_1111";
+	constant COUNTER_MAX_VALUE : SIGNED(10 downto 0) := b"110_0001_1000";
 begin
-	-- Reset
---	process (CLK_IN, RESET) begin
---		if (rising_edge(CLK_IN)) and (RESET = '1') then
---			COUNTER_INTERNAL <= b"000_0000_0000";
---		end if;
---	end process;
-	
+
 	-- Handle counting and resetting
 	process (CLK_IN) begin
 		if (rising_edge(CLK_IN)) then
@@ -62,15 +55,13 @@ begin
 		end if;
 	end process;
 
-	-- Handle outputs
+	-- Handle clock output
 	process (COUNTER_INTERNAL) begin
 		if (COUNTER_INTERNAL = COUNTER_MAX_VALUE) then
 			CLK_OUT <= '1';
 		else
 			CLK_OUT <= '0';
 		end if;
-		
-		COUNTER_OUT <= COUNTER_INTERNAL;
 	end process;
 	
 end Behavioral;

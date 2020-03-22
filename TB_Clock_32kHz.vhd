@@ -43,8 +43,7 @@ ARCHITECTURE behavior OF TB_Clock_32kHz IS
     PORT(
          CLK_IN : IN  std_logic;
          RESET : IN  std_logic;
-         CLK_OUT : OUT  std_logic;
-			COUNTER_OUT : OUT SIGNED(10 downto 0)
+         CLK_OUT : OUT  std_logic
         );
     END COMPONENT;
 
@@ -54,15 +53,13 @@ ARCHITECTURE behavior OF TB_Clock_32kHz IS
 
  	--Outputs
    signal CLK_OUT : std_logic := '0';
-	signal COUNTER_OUT : SIGNED(10 downto 0) := (others => '0');
 
 BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: Clock_32kHz PORT MAP (
           CLK_IN => CLK_IN,
           RESET => RESET,
-          CLK_OUT => CLK_OUT,
-			 COUNTER_OUT => COUNTER_OUT
+          CLK_OUT => CLK_OUT
         );
 
 	RESET <= '1', '0' after 100 ns;
