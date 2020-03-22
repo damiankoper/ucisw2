@@ -16,11 +16,16 @@
         <signal name="XLXN_94" />
         <signal name="XLXN_95(7:0)" />
         <signal name="XLXN_96(7:0)" />
-        <signal name="XLXN_98" />
-        <signal name="XLXN_99" />
-        <signal name="XLXN_100" />
-        <signal name="XLXN_101" />
         <signal name="XLXN_102(11:0)" />
+        <signal name="XLXN_103(31:0)" />
+        <signal name="XLXN_104(11:0)" />
+        <signal name="XLXN_105" />
+        <signal name="XLXN_106" />
+        <signal name="XLXN_107" />
+        <signal name="XLXN_108" />
+        <signal name="XLXN_109" />
+        <signal name="XLXN_110" />
+        <signal name="XLXN_111" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="PS2_Data" />
@@ -113,6 +118,14 @@
             <rect width="64" x="384" y="-300" height="24" />
             <line x2="448" y1="-288" y2="-288" x1="384" />
         </blockdef>
+        <blockdef name="GeneratorSaw">
+            <timestamp>2020-3-22T22:36:21</timestamp>
+            <rect width="256" x="64" y="-128" height="128" />
+            <line x2="0" y1="-96" y2="-96" x1="64" />
+            <line x2="0" y1="-32" y2="-32" x1="64" />
+            <rect width="64" x="320" y="-108" height="24" />
+            <line x2="384" y1="-96" y2="-96" x1="320" />
+        </blockdef>
         <block symbolname="ToneFSM" name="XLXI_4">
             <blockpin signalname="Clk_50MHz" name="Clk" />
             <blockpin signalname="XLXN_10" name="F0" />
@@ -159,7 +172,7 @@
         <block symbolname="FreqMapper" name="XLXI_22">
             <blockpin signalname="XLXN_95(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_96(7:0)" name="OctaveNum(7:0)" />
-            <blockpin name="Freq(31:0)" />
+            <blockpin signalname="XLXN_103(31:0)" name="Freq(31:0)" />
         </block>
         <block symbolname="constant" name="XLXI_23">
             <attr value="04" name="CValue">
@@ -171,11 +184,16 @@
         </block>
         <block symbolname="GeneratorSignalSwitch" name="XLXI_24">
             <blockpin name="Wave_Type(7:0)" />
-            <blockpin name="Input_0(11:0)" />
+            <blockpin signalname="XLXN_104(11:0)" name="Input_0(11:0)" />
             <blockpin name="Input_1(11:0)" />
             <blockpin name="Input_2(11:0)" />
             <blockpin name="Input_3(11:0)" />
             <blockpin signalname="XLXN_102(11:0)" name="Output(11:0)" />
+        </block>
+        <block symbolname="GeneratorSaw" name="XLXI_25">
+            <blockpin signalname="Clk_50MHz" name="Clk" />
+            <blockpin signalname="XLXN_103(31:0)" name="Freq" />
+            <blockpin signalname="XLXN_104(11:0)" name="Sample(11:0)" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="7040" height="5440">
@@ -228,6 +246,7 @@
             <wire x2="5040" y1="3376" y2="3376" x1="576" />
             <wire x2="576" y1="3376" y2="3440" x1="576" />
             <wire x2="5040" y1="3440" y2="3440" x1="576" />
+            <wire x2="2288" y1="2608" y2="2608" x1="576" />
             <wire x2="1072" y1="1968" y2="1968" x1="160" />
             <wire x2="1072" y1="1968" y2="2112" x1="1072" />
             <wire x2="1120" y1="2112" y2="2112" x1="1072" />
@@ -238,6 +257,8 @@
             <wire x2="608" y1="2240" y2="2240" x1="576" />
             <wire x2="5040" y1="1616" y2="1616" x1="1072" />
             <wire x2="1072" y1="1616" y2="1968" x1="1072" />
+            <wire x2="3728" y1="2048" y2="2048" x1="2288" />
+            <wire x2="2288" y1="2048" y2="2608" x1="2288" />
         </branch>
         <instance x="1696" y="2208" name="XLXI_22" orien="R0">
         </instance>
@@ -266,6 +287,16 @@
             <wire x2="5040" y1="2928" y2="2928" x1="4800" />
         </branch>
         <instance x="4352" y="3216" name="XLXI_24" orien="R0">
+        </instance>
+        <branch name="XLXN_103(31:0)">
+            <wire x2="3728" y1="2112" y2="2112" x1="2128" />
+        </branch>
+        <branch name="XLXN_104(11:0)">
+            <wire x2="4256" y1="2048" y2="2048" x1="4112" />
+            <wire x2="4256" y1="2048" y2="2992" x1="4256" />
+            <wire x2="4352" y1="2992" y2="2992" x1="4256" />
+        </branch>
+        <instance x="3728" y="2144" name="XLXI_25" orien="R0">
         </instance>
     </sheet>
 </drawing>

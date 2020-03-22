@@ -40,7 +40,7 @@ END FreqMapper;
 ARCHITECTURE Behavioral OF FreqMapper IS
     TYPE Tones IS ARRAY(0 TO 12) OF INTEGER;
     TYPE Octaves IS ARRAY(0 TO 8) OF Tones;
-    SIGNAL Freqs : Octaves := (
+    SIGNAL Freqs : Octaves := ( -- Each frequency value is a multiple of 0.1Hz.
     (0, 164, 173, 184, 195, 206, 218, 231, 245, 260, 275, 291, 309),
     (0, 327, 347, 367, 389, 412, 437, 463, 490, 519, 550, 583, 617),
     (0, 625, 639, 734, 778, 824, 873, 925, 980, 1038, 1100, 1165, 1235),
