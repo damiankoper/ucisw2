@@ -1,0 +1,9 @@
+[Inputs]
+=Wave_Type[7:0]=
+=Input_0[11:0]=
+=Input_1[11:0]=
+=Input_2[11:0]=
+=Input_3[11:0]=
+[Outputs]
+=Output[11:0]=
+[BiDir]
