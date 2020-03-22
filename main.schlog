@@ -1,8 +1,0 @@
-select figure at 1519 3069 8 -wires -sn=1
-select figure at 607 1541 8 -wires -sn=1
-select figure at 2431 1616 8 -wires -sn=1
-select all in 2431 1616 4085 3376 -wires -enclosed -sn=1
-move selection by 768 16 -keepConn -sn=1
-undo
-move selection by 352 0 -keepConn -sn=1
-select figure at 2883 1582 8 -wires -sn=1
