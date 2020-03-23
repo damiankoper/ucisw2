@@ -37,14 +37,14 @@ end GeneratorSaw;
 
 architecture Behavioral of GeneratorSaw is
 	signal Half_Cycles_Per_Step : INTEGER;
-	constant Cycles_Per_Step_Conversion_Factor: INTEGER := 1_000_000_000/(2 * 2**8);
+	constant Half_Cycles_Per_Step_Conversion_Factor: INTEGER := 1_000_000_000/(2**8);
 	signal Cycles_Since_Sample_Change : INTEGER := 0;
 	
 	signal Next_Sample_Unsigned : UNSIGNED(11 downto 0) := (others => '0');
 begin
 	-- Calculate step duration
 	process (Freq) begin
-		Half_Cycles_Per_Step <= 2* Cycles_Per_Step_Conversion_Factor / (Freq);
+		Half_Cycles_Per_Step <= Half_Cycles_Per_Step_Conversion_Factor / (Freq);
 	end process;
 	
 	-- Handle next sample calculation

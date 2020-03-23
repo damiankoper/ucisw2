@@ -49,7 +49,7 @@ ARCHITECTURE behavior OF TB_GeneratorSaw IS
 
    --Inputs
    signal Clk : std_logic := '0';
-   signal Freq : INTEGER := 10000; -- 10000 * 0.1Hz = 1000Hz
+   signal Freq : INTEGER := 72000; -- 10000 * 0.1Hz = 1000Hz
 
  	--Outputs
    signal Sample : std_logic_vector(11 downto 0);
@@ -68,11 +68,11 @@ BEGIN
 		  
 	Clk <= not Clk after Clk_Half_Period;
 	
-	process begin
-		for I in 1 to 7 loop
-			Freq <= Freq + 10000;
-			wait for 100 ms;
-		end loop;
-	end process;
+--	process begin
+--		for I in 1 to 7 loop
+--			Freq <= Freq + 10000;
+--			wait for 100 ms;
+--		end loop;
+--	end process;
 	
 END;
