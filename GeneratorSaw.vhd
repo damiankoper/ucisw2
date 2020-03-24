@@ -37,11 +37,12 @@ ENTITY GeneratorSaw IS
 END GeneratorSaw;
 
 ARCHITECTURE Behavioral OF GeneratorSaw IS
-	SIGNAL Half_Cycles_Per_Period_Counter_A : INTEGER; -- High freq counter
-	SIGNAL Half_Cycles_Per_Period_Counter_B : INTEGER; -- Low freq counter
 
-	SIGNAL Half_Cycles_Since_Rollover_Counter_A : INTEGER := 0; -- Low frequency counter, to avoid timing errors caused by high-freq counter.
-	SIGNAL Half_Cycles_Since_Rollover_Counter_B : INTEGER := 0; -- High frequency counter
+	SIGNAL Cycles_Per_Period_Counter_A : INTEGER; -- High freq counter
+	SIGNAL Cycles_Per_Period_Counter_B : INTEGER; -- Low freq counter
+
+	SIGNAL Counter_A : INTEGER := 0; -- Low frequency counter, to avoid timing errors caused by high-freq counter.
+	SIGNAL Counter_B : INTEGER := 0; -- High frequency counter
 
 	CONSTANT Counter_B_To_A_Resolution_Ratio : INTEGER := 4; -- Exponent of power of two. How many cycles makes counter B per one cycle of counter A (assuming no calc errors).
 	CONSTANT Effective_Wave_Resolution : INTEGER := 8; -- Bits. 
@@ -49,47 +50,36 @@ ARCHITECTURE Behavioral OF GeneratorSaw IS
 
 	SIGNAL Next_8b_Sample_A : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
 	SIGNAL Next_8b_Sample_B : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
-	
---	CONSTANT Sample_B_Right_Side_Padding : STD_LOGIC_VECTOR(3 downto 0) := (others => '0');
+	SIGNAL Next_8b_Sample : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
+
 BEGIN
-	-- Calculate counter periods
-	PROCESS (Freq) BEGIN
-		Half_Cycles_Per_Period_Counter_A <= Nanos_Per_Sec / (to_integer(unsigned(Freq)) * 2 ** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio ));
-		Half_Cycles_Since_Rollover_Counter_A <= 0;
-		Half_Cycles_Since_Rollover_Counter_B <= 0;
-	END PROCESS;
+ 
+	Cycles_Per_Period_Counter_A <= Nanos_Per_Sec / (to_integer(unsigned(Freq)) * 2 ** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio+1));
+	Cycles_Per_Period_Counter_B <= Nanos_Per_Sec / (to_integer(unsigned(Freq)) * 2 ** (Effective_Wave_Resolution+1));
 
-	PROCESS (Half_Cycles_Per_Period_Counter_A ) BEGIN
-		Half_Cycles_Per_Period_Counter_B <= Half_Cycles_Per_Period_Counter_A / 2 ** Counter_B_To_A_Resolution_Ratio;
-	END PROCESS;
-	
-	-- Handle next sample calculation
 	PROCESS (Clk) BEGIN
-		Half_Cycles_Since_Rollover_Counter_A <= Half_Cycles_Since_Rollover_Counter_A + 1;
-		Half_Cycles_Since_Rollover_Counter_B <= Half_Cycles_Since_Rollover_Counter_B + 1;
-
-		IF (Half_Cycles_Since_Rollover_Counter_A >= Half_Cycles_Per_Period_Counter_A) THEN
-			-- Low frequency counter (A) rolled over. Takes priority over high freq counter (counter B).
-			Half_Cycles_Since_Rollover_Counter_A <= 0;
-			Half_Cycles_Since_Rollover_Counter_B <= 0;
-
-			Next_8b_Sample_A <= Next_8b_Sample_A + 2**Counter_B_To_A_Resolution_Ratio;
-		ELSIF (Half_Cycles_Since_Rollover_Counter_B >= Half_Cycles_Per_Period_Counter_B) THEN
-			-- High frequency counter   rolled over
-			Half_Cycles_Since_Rollover_Counter_B <= 0;
-
-			Next_8b_Sample_B <= Next_8b_Sample_B + 1;
-		END IF;
+		IF(rising_edge(Clk)) THEN
+			Counter_A <= Counter_A + 1;
+			Counter_B <= Counter_B + 1;
 		
+			IF (Counter_A > Cycles_Per_Period_Counter_A) THEN
+				-- Low frequency counter (A) rolled over. Takes priority over high freq counter (counter B).
+				Next_8b_Sample_A <= Next_8b_Sample_A + 2**Counter_B_To_A_Resolution_Ratio;
+				Next_8b_Sample_B <= Next_8b_Sample_A;
+				Next_8b_Sample <= Next_8b_Sample_A;
+				
+				Counter_A <= 1; 
+				Counter_B <= 1;
+			ELSIF (Counter_B > Cycles_Per_Period_Counter_B) THEN
+				-- High frequency counter (B) rolled over
+				Next_8b_Sample_B <= Next_8b_Sample_B + 1;
+				Next_8b_Sample <= Next_8b_Sample_B;
+
+				Counter_B <= 0;
+			END IF;
+		END IF;
 	END PROCESS;
 
-	-- Update samples
-	PROCESS (Next_8b_Sample_A) BEGIN
-		Next_8b_Sample_B <= Next_8b_Sample_A;
-	END PROCESS;
+	Sample <= std_logic_vector(Next_8b_Sample) & x"0";
 	
-	PROCESS (Next_8b_Sample_B) BEGIN
-		Sample <= std_logic_vector(Next_8b_Sample_B) & x"0";
-	END PROCESS;
-
 END Behavioral;
