@@ -30,7 +30,7 @@ USE ieee.std_logic_1164.ALL;
  
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
+USE ieee.numeric_std.ALL;
  
 ENTITY TB_GeneratorSaw IS
 END TB_GeneratorSaw;
@@ -42,14 +42,14 @@ ARCHITECTURE behavior OF TB_GeneratorSaw IS
     COMPONENT GeneratorSaw
     PORT(
          Clk : IN  std_logic;
-         Freq : IN  INTEGER;
+         Freq : IN  std_logic_vector(31 downto 0);
          Sample : OUT  std_logic_vector(11 downto 0) := "000000111111"
         );
     END COMPONENT;
 
    --Inputs
    signal Clk : std_logic := '0';
-   signal Freq : INTEGER := 72000; -- 10000 * 0.1Hz = 1000Hz
+   signal Freq : std_logic_vector(31 downto 0) := std_logic_vector(to_unsigned(72000, 32)); -- 10000 * 0.1Hz = 1000Hz
 
  	--Outputs
    signal Sample : std_logic_vector(11 downto 0);

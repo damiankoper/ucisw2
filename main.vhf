@@ -7,11 +7,11 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 03/22/2020 19:11:20
+-- /___/   /\     Timestamp : 03/23/2020 09:44:31
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/damian_koper/Documents/GitHub/ucisw2/main.vhf -w /home/damian_koper/Documents/GitHub/ucisw2/main.sch
+--Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl C:/Users/mboja/Desktop/ucisw2/main.vhf -w C:/Users/mboja/Desktop/ucisw2/main.sch
 --Design Name: main
 --Device: spartan3e
 --Purpose:
@@ -33,16 +33,22 @@ entity main is
 end main;
 
 architecture BEHAVIORAL of main is
-   signal XLXN_8                     : std_logic_vector (7 downto 0);
-   signal XLXN_10                    : std_logic;
-   signal XLXN_11                    : std_logic;
-   signal XLXN_94                    : std_logic;
-   signal XLXN_95                    : std_logic_vector (7 downto 0);
-   signal XLXN_96                    : std_logic_vector (7 downto 0);
-   signal XLXI_3_Addr_openSignal     : std_logic_vector (3 downto 0);
-   signal XLXI_3_Cmd_openSignal      : std_logic_vector (3 downto 0);
-   signal XLXI_3_DATA_openSignal     : std_logic_vector (11 downto 0);
-   signal XLXI_3_SPI_MISO_openSignal : std_logic;
+   signal XLXN_8                       : std_logic_vector (7 downto 0);
+   signal XLXN_10                      : std_logic;
+   signal XLXN_11                      : std_logic;
+   signal XLXN_94                      : std_logic;
+   signal XLXN_95                      : std_logic_vector (7 downto 0);
+   signal XLXN_96                      : std_logic_vector (7 downto 0);
+   signal XLXN_102                     : std_logic_vector (11 downto 0);
+   signal XLXN_104                     : std_logic_vector (11 downto 0);
+   signal XLXI_3_Addr_openSignal       : std_logic_vector (3 downto 0);
+   signal XLXI_3_Cmd_openSignal        : std_logic_vector (3 downto 0);
+   signal XLXI_3_SPI_MISO_openSignal   : std_logic;
+   signal XLXI_24_Input_1_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_24_Input_2_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_24_Input_3_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_24_Wave_Type_openSignal : std_logic_vector (7 downto 0);
+   signal XLXI_25_Freq_openSignal      : std_logic;
    component PS2_Kbd
       port ( PS2_Clk   : in    std_logic; 
              PS2_Data  : in    std_logic; 
@@ -96,6 +102,21 @@ architecture BEHAVIORAL of main is
              Freq      : out   std_logic_vector (31 downto 0));
    end component;
    
+   component GeneratorSignalSwitch
+      port ( Wave_Type : in    std_logic_vector (7 downto 0); 
+             Input_0   : in    std_logic_vector (11 downto 0); 
+             Input_1   : in    std_logic_vector (11 downto 0); 
+             Input_2   : in    std_logic_vector (11 downto 0); 
+             Input_3   : in    std_logic_vector (11 downto 0); 
+             Output    : out   std_logic_vector (11 downto 0));
+   end component;
+   
+   component GeneratorSaw
+      port ( Clk    : in    std_logic; 
+             Freq   : in    std_logic; 
+             Sample : out   std_logic_vector (11 downto 0));
+   end component;
+   
 begin
    XLXN_96(7 downto 0) <= x"04";
    XLXI_1 : PS2_Kbd
@@ -113,7 +134,7 @@ begin
                 Clk_Sys=>Clk_50MHz,
                 Clk_50MHz=>Clk_50MHz,
                 Cmd(3 downto 0)=>XLXI_3_Cmd_openSignal(3 downto 0),
-                DATA(11 downto 0)=>XLXI_3_DATA_openSignal(11 downto 0),
+                DATA(11 downto 0)=>XLXN_102(11 downto 0),
                 Reset=>Reset,
                 SPI_MISO=>XLXI_3_SPI_MISO_openSignal,
                 Start=>XLXN_94,
@@ -145,6 +166,19 @@ begin
       port map (OctaveNum(7 downto 0)=>XLXN_96(7 downto 0),
                 Tone(7 downto 0)=>XLXN_95(7 downto 0),
                 Freq=>open);
+   
+   XLXI_24 : GeneratorSignalSwitch
+      port map (Input_0(11 downto 0)=>XLXN_104(11 downto 0),
+                Input_1(11 downto 0)=>XLXI_24_Input_1_openSignal(11 downto 0),
+                Input_2(11 downto 0)=>XLXI_24_Input_2_openSignal(11 downto 0),
+                Input_3(11 downto 0)=>XLXI_24_Input_3_openSignal(11 downto 0),
+                Wave_Type(7 downto 0)=>XLXI_24_Wave_Type_openSignal(7 downto 0),
+                Output(11 downto 0)=>XLXN_102(11 downto 0));
+   
+   XLXI_25 : GeneratorSaw
+      port map (Clk=>Clk_50MHz,
+                Freq=>XLXI_25_Freq_openSignal,
+                Sample(11 downto 0)=>XLXN_104(11 downto 0));
    
 end BEHAVIORAL;
 

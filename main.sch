@@ -17,15 +17,7 @@
         <signal name="XLXN_95(7:0)" />
         <signal name="XLXN_96(7:0)" />
         <signal name="XLXN_102(11:0)" />
-        <signal name="XLXN_103(31:0)" />
         <signal name="XLXN_104(11:0)" />
-        <signal name="XLXN_105" />
-        <signal name="XLXN_106" />
-        <signal name="XLXN_107" />
-        <signal name="XLXN_108" />
-        <signal name="XLXN_109" />
-        <signal name="XLXN_110" />
-        <signal name="XLXN_111" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="PS2_Data" />
@@ -172,7 +164,7 @@
         <block symbolname="FreqMapper" name="XLXI_22">
             <blockpin signalname="XLXN_95(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_96(7:0)" name="OctaveNum(7:0)" />
-            <blockpin signalname="XLXN_103(31:0)" name="Freq(31:0)" />
+            <blockpin name="Freq(31:0)" />
         </block>
         <block symbolname="constant" name="XLXI_23">
             <attr value="04" name="CValue">
@@ -192,7 +184,7 @@
         </block>
         <block symbolname="GeneratorSaw" name="XLXI_25">
             <blockpin signalname="Clk_50MHz" name="Clk" />
-            <blockpin signalname="XLXN_103(31:0)" name="Freq" />
+            <blockpin name="Freq" />
             <blockpin signalname="XLXN_104(11:0)" name="Sample(11:0)" />
         </block>
     </netlist>
@@ -288,9 +280,6 @@
         </branch>
         <instance x="4352" y="3216" name="XLXI_24" orien="R0">
         </instance>
-        <branch name="XLXN_103(31:0)">
-            <wire x2="3728" y1="2112" y2="2112" x1="2128" />
-        </branch>
         <branch name="XLXN_104(11:0)">
             <wire x2="4256" y1="2048" y2="2048" x1="4112" />
             <wire x2="4256" y1="2048" y2="2992" x1="4256" />

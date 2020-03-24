@@ -1,6 +1,0 @@
-[Inputs]
-Clk
-Freq
-[Outputs]
-=Sample[11:0]=
-[BiDir]
