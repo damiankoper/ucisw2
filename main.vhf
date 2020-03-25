@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 03/24/2020 23:12:17
+-- /___/   /\     Timestamp : 03/25/2020 19:44:17
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -40,9 +40,9 @@ architecture BEHAVIORAL of main is
    signal XLXN_95                    : std_logic_vector (7 downto 0);
    signal XLXN_96                    : std_logic_vector (7 downto 0);
    signal XLXN_104                   : std_logic_vector (11 downto 0);
-   signal XLXN_105                   : std_logic_vector (31 downto 0);
    signal XLXN_113                   : std_logic_vector (7 downto 0);
    signal XLXN_114                   : std_logic_vector (11 downto 0);
+   signal XLXN_115                   : std_logic_vector (31 downto 0);
    signal XLXI_3_Addr_openSignal     : std_logic_vector (3 downto 0);
    signal XLXI_3_Cmd_openSignal      : std_logic_vector (3 downto 0);
    signal XLXI_3_SPI_MISO_openSignal : std_logic;
@@ -99,7 +99,7 @@ architecture BEHAVIORAL of main is
    component FreqMapper
       port ( Tone      : in    std_logic_vector (7 downto 0); 
              OctaveNum : in    std_logic_vector (7 downto 0); 
-             Freq      : out   std_logic_vector (31 downto 0));
+             Period    : out   std_logic_vector (31 downto 0));
    end component;
    
    component GeneratorSignalSwitch
@@ -114,7 +114,7 @@ architecture BEHAVIORAL of main is
    component GeneratorSaw
       port ( Clk    : in    std_logic; 
              Sample : out   std_logic_vector (11 downto 0); 
-             Freq   : in    std_logic_vector (31 downto 0));
+             Period : in    std_logic_vector (31 downto 0));
    end component;
    
 begin
@@ -166,7 +166,7 @@ begin
    XLXI_22 : FreqMapper
       port map (OctaveNum(7 downto 0)=>XLXN_96(7 downto 0),
                 Tone(7 downto 0)=>XLXN_95(7 downto 0),
-                Freq(31 downto 0)=>XLXN_105(31 downto 0));
+                Period(31 downto 0)=>XLXN_115(31 downto 0));
    
    XLXI_24 : GeneratorSignalSwitch
       port map (Input_0(11 downto 0)=>XLXN_104(11 downto 0),
@@ -178,7 +178,7 @@ begin
    
    XLXI_25 : GeneratorSaw
       port map (Clk=>Clk_50MHz,
-                Freq(31 downto 0)=>XLXN_105(31 downto 0),
+                Period(31 downto 0)=>XLXN_115(31 downto 0),
                 Sample(11 downto 0)=>XLXN_104(11 downto 0));
    
 end BEHAVIORAL;
