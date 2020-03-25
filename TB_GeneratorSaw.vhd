@@ -42,14 +42,14 @@ ARCHITECTURE behavior OF TB_GeneratorSaw IS
     COMPONENT GeneratorSaw
     PORT(
          Clk : IN  std_logic;
-         Freq : IN  std_logic_vector(31 downto 0);
+         CyclesPerWavePeriod  : IN  std_logic_vector(31 downto 0);
          Sample : OUT  std_logic_vector(11 downto 0) := "000000111111"
         );
     END COMPONENT;
 
    --Inputs
    signal Clk : std_logic := '0';
-   signal Freq : std_logic_vector(31 downto 0) := std_logic_vector(to_unsigned(72000, 32)); -- 10000 * 0.1Hz = 1000Hz
+   signal CyclesPerWavePeriod : std_logic_vector(31 downto 0) := std_logic_vector(to_unsigned(113636, 32));
 
  	--Outputs
    signal Sample : std_logic_vector(11 downto 0);
@@ -62,7 +62,7 @@ BEGIN
 	-- Instantiate the Unit Under Test (UUT)
    uut: GeneratorSaw PORT MAP (
           Clk => Clk,
-          Freq => Freq,
+          CyclesPerWavePeriod  =>CyclesPerWavePeriod ,
           Sample => Sample
         );
 		  
