@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 03/25/2020 17:52:58
+-- /___/   /\     Timestamp : 03/25/2020 19:03:49
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
