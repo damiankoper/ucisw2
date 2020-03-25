@@ -47,10 +47,10 @@ BEGIN
 
     SYNC_PROC : PROCESS (clk)
     BEGIN
-        IF rising_edge(Clk) AND DI_Rdy = '1' THEN
+        IF rising_edge(Clk) THEN
             IF (Reset = '1') THEN
                 state <= Silence;
-            ELSE
+            ELSIF DI_Rdy = '1' THEN
                 state <= next_state;
             END IF;
         END IF;

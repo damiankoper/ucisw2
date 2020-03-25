@@ -52,6 +52,8 @@ BEGIN
       DI_Rdy => DI_Rdy,
       F0 => F0
    );
+	
+	Reset <= '0';
 
    -- Clock process definitions
    Clk_process : PROCESS
@@ -67,16 +69,14 @@ BEGIN
       TYPE typeByteArray IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(7 DOWNTO 0);
       VARIABLE arrBytes : typeByteArray(0 TO 13) := (X"44", X"1C", X"1D", X"1B", X"24", X"23", X"2B", X"2C", X"34", X"35", X"33", X"3C", X"3B", X"44");
    BEGIN
-      -- hold reset state for 100 ns.
-      WAIT FOR 10 ns;
-
+		
       FOR i IN arrBytes'RANGE LOOP
          F0 <= '0';
          DI_Rdy <= '1';
          DI <= arrBytes(i);
          WAIT FOR Clk_period * 1;
          DI_Rdy <= '0';
-         WAIT FOR 1 ms; -- Tone time
+         WAIT FOR 10 ms; -- Tone time
          DI_Rdy <= '1';
          F0 <= '1';
          WAIT FOR Clk_period * 1;
