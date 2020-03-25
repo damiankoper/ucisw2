@@ -43,7 +43,7 @@ ARCHITECTURE behavior OF TD_FreqMapper IS
     PORT(
          Tone : IN  std_logic_vector(7 downto 0);
          OctaveNum : IN  std_logic_vector(7 downto 0);
-         Freq : OUT  std_logic_vector(31 downto 0)
+         Period : OUT  std_logic_vector(31 downto 0)
         );
     END COMPONENT;
     
@@ -53,7 +53,7 @@ ARCHITECTURE behavior OF TD_FreqMapper IS
    signal OctaveNum : std_logic_vector(7 downto 0) := (others => '0');
 
  	--Outputs
-   signal Freq : std_logic_vector(31 downto 0);
+   signal Period : std_logic_vector(31 downto 0);
    -- No clocks detected in port list. Replace <clock> below with 
    -- appropriate port name 
  
@@ -64,8 +64,8 @@ BEGIN
    uut: FreqMapper PORT MAP (
           Tone => Tone,
           OctaveNum => OctaveNum,
-          Freq => Freq
-        );
+          Period => Period 
+	);
 
    -- Stimulus process
     stim_proc : PROCESS

@@ -2,5 +2,5 @@
 =Tone[7:0]=
 =OctaveNum[7:0]=
 [Outputs]
-=Freq[31:0]=
+=Period[31:0]=
 [BiDir]

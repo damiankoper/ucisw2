@@ -17,27 +17,9 @@
         <signal name="XLXN_96(7:0)" />
         <signal name="XLXN_104(11:0)" />
         <signal name="XLXN_105(31:0)" />
-        <signal name="XLXN_106" />
-        <signal name="XLXN_107" />
-        <signal name="XLXN_108(31:0)" />
-        <signal name="XLXN_109(31:0)" />
-        <signal name="XLXN_112(11:0)" />
-        <signal name="XLXN_119" />
-        <signal name="XLXN_124" />
-        <signal name="XLXN_125" />
-        <signal name="XLXN_130" />
-        <signal name="XLXN_131(31:0)" />
-        <signal name="XLXN_132" />
-        <signal name="XLXN_133" />
-        <signal name="XLXN_138" />
-        <signal name="XLXN_139(31:0)" />
-        <signal name="XLXN_140" />
-        <signal name="XLXN_141" />
         <signal name="XLXN_94" />
         <signal name="XLXN_113(7:0)" />
         <signal name="XLXN_114(11:0)" />
-        <signal name="XLXN_146" />
-        <signal name="XLXN_147" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="PS2_Data" />
@@ -100,14 +82,14 @@
             <line x2="384" y1="-96" y2="-96" x1="320" />
         </blockdef>
         <blockdef name="FreqMapper">
-            <timestamp>2020-3-22T18:10:14</timestamp>
-            <rect width="304" x="64" y="-128" height="128" />
+            <timestamp>2020-3-25T16:49:53</timestamp>
+            <rect width="64" x="368" y="20" height="24" />
+            <line x2="432" y1="32" y2="32" x1="368" />
             <rect width="64" x="0" y="-108" height="24" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <rect width="64" x="0" y="-44" height="24" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
-            <rect width="64" x="368" y="-108" height="24" />
-            <line x2="432" y1="-96" y2="-96" x1="368" />
+            <rect width="304" x="64" y="-128" height="192" />
         </blockdef>
         <blockdef name="constant">
             <timestamp>2006-1-1T10:10:10</timestamp>
@@ -131,13 +113,13 @@
             <line x2="448" y1="-288" y2="-288" x1="384" />
         </blockdef>
         <blockdef name="GeneratorSaw">
-            <timestamp>2020-3-24T21:20:0</timestamp>
-            <rect width="64" x="0" y="20" height="24" />
-            <line x2="0" y1="32" y2="32" x1="64" />
+            <timestamp>2020-3-25T16:51:58</timestamp>
+            <rect width="64" x="0" y="404" height="24" />
+            <line x2="0" y1="416" y2="416" x1="64" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <rect width="64" x="320" y="-108" height="24" />
             <line x2="384" y1="-96" y2="-96" x1="320" />
-            <rect width="256" x="64" y="-128" height="192" />
+            <rect width="256" x="64" y="-128" height="576" />
         </blockdef>
         <block symbolname="ToneFSM" name="XLXI_4">
             <blockpin signalname="Clk_50MHz" name="Clk" />
@@ -160,7 +142,7 @@
         <block symbolname="FreqMapper" name="XLXI_22">
             <blockpin signalname="XLXN_95(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_96(7:0)" name="OctaveNum(7:0)" />
-            <blockpin signalname="XLXN_105(31:0)" name="Freq(31:0)" />
+            <blockpin name="Period(31:0)" />
         </block>
         <block symbolname="constant" name="XLXI_23">
             <attr value="04" name="CValue">
@@ -198,7 +180,7 @@
         <block symbolname="GeneratorSaw" name="XLXI_25">
             <blockpin signalname="Clk_50MHz" name="Clk" />
             <blockpin signalname="XLXN_104(11:0)" name="Sample(11:0)" />
-            <blockpin signalname="XLXN_105(31:0)" name="Freq(31:0)" />
+            <blockpin name="Period(31:0)" />
         </block>
         <block symbolname="GeneratorSignalSwitch" name="XLXI_24">
             <blockpin signalname="XLXN_113(7:0)" name="Wave_Type(7:0)" />

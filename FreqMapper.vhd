@@ -34,13 +34,13 @@ ENTITY FreqMapper IS
     PORT (
         Tone : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
         OctaveNum : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
-        Freq : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
+        Period : OUT STD_LOGIC_VECTOR (31 DOWNTO 0));
 END FreqMapper;
 
 ARCHITECTURE Behavioral OF FreqMapper IS
     TYPE Tone_Periods IS ARRAY(0 TO 12) OF INTEGER;
     TYPE Octaves IS ARRAY(0 TO 8) OF Tone_Periods;
-    SIGNAL Cycles_Per_Wave_Period_Table : Octaves:= ( -- Each frequency value is a multiple of 0.1Hz.
+    SIGNAL Cycles_Per_Wave_Period_Table : Octaves:= ( -- Each period value is expressed in number of 50MHz clock cycles
     (0, 3048780, 2890173, 2717391, 2564103, 2427184, 2293578, 2164502, 2040816, 1923077, 1818182, 1718213, 1618123),
 	 (0, 1529052, 1440922, 1362398, 1285347, 1213592, 1144165, 1079914, 1020408, 963391, 909091, 857633, 810373),
 	 (0, 800000, 782473, 681199, 642674, 606796, 572738, 540541, 510204, 481696, 454545, 429185, 404858),
@@ -53,6 +53,6 @@ ARCHITECTURE Behavioral OF FreqMapper IS
 
 BEGIN
 
-    Freq <= STD_LOGIC_VECTOR(to_unsigned(INTEGER(Cycles_Per_Wave_Period_Table(to_integer(unsigned(OctaveNum)))(to_integer(unsigned(Tone)))), 32));
+    Period <= STD_LOGIC_VECTOR(to_unsigned(INTEGER(Cycles_Per_Wave_Period_Table(to_integer(unsigned(OctaveNum)))(to_integer(unsigned(Tone)))), 32));
 
 END Behavioral;

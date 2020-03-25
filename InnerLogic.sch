@@ -8,24 +8,23 @@
     <netlist>
         <signal name="XLXN_95(7:0)" />
         <signal name="XLXN_96(7:0)" />
-        <signal name="XLXN_105(31:0)" />
         <signal name="XLXN_104(11:0)" />
         <signal name="XLXN_113(7:0)" />
-        <signal name="Clk" />
         <signal name="DAC_Clock" />
         <signal name="WaveOut(11:0)" />
         <signal name="Reset" />
         <signal name="DI(7:0)" />
         <signal name="DI_Rdy" />
         <signal name="F0" />
-        <signal name="XLXN_123" />
-        <port polarity="Input" name="Clk" />
+        <signal name="Clk" />
+        <signal name="XLXN_126(31:0)" />
         <port polarity="Output" name="DAC_Clock" />
         <port polarity="Output" name="WaveOut(11:0)" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="DI(7:0)" />
         <port polarity="Input" name="DI_Rdy" />
         <port polarity="Input" name="F0" />
+        <port polarity="Input" name="Clk" />
         <blockdef name="ToneFSM">
             <timestamp>2020-3-22T15:24:12</timestamp>
             <rect width="256" x="64" y="-320" height="320" />
@@ -39,14 +38,14 @@
             <line x2="384" y1="-288" y2="-288" x1="320" />
         </blockdef>
         <blockdef name="FreqMapper">
-            <timestamp>2020-3-22T18:10:14</timestamp>
-            <rect width="304" x="64" y="-128" height="128" />
+            <timestamp>2020-3-25T16:49:53</timestamp>
+            <rect width="64" x="368" y="20" height="24" />
+            <line x2="432" y1="32" y2="32" x1="368" />
             <rect width="64" x="0" y="-108" height="24" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <rect width="64" x="0" y="-44" height="24" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
-            <rect width="64" x="368" y="-108" height="24" />
-            <line x2="432" y1="-96" y2="-96" x1="368" />
+            <rect width="304" x="64" y="-128" height="192" />
         </blockdef>
         <blockdef name="constant">
             <timestamp>2006-1-1T10:10:10</timestamp>
@@ -61,13 +60,13 @@
             <line x2="384" y1="-96" y2="-96" x1="320" />
         </blockdef>
         <blockdef name="GeneratorSaw">
-            <timestamp>2020-3-24T21:20:0</timestamp>
-            <rect width="64" x="0" y="20" height="24" />
-            <line x2="0" y1="32" y2="32" x1="64" />
+            <timestamp>2020-3-25T16:51:58</timestamp>
+            <rect width="64" x="0" y="404" height="24" />
+            <line x2="0" y1="416" y2="416" x1="64" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <rect width="64" x="320" y="-108" height="24" />
             <line x2="384" y1="-96" y2="-96" x1="320" />
-            <rect width="256" x="64" y="-128" height="192" />
+            <rect width="256" x="64" y="-128" height="576" />
         </blockdef>
         <blockdef name="GeneratorSignalSwitch">
             <timestamp>2020-3-24T20:0:2</timestamp>
@@ -96,7 +95,7 @@
         <block symbolname="FreqMapper" name="XLXI_22">
             <blockpin signalname="XLXN_95(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_96(7:0)" name="OctaveNum(7:0)" />
-            <blockpin signalname="XLXN_105(31:0)" name="Freq(31:0)" />
+            <blockpin signalname="XLXN_126(31:0)" name="Period(31:0)" />
         </block>
         <block symbolname="constant" name="XLXI_23">
             <attr value="04" name="CValue">
@@ -114,7 +113,7 @@
         <block symbolname="GeneratorSaw" name="XLXI_25">
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="XLXN_104(11:0)" name="Sample(11:0)" />
-            <blockpin signalname="XLXN_105(31:0)" name="Freq(31:0)" />
+            <blockpin signalname="XLXN_126(31:0)" name="Period(31:0)" />
         </block>
         <block symbolname="GeneratorSignalSwitch" name="XLXI_24">
             <blockpin signalname="XLXN_113(7:0)" name="Wave_Type(7:0)" />
@@ -148,10 +147,6 @@
             <wire x2="768" y1="928" y2="1232" x1="768" />
             <wire x2="880" y1="928" y2="928" x1="768" />
         </branch>
-        <branch name="XLXN_105(31:0)">
-            <wire x2="1328" y1="864" y2="864" x1="1312" />
-            <wire x2="1920" y1="864" y2="864" x1="1328" />
-        </branch>
         <instance x="1920" y="832" name="XLXI_25" orien="R0">
         </instance>
         <branch name="XLXN_104(11:0)">
@@ -168,15 +163,6 @@
         </instance>
         <instance x="2800" y="1376" name="XLXI_17" orien="R0">
         </instance>
-        <branch name="Clk">
-            <wire x2="288" y1="736" y2="736" x1="272" />
-            <wire x2="1840" y1="736" y2="736" x1="288" />
-            <wire x2="1920" y1="736" y2="736" x1="1840" />
-            <wire x2="1840" y1="736" y2="1280" x1="1840" />
-            <wire x2="2800" y1="1280" y2="1280" x1="1840" />
-            <wire x2="288" y1="736" y2="864" x1="288" />
-            <wire x2="304" y1="864" y2="864" x1="288" />
-        </branch>
         <branch name="DAC_Clock">
             <wire x2="3216" y1="1280" y2="1280" x1="3184" />
         </branch>
@@ -207,5 +193,20 @@
         <iomarker fontsize="28" x="272" y="928" name="F0" orien="R180" />
         <iomarker fontsize="28" x="240" y="1376" name="Reset" orien="R180" />
         <iomarker fontsize="28" x="272" y="736" name="Clk" orien="R180" />
+        <branch name="Clk">
+            <wire x2="288" y1="736" y2="736" x1="272" />
+            <wire x2="1840" y1="736" y2="736" x1="288" />
+            <wire x2="1920" y1="736" y2="736" x1="1840" />
+            <wire x2="1840" y1="736" y2="1312" x1="1840" />
+            <wire x2="2800" y1="1312" y2="1312" x1="1840" />
+            <wire x2="288" y1="736" y2="864" x1="288" />
+            <wire x2="304" y1="864" y2="864" x1="288" />
+            <wire x2="2800" y1="1280" y2="1312" x1="2800" />
+        </branch>
+        <branch name="XLXN_126(31:0)">
+            <wire x2="1616" y1="992" y2="992" x1="1312" />
+            <wire x2="1616" y1="992" y2="1248" x1="1616" />
+            <wire x2="1920" y1="1248" y2="1248" x1="1616" />
+        </branch>
     </sheet>
 </drawing>

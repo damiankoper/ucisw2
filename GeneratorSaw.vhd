@@ -32,7 +32,7 @@ USE IEEE.NUMERIC_STD.ALL;
 ENTITY GeneratorSaw IS
 	PORT (
 		Clk : IN STD_LOGIC;
-		CyclesPerWavePeriod : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
+		Period : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
 		Sample : OUT STD_LOGIC_VECTOR (11 DOWNTO 0));
 END GeneratorSaw;
 
@@ -54,8 +54,8 @@ ARCHITECTURE Behavioral OF GeneratorSaw IS
 
 BEGIN
  
-	Cycles_Per_Period_Counter_A <= to_integer(unsigned(CyclesPerWavePeriod)) / 2** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio);
-	Cycles_Per_Period_Counter_B <= to_integer(unsigned(CyclesPerWavePeriod)) / 2** (Effective_Wave_Resolution);
+	Cycles_Per_Period_Counter_A <= to_integer(unsigned(Period)) / 2** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio);
+	Cycles_Per_Period_Counter_B <= to_integer(unsigned(Period)) / 2** (Effective_Wave_Resolution);
 
 	PROCESS (Clk) BEGIN
 		IF(rising_edge(Clk)) THEN
