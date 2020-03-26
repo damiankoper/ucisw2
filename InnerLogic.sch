@@ -18,6 +18,7 @@
         <signal name="F0" />
         <signal name="Clk" />
         <signal name="XLXN_126(31:0)" />
+        <signal name="XLXN_127" />
         <port polarity="Output" name="DAC_Clock" />
         <port polarity="Output" name="WaveOut(11:0)" />
         <port polarity="Input" name="Reset" />
@@ -161,23 +162,19 @@
         </branch>
         <instance x="2384" y="1648" name="XLXI_26" orien="R0">
         </instance>
-        <instance x="2800" y="1376" name="XLXI_17" orien="R0">
-        </instance>
         <branch name="DAC_Clock">
-            <wire x2="3216" y1="1280" y2="1280" x1="3184" />
+            <wire x2="3040" y1="1312" y2="1312" x1="3024" />
+            <wire x2="3216" y1="1312" y2="1312" x1="3040" />
         </branch>
-        <iomarker fontsize="28" x="3216" y="1280" name="DAC_Clock" orien="R0" />
         <branch name="WaveOut(11:0)">
             <wire x2="3216" y1="1680" y2="1680" x1="3184" />
         </branch>
         <iomarker fontsize="28" x="3216" y="1680" name="WaveOut(11:0)" orien="R0" />
         <branch name="Reset">
             <wire x2="288" y1="1376" y2="1376" x1="240" />
-            <wire x2="2784" y1="1376" y2="1376" x1="288" />
+            <wire x2="2640" y1="1376" y2="1376" x1="288" />
             <wire x2="304" y1="1056" y2="1056" x1="288" />
             <wire x2="288" y1="1056" y2="1376" x1="288" />
-            <wire x2="2800" y1="1344" y2="1344" x1="2784" />
-            <wire x2="2784" y1="1344" y2="1376" x1="2784" />
         </branch>
         <branch name="DI(7:0)">
             <wire x2="304" y1="1120" y2="1120" x1="272" />
@@ -198,15 +195,17 @@
             <wire x2="1840" y1="736" y2="736" x1="288" />
             <wire x2="1920" y1="736" y2="736" x1="1840" />
             <wire x2="1840" y1="736" y2="1312" x1="1840" />
-            <wire x2="2800" y1="1312" y2="1312" x1="1840" />
+            <wire x2="2640" y1="1312" y2="1312" x1="1840" />
             <wire x2="288" y1="736" y2="864" x1="288" />
             <wire x2="304" y1="864" y2="864" x1="288" />
-            <wire x2="2800" y1="1280" y2="1312" x1="2800" />
         </branch>
         <branch name="XLXN_126(31:0)">
             <wire x2="1616" y1="992" y2="992" x1="1312" />
             <wire x2="1616" y1="992" y2="1248" x1="1616" />
             <wire x2="1920" y1="1248" y2="1248" x1="1616" />
         </branch>
+        <instance x="2640" y="1408" name="XLXI_17" orien="R0">
+        </instance>
+        <iomarker fontsize="28" x="3216" y="1312" name="DAC_Clock" orien="R0" />
     </sheet>
 </drawing>
