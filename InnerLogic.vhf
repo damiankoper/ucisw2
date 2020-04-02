@@ -7,11 +7,11 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 03/25/2020 19:03:49
+-- /___/   /\     Timestamp : 04/02/2020 20:56:10
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl C:/Users/mboja/Desktop/ucisw2/InnerLogic.vhf -w C:/Users/mboja/Desktop/ucisw2/InnerLogic.sch
+--Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/damian_koper/Documents/GitHub/ucisw2/InnerLogic.vhf -w /home/damian_koper/Documents/GitHub/ucisw2/InnerLogic.sch
 --Design Name: InnerLogic
 --Device: spartan3e
 --Purpose:
@@ -36,14 +36,17 @@ entity InnerLogic is
 end InnerLogic;
 
 architecture BEHAVIORAL of InnerLogic is
-   signal XLXN_95                    : std_logic_vector (7 downto 0);
-   signal XLXN_96                    : std_logic_vector (7 downto 0);
-   signal XLXN_104                   : std_logic_vector (11 downto 0);
-   signal XLXN_113                   : std_logic_vector (7 downto 0);
-   signal XLXN_126                   : std_logic_vector (31 downto 0);
-   signal XLXI_24_Input_1_openSignal : std_logic_vector (11 downto 0);
-   signal XLXI_24_Input_2_openSignal : std_logic_vector (11 downto 0);
-   signal XLXI_24_Input_3_openSignal : std_logic_vector (11 downto 0);
+   signal XLXN_104                     : std_logic_vector (11 downto 0);
+   signal XLXN_113                     : std_logic_vector (7 downto 0);
+   signal XLXN_126                     : std_logic_vector (31 downto 0);
+   signal XLXN_136                     : std_logic_vector (7 downto 0);
+   signal XLXN_137                     : std_logic_vector (7 downto 0);
+   signal XLXN_138                     : std_logic_vector (7 downto 0);
+   signal XLXN_139                     : std_logic_vector (7 downto 0);
+   signal XLXI_24_Input_1_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_24_Input_2_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_24_Input_3_openSignal   : std_logic_vector (11 downto 0);
+   signal XLXI_27_Tone_File_openSignal : std_logic_vector (7 downto 0);
    component ToneFSM
       port ( Clk    : in    std_logic; 
              F0     : in    std_logic; 
@@ -80,16 +83,30 @@ architecture BEHAVIORAL of InnerLogic is
              Period : in    std_logic_vector (31 downto 0));
    end component;
    
+   component SourceSwitchFSM
+      port ( Clk         : in    std_logic; 
+             Reset       : in    std_logic; 
+             DI_Rdy      : in    std_logic; 
+             F0          : in    std_logic; 
+             DI          : in    std_logic_vector (7 downto 0); 
+             Tone_Key    : in    std_logic_vector (7 downto 0); 
+             Tone_File   : in    std_logic_vector (7 downto 0); 
+             Octave_Key  : in    std_logic_vector (7 downto 0); 
+             Octave_File : in    std_logic_vector (7 downto 0); 
+             Tone        : out   std_logic_vector (7 downto 0); 
+             Octave      : out   std_logic_vector (7 downto 0));
+   end component;
+   
 begin
-   XLXN_96(7 downto 0) <= x"04";
    XLXN_113(7 downto 0) <= x"00";
+   XLXN_138(7 downto 0) <= x"04";
    XLXI_4 : ToneFSM
       port map (Clk=>Clk,
                 DI(7 downto 0)=>DI(7 downto 0),
                 DI_Rdy=>DI_Rdy,
                 F0=>F0,
                 Reset=>Reset,
-                Tone(7 downto 0)=>XLXN_95(7 downto 0));
+                Tone(7 downto 0)=>XLXN_139(7 downto 0));
    
    XLXI_17 : Clock_32kHz
       port map (CLK_IN=>Clk,
@@ -97,8 +114,8 @@ begin
                 CLK_OUT=>DAC_Clock);
    
    XLXI_22 : FreqMapper
-      port map (OctaveNum(7 downto 0)=>XLXN_96(7 downto 0),
-                Tone(7 downto 0)=>XLXN_95(7 downto 0),
+      port map (OctaveNum(7 downto 0)=>XLXN_136(7 downto 0),
+                Tone(7 downto 0)=>XLXN_137(7 downto 0),
                 Period(31 downto 0)=>XLXN_126(31 downto 0));
    
    XLXI_24 : GeneratorSignalSwitch
@@ -113,6 +130,19 @@ begin
       port map (Clk=>Clk,
                 Period(31 downto 0)=>XLXN_126(31 downto 0),
                 Sample(11 downto 0)=>XLXN_104(11 downto 0));
+   
+   XLXI_27 : SourceSwitchFSM
+      port map (Clk=>Clk,
+                DI(7 downto 0)=>DI(7 downto 0),
+                DI_Rdy=>DI_Rdy,
+                F0=>F0,
+                Octave_File(7 downto 0)=>XLXN_138(7 downto 0),
+                Octave_Key(7 downto 0)=>XLXN_138(7 downto 0),
+                Reset=>Reset,
+                Tone_File(7 downto 0)=>XLXI_27_Tone_File_openSignal(7 downto 0),
+                Tone_Key(7 downto 0)=>XLXN_139(7 downto 0),
+                Octave(7 downto 0)=>XLXN_136(7 downto 0),
+                Tone(7 downto 0)=>XLXN_137(7 downto 0));
    
 end BEHAVIORAL;
 
