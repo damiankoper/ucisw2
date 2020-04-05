@@ -6,12 +6,12 @@
 -- /___/  \  /    Vendor: Xilinx 
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
---  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 04/05/2020 20:06:53
+--  /   /         Filename : InnerLogic_drc.vhf
+-- /___/   /\     Timestamp : 04/05/2020 20:07:12
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/maja/Git/ucisw2/InnerLogic.vhf -w /home/maja/Git/ucisw2/InnerLogic.sch
+--Command: /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl InnerLogic_drc.vhf -w /home/maja/Git/ucisw2/InnerLogic.sch
 --Design Name: InnerLogic
 --Device: spartan3e
 --Purpose:

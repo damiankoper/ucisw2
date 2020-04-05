@@ -33,7 +33,8 @@ ENTITY GeneratorSaw IS
 	PORT (
 		Clk : IN STD_LOGIC;
 		Period : IN STD_LOGIC_VECTOR (31 DOWNTO 0);
-		Sample : OUT STD_LOGIC_VECTOR (11 DOWNTO 0));
+		Sample : OUT STD_LOGIC_VECTOR (11 DOWNTO 0);
+		Sample_Rdy : OUT STD_LOGIC);
 END GeneratorSaw;
 
 ARCHITECTURE Behavioral OF GeneratorSaw IS
@@ -51,9 +52,11 @@ ARCHITECTURE Behavioral OF GeneratorSaw IS
 	SIGNAL Next_8b_Sample_A : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
 	SIGNAL Next_8b_Sample_B : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
 	SIGNAL Next_8b_Sample : UNSIGNED(7 DOWNTO 0) := (OTHERS => '0');
+	SIGNAL Next_Sample_Rdy : STD_LOGIC := '0';
+
 
 	SIGNAL Last_Period : STD_LOGIC_VECTOR (31 DOWNTO 0) := (OTHERS => '0');
-
+	
 BEGIN
 
 	Cycles_Per_Period_Counter_A <= to_integer(unsigned(Period)) / 2 ** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio);
@@ -62,7 +65,7 @@ BEGIN
 	PROCESS (Clk) BEGIN
 		-- New Period value on input, clear counters and samples.
 		IF (rising_edge(Clk)) THEN
-	
+
 			IF (Period /= Last_Period) THEN
 				Last_Period <= Period;
 				Next_8b_Sample <= x"00";
@@ -70,8 +73,9 @@ BEGIN
 				Counter_B <= 1;
 				Next_8b_Sample_A <= x"00";
 				Next_8b_Sample_B <= x"00";
+				Sample_Rdy <= '0';
 			END IF;
-		
+			
 			-- Calculate next sample only if the target period is > 0 (tone not silent).
 			IF (Period /= x"00000000") THEN
 				Counter_A <= Counter_A + 1;
@@ -85,17 +89,21 @@ BEGIN
 
 					Counter_A <= 1;
 					Counter_B <= 1;
+					Sample_Rdy <= '1';
 				ELSIF (Counter_B > Cycles_Per_Period_Counter_B) THEN
 					-- High frequency counter (B) rolled over
 					Next_8b_Sample_B <= Next_8b_Sample_B + 1;
 					Next_8b_Sample <= Next_8b_Sample_B;
 
 					Counter_B <= 1;
+					Sample_Rdy <= '1';
+				ELSE
+					Sample_Rdy <= '0';
 				END IF;
 			END IF;
 		END IF;
 	END PROCESS;
-
+	
 	Sample <= std_logic_vector(Next_8b_Sample) & x"0";
 
 END Behavioral;
