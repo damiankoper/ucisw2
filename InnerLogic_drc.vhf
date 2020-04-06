@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic_drc.vhf
--- /___/   /\     Timestamp : 04/05/2020 20:07:12
+-- /___/   /\     Timestamp : 04/06/2020 17:45:35
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -36,12 +36,21 @@ entity InnerLogic is
 end InnerLogic;
 
 architecture BEHAVIORAL of InnerLogic is
-   signal XLXN_136                     : std_logic_vector (7 downto 0);
-   signal XLXN_137                     : std_logic_vector (7 downto 0);
-   signal XLXN_138                     : std_logic_vector (7 downto 0);
-   signal XLXN_139                     : std_logic_vector (7 downto 0);
-   signal XLXN_162                     : std_logic_vector (31 downto 0);
-   signal XLXI_27_Tone_File_openSignal : std_logic_vector (7 downto 0);
+   signal XLXN_136                       : std_logic_vector (7 downto 0);
+   signal XLXN_137                       : std_logic_vector (7 downto 0);
+   signal XLXN_138                       : std_logic_vector (7 downto 0);
+   signal XLXN_139                       : std_logic_vector (7 downto 0);
+   signal XLXN_162                       : std_logic_vector (31 downto 0);
+   signal XLXN_180                       : std_logic_vector (11 downto 0);
+   signal XLXN_181                       : std_logic;
+   signal XLXN_195                       : std_logic_vector (7 downto 0);
+   signal XLXI_27_Tone_File_openSignal   : std_logic_vector (7 downto 0);
+   signal XLXI_28_Input_1_openSignal     : std_logic_vector (11 downto 0);
+   signal XLXI_28_Input_1_Rdy_openSignal : std_logic;
+   signal XLXI_28_Input_2_openSignal     : std_logic_vector (11 downto 0);
+   signal XLXI_28_Input_2_Rdy_openSignal : std_logic;
+   signal XLXI_28_Input_3_openSignal     : std_logic_vector (11 downto 0);
+   signal XLXI_28_Input_3_Rdy_openSignal : std_logic;
    component ToneFSM
       port ( Clk    : in    std_logic; 
              F0     : in    std_logic; 
@@ -55,13 +64,6 @@ architecture BEHAVIORAL of InnerLogic is
       port ( Tone      : in    std_logic_vector (7 downto 0); 
              OctaveNum : in    std_logic_vector (7 downto 0); 
              Period    : out   std_logic_vector (31 downto 0));
-   end component;
-   
-   component GeneratorSaw
-      port ( Clk        : in    std_logic; 
-             Period     : in    std_logic_vector (31 downto 0); 
-             Sample     : out   std_logic_vector (11 downto 0); 
-             Sample_Rdy : out   std_logic);
    end component;
    
    component SourceSwitchFSM
@@ -78,8 +80,30 @@ architecture BEHAVIORAL of InnerLogic is
              Octave      : out   std_logic_vector (7 downto 0));
    end component;
    
+   component GeneratorSignalSwitch
+      port ( Wave_Type   : in    std_logic_vector (7 downto 0); 
+             Input_0     : in    std_logic_vector (11 downto 0); 
+             Input_1     : in    std_logic_vector (11 downto 0); 
+             Input_2     : in    std_logic_vector (11 downto 0); 
+             Input_3     : in    std_logic_vector (11 downto 0); 
+             Output      : out   std_logic_vector (11 downto 0); 
+             Input_0_Rdy : in    std_logic; 
+             Input_1_Rdy : in    std_logic; 
+             Input_2_Rdy : in    std_logic; 
+             Input_3_Rdy : in    std_logic; 
+             Output_Rdy  : out   std_logic);
+   end component;
+   
+   component GeneratorSaw
+      port ( Clk        : in    std_logic; 
+             Period     : in    std_logic_vector (31 downto 0); 
+             Sample     : out   std_logic_vector (11 downto 0); 
+             Sample_Rdy : out   std_logic);
+   end component;
+   
 begin
    XLXN_138(7 downto 0) <= x"04";
+   XLXN_195(7 downto 0) <= x"00";
    XLXI_4 : ToneFSM
       port map (Clk=>Clk,
                 DI(7 downto 0)=>DI(7 downto 0),
@@ -93,12 +117,6 @@ begin
                 Tone(7 downto 0)=>XLXN_137(7 downto 0),
                 Period(31 downto 0)=>XLXN_162(31 downto 0));
    
-   XLXI_25 : GeneratorSaw
-      port map (Clk=>Clk,
-                Period(31 downto 0)=>XLXN_162(31 downto 0),
-                Sample(11 downto 0)=>WaveOut(11 downto 0),
-                Sample_Rdy=>DAC_Clock);
-   
    XLXI_27 : SourceSwitchFSM
       port map (Clk=>Clk,
                 DI(7 downto 0)=>DI(7 downto 0),
@@ -111,6 +129,25 @@ begin
                 Tone_Key(7 downto 0)=>XLXN_139(7 downto 0),
                 Octave(7 downto 0)=>XLXN_136(7 downto 0),
                 Tone(7 downto 0)=>XLXN_137(7 downto 0));
+   
+   XLXI_28 : GeneratorSignalSwitch
+      port map (Input_0(11 downto 0)=>XLXN_180(11 downto 0),
+                Input_0_Rdy=>XLXN_181,
+                Input_1(11 downto 0)=>XLXI_28_Input_1_openSignal(11 downto 0),
+                Input_1_Rdy=>XLXI_28_Input_1_Rdy_openSignal,
+                Input_2(11 downto 0)=>XLXI_28_Input_2_openSignal(11 downto 0),
+                Input_2_Rdy=>XLXI_28_Input_2_Rdy_openSignal,
+                Input_3(11 downto 0)=>XLXI_28_Input_3_openSignal(11 downto 0),
+                Input_3_Rdy=>XLXI_28_Input_3_Rdy_openSignal,
+                Wave_Type(7 downto 0)=>XLXN_195(7 downto 0),
+                Output(11 downto 0)=>WaveOut(11 downto 0),
+                Output_Rdy=>DAC_Clock);
+   
+   XLXI_31 : GeneratorSaw
+      port map (Clk=>Clk,
+                Period(31 downto 0)=>XLXN_162(31 downto 0),
+                Sample(11 downto 0)=>XLXN_180(11 downto 0),
+                Sample_Rdy=>XLXN_181);
    
 end BEHAVIORAL;
 

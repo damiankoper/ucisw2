@@ -60,7 +60,7 @@
             <line x2="0" y1="160" y2="160" x1="64" />
         </blockdef>
         <blockdef name="InnerLogic">
-            <timestamp>2020-4-5T18:7:10</timestamp>
+            <timestamp>2020-4-6T15:45:32</timestamp>
             <rect width="256" x="64" y="-320" height="320" />
             <line x2="0" y1="-288" y2="-288" x1="64" />
             <rect width="64" x="0" y="-236" height="24" />
@@ -137,8 +137,8 @@
             <blockpin signalname="XLXN_119" name="F0" />
             <blockpin signalname="Reset" name="Clk" />
             <blockpin signalname="Reset" name="Reset" />
-            <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
             <blockpin signalname="XLXN_114" name="DAC_Clock" />
+            <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
         </block>
         <block symbolname="SDC_FileReader" name="XLXI_27">
             <blockpin name="SDC_MISO" />

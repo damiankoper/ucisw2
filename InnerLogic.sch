@@ -217,7 +217,7 @@
             <blockpin signalname="DAC_Clock" name="Output_Rdy" />
         </block>
         <block symbolname="constant" name="XLXI_33">
-            <attr value="00" name="CValue">
+            <attr value="0" name="CValue">
                 <trait delete="all:1 sym:0" />
                 <trait editname="all:1 sch:0" />
                 <trait valuetype="BitVector 32 Hexadecimal" />
@@ -233,11 +233,10 @@
             <wire x2="208" y1="912" y2="1632" x1="208" />
         </branch>
         <branch name="DI_Rdy">
-            <wire x2="176" y1="1488" y2="1488" x1="144" />
-            <wire x2="176" y1="1488" y2="1504" x1="176" />
+            <wire x2="176" y1="1504" y2="1504" x1="144" />
             <wire x2="464" y1="1504" y2="1504" x1="176" />
             <wire x2="1776" y1="784" y2="784" x1="176" />
-            <wire x2="176" y1="784" y2="1488" x1="176" />
+            <wire x2="176" y1="784" y2="1504" x1="176" />
         </branch>
         <branch name="F0">
             <wire x2="240" y1="1440" y2="1440" x1="80" />
@@ -246,7 +245,6 @@
             <wire x2="240" y1="848" y2="1440" x1="240" />
         </branch>
         <iomarker fontsize="28" x="80" y="1440" name="F0" orien="R180" />
-        <iomarker fontsize="28" x="144" y="1488" name="DI_Rdy" orien="R180" />
         <iomarker fontsize="28" x="80" y="1248" name="Clk" orien="R180" />
         <iomarker fontsize="28" x="128" y="1632" name="DI(7:0)" orien="R180" />
         <iomarker fontsize="28" x="112" y="1888" name="Reset" orien="R180" />
@@ -331,5 +329,6 @@
         </branch>
         <iomarker fontsize="28" x="4480" y="1152" name="WaveOut(11:0)" orien="R0" />
         <iomarker fontsize="28" x="4480" y="1200" name="DAC_Clock" orien="R0" />
+        <iomarker fontsize="28" x="144" y="1504" name="DI_Rdy" orien="R180" />
     </sheet>
 </drawing>
