@@ -1,0 +1,138 @@
+add instance Clock_32kHz 464 320 R0 -sn=1
+select figure at 747 248 8 -branches -sn=1
+delete selection -sn=1
+add instance FileReaderFSM 224 592 R0 -sn=1
+select figure at 460 408 8 -branches -sn=1
+move instance at 224 592 to 304 656 R0 -keepConn -sn=1
+select figure at 768 1194 8 -branches -sn=1
+select figure at 770 1205 8 -branches -sn=1
+select figure at 766 1196 8 -wires -sn=1
+delete selection -sn=1
+select figure at 743 1181 8 -wires -sn=1
+delete selection -sn=1
+add autowire 688 448 784 448 8 -sn=1
+add autowire 688 528 816 1072 8 -sn=1
+add autowire 688 608 816 1200 8 -sn=1
+add autowire 304 560 288 704 8 -sn=1
+add autowire 304 496 240 1888 8 -sn=1
+undo
+add autowire 304 496 160 752 8 -sn=1
+select figure at 473 367 8 -wires -sn=1
+move instance at 304 656 to 368 656 R0 -keepConn -sn=1
+select figure at 278 667 8 -wires -sn=1
+move wire at 272 560 272 704 to 288 560 288 704 -keepConn -sn=1
+select figure at 350 753 8 -wires -sn=1
+select figure at 287 702 8 -wires -sn=1
+select figure at 314 646 8 -wires -sn=1
+select figure at 300 648 8 -wires -sn=1
+select figure at 295 650 8 -wires -all -sn=1
+select figure at 303 697 8 -wires -sn=1
+select figure at 288 695 8 -wires -sn=1
+select figure at 294 634 8 -wires -sn=1
+select figure at 317 639 8 -wires -sn=1
+BeginGroup
+add wire 368 624 336 624 -sn=1
+add iomarker 336 624 0 Input Unknown -sn=1
+EndGroup
+BeginGroup
+add wire 368 432 336 432 -sn=1
+add iomarker 336 432 0 Input Unknown -sn=1
+EndGroup
+BeginGroup
+add wire 368 368 336 368 -sn=1
+add iomarker 336 368 0 Input Unknown -sn=1
+EndGroup
+add iomarker 784 448 0 Unknown Unknown -sn=1
+BeginGroup
+add wire 752 368 784 368 -sn=1
+add iomarker 784 368 0 Output Unknown -sn=1
+EndGroup
+select figure at 192 626 8 -wires -sn=1
+select figure at 192 626 8 -wires -all -sn=1
+set attr NA|XLXN_164(7:0)|Name value SDC_DI(7:0) -sn=1
+select figure at 231 437 8 -wires -sn=1
+select figure at 231 437 8 -wires -all -sn=1
+set attr NA|XLXN_165|Name value SDC_DI_Busy -sn=1
+select figure at 215 369 8 -wires -sn=1
+select figure at 215 369 8 -wires -all -sn=1
+set attr NA|XLXN_166|Name value SDC_DI_Rdy -sn=1
+select figure at 899 382 8 -wires -sn=1
+select figure at 899 382 8 -wires -all -sn=1
+set attr NA|XLXN_167|Name value SDC_DI_Pop -sn=1
+select figure at 839 456 8 -wires -sn=1
+select figure at 839 456 8 -wires -all -sn=1
+set attr NA|XLXN_156|Name value SDC_DI_Start -sn=1
+select figure at 1456 447 8 -wires -sn=1
+select figure at 225 624 8 -wires -sn=1
+move iomarker at 336 624 to 272 624 R180 -keepConn -sn=1
+select figure at 672 483 8 -wires -sn=1
+select figure at 227 436 8 -wires -sn=1
+move iomarker at 336 432 to 288 432 R180 -keepConn -sn=1
+select figure at 272 376 8 -wires -sn=1
+move iomarker at 336 368 to 288 368 R180 -keepConn -sn=1
+select figure at 598 450 8 -wires -sn=1
+move instance at 368 656 to 336 656 R0 -keepConn -sn=1
+select figure at 185 628 8 -wires -sn=1
+move iomarker at 272 624 to 192 640 R180 -keepConn -sn=1
+select figure at 46 584 8 -wires -sn=1
+move wire at 48 496 48 752 to 160 496 160 752 -keepConn -sn=1
+select figure at 114 647 8 -wires -sn=1
+move iomarker at 192 640 to 176 624 R180 -keepConn -sn=1
+move iomarker at 176 624 to 208 624 R180 -keepConn -sn=1
+select figure at 1412 464 8 -wires -sn=1
+select figure at 800 1173 8 -wires -sn=1
+move wire at 800 1120 800 1200 to 784 1120 784 1200 -keepConn -sn=1
+select figure at 1872 902 8 -wires -sn=1
+select figure at 3565 2607 8 -wires -sn=1
+select all in 2170 2113 3565 2607 -wires -enclosed -sn=1
+select figure at 2988 2393 8 -wires -sn=1
+move instance at 2736 2480 to 2544 896 R0 -keepConn -sn=1
+undo
+select figure at 2056 2594 8 -wires -sn=1
+select all in 2056 2025 3600 2594 -wires -enclosed -sn=1
+move selection by 0 -1296 -keepConn -sn=1
+undo
+move selection by 0 -1216 -keepConn -sn=1
+undo
+move selection by 64 -992 -keepConn -sn=1
+select figure at 2471 2147 8 -wires -sn=1
+select figure at 2369 2255 8 -wires -sn=1
+move wire at 2320 2256 2384 2256 to 2320 1264 2384 1264 -keepConn -sn=1
+select figure at 2916 1288 8 -wires -sn=1
+move instance at 2800 1488 to 2800 1472 R0 -keepConn -sn=1
+select figure at 2678 1395 8 -wires -sn=1
+select figure at 2521 1213 8 -wires -sn=1
+move instance at 2448 1168 to 2432 1152 R0 -keepConn -sn=1
+select figure at 2590 1405 8 -wires -sn=1
+select figure at 3341 1210 8 -wires -sn=1
+move iomarker at 3280 1200 to 3280 1168 R0 -keepConn -sn=1
+select figure at 2726 1600 8 -wires -sn=1
+select all in 2726 1088 3508 1600 -wires -enclosed -sn=1
+select figure at 2944 1344 8 -wires -sn=1
+move instance at 2800 1472 to 2640 1472 R0 -keepConn -sn=1
+select figure at 3169 1413 8 -wires -sn=1
+select figure at 3344 1164 8 -wires -sn=1
+move iomarker at 3280 1168 to 3152 1184 R0 -keepConn -sn=1
+select figure at 3265 1332 8 -wires -sn=1
+select figure at 2453 1185 8 -wires -sn=1
+move instance at 2432 1152 to 2080 864 R0 -keepConn -sn=1
+move instance at 2080 864 to 2048 1024 R0 -keepConn -sn=1
+select figure at 2734 1273 8 -wires -sn=1
+move instance at 2640 1472 to 2448 1472 R0 -keepConn -sn=1
+select figure at 2215 1094 8 -wires -sn=1
+move instance at 1920 1344 to 2016 1360 R0 -keepConn -sn=1
+undo
+move instance at 1920 1344 to 1968 1344 R0 -keepConn -sn=1
+undo
+select figure at 2217 1101 8 -wires -sn=1
+select figure at 2210 1096 8 -wires -sn=1
+move wire at 2208 1056 2208 1184 to 2336 1056 2336 1184 -keepConn -sn=1
+select figure at 3210 1187 8 -wires -sn=1
+move iomarker at 3152 1184 to 2976 1184 R0 -keepConn -sn=1
+select figure at 3103 1415 8 -wires -sn=1
+select figure at 2511 1590 8 -wires -sn=1
+select all in 2511 1590 3493 2093 -wires -enclosed -sn=1
+move selection by -240 0 -keepConn -sn=1
+select figure at 2901 2104 8 -wires -sn=1
+select figure at -373 2425 8 -wires -sn=1
+select all in -373 5 3979 2425 -wires -enclosed -sn=1

@@ -17,9 +17,9 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.numeric_std.ALL;
 LIBRARY UNISIM;
 USE UNISIM.Vcomponents.ALL;
-ENTITY InnerLogic_InnerLogic_sch_tb IS
-END InnerLogic_InnerLogic_sch_tb;
-ARCHITECTURE behavioral OF InnerLogic_InnerLogic_sch_tb IS
+ENTITY InnerLogic_InnerLogic_SD_sch_tb IS
+END InnerLogic_InnerLogic_SD_sch_tb;
+ARCHITECTURE behavioral OF InnerLogic_InnerLogic_SD_sch_tb IS
 
    COMPONENT InnerLogic
       PORT (
@@ -30,11 +30,11 @@ ARCHITECTURE behavioral OF InnerLogic_InnerLogic_sch_tb IS
          DI : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
          DI_Rdy : IN STD_LOGIC;
          F0 : IN STD_LOGIC;
-			SDC_DI : IN  std_logic_vector(7 downto 0);
-         SDC_DI_Rdy : IN  std_logic;
-         SDC_DI_Busy : IN  std_logic;
-         SDC_DI_Pop : OUT  std_logic;
-         SDC_DI_Start : OUT  std_logic);
+         SDC_DI : IN std_logic_vector(7 DOWNTO 0);
+         SDC_DI_Rdy : IN std_logic;
+         SDC_DI_Busy : IN std_logic;
+         SDC_DI_Pop : OUT std_logic;
+         SDC_DI_Start : OUT std_logic);
    END COMPONENT;
 
    SIGNAL Clk : STD_LOGIC;
@@ -44,11 +44,11 @@ ARCHITECTURE behavioral OF InnerLogic_InnerLogic_sch_tb IS
    SIGNAL DI : STD_LOGIC_VECTOR (7 DOWNTO 0);
    SIGNAL DI_Rdy : STD_LOGIC;
    SIGNAL F0 : STD_LOGIC;
-	SIGNAL SDC_DI :  std_logic_vector(7 downto 0);
-	SIGNAL SDC_DI_Rdy :  std_logic;
-	SIGNAL SDC_DI_Busy :  std_logic;
-	SIGNAL SDC_DI_Pop :  std_logic;
-	SIGNAL SDC_DI_Start :  std_logic;
+   SIGNAL SDC_DI : std_logic_vector(7 DOWNTO 0);
+   SIGNAL SDC_DI_Rdy : std_logic;
+   SIGNAL SDC_DI_Busy : std_logic;
+   SIGNAL SDC_DI_Pop : std_logic;
+   SIGNAL SDC_DI_Start : std_logic;
 
    CONSTANT Clk_period : TIME := 20 ns;
 BEGIN
@@ -61,14 +61,14 @@ BEGIN
       DI => DI,
       DI_Rdy => DI_Rdy,
       F0 => F0,
-		SDC_DI => SDC_DI,
-		SDC_DI_Rdy =>SDC_DI_Rdy,
-		SDC_DI_Busy =>SDC_DI_Busy,
-		SDC_DI_Pop =>SDC_DI_Pop,
-		SDC_DI_Start =>SDC_DI_Start
+      SDC_DI => SDC_DI,
+      SDC_DI_Rdy => SDC_DI_Rdy,
+      SDC_DI_Busy => SDC_DI_Busy,
+      SDC_DI_Pop => SDC_DI_Pop,
+      SDC_DI_Start => SDC_DI_Start
    );
-	
-	Reset <= '0';
+
+   Reset <= '0';
 
    -- Clock process definitions
    Clk_process : PROCESS
@@ -82,24 +82,51 @@ BEGIN
    -- Stimulus process
    stim_proc : PROCESS
       TYPE typeByteArray IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(7 DOWNTO 0);
-		-- X"31" => select key source
-      VARIABLE arrBytes : typeByteArray(0 TO 14) := ( X"31", X"44", X"1C", X"1D", X"1B", X"24", X"23", X"2B", X"2C", X"34", X"35", X"33", X"3C", X"3B", X"44");
+      -- X"3A" => select file source
+      VARIABLE arrBytes : typeByteArray(0 TO 1) := (X"3A", X"44");
    BEGIN
-		
       FOR i IN arrBytes'RANGE LOOP
          F0 <= '0';
          DI_Rdy <= '1';
          DI <= arrBytes(i);
-         WAIT FOR Clk_period * 1;
+         WAIT FOR Clk_period;
          DI_Rdy <= '0';
-         WAIT FOR 10 ms; -- Tone time
-         DI_Rdy <= '1';
+         WAIT FOR Clk_period;         
+			DI_Rdy <= '1';
          F0 <= '1';
          WAIT FOR Clk_period * 1;
          DI_Rdy <= '0';
-         WAIT FOR 1 ms; -- Silence time
+         WAIT FOR Clk_period; 
       END LOOP;
-
-      WAIT;
+		
+		Reset <='1';
+		WAIT FOR Clk_period;
+		Reset <='0';
+      
+		WAIT;
    END PROCESS;
+		
+	   -- Stimulus process
+   stim_proc_sdc: process
+	   type file_int is file of character;
+      file WAV : file_int is in "./song.txt";
+      variable i : character;
+   begin		
+      wait until rising_edge( Clk ) and SDC_DI_Start = '1';
+      
+      SDC_DI_Busy <= '1';
+      
+      while not endfile( WAV ) loop
+        wait for 2*Clk_period;
+        read( WAV, i );
+        SDC_DI <= std_logic_vector( to_unsigned( character'pos( i ), 8 ) );
+        SDC_DI_Rdy <= '1';
+        wait until rising_edge( Clk ) and SDC_DI_Pop = '1';
+        SDC_DI_Rdy <= '0';
+      end loop;
+
+      SDC_DI_Busy <= '0';
+
+      wait; -- forever
+   end process;
 END;

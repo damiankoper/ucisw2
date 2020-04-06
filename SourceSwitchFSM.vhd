@@ -68,7 +68,7 @@ BEGIN
             CASE DI IS
                 WHEN X"31" => next_state <= Key_Source; -- N 
                 WHEN X"3A" => next_state <= File_Source; -- M
-                WHEN OTHERS => next_state <= state;
+                WHEN OTHERS =>
             END CASE;
         END IF;
     END PROCESS;
