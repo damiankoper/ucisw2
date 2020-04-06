@@ -10,20 +10,11 @@
         <signal name="Reset" />
         <signal name="PS2_Data" />
         <signal name="PS2_Clk" />
-        <signal name="XLXN_113" />
         <signal name="XLXN_114" />
         <signal name="XLXN_115(11:0)" />
         <signal name="XLXN_116(7:0)" />
-        <signal name="XLXN_117" />
         <signal name="XLXN_118" />
         <signal name="XLXN_119" />
-        <signal name="XLXN_120" />
-        <signal name="XLXN_121" />
-        <signal name="XLXN_122(7:0)" />
-        <signal name="XLXN_124" />
-        <signal name="XLXN_125" />
-        <signal name="XLXN_127" />
-        <signal name="XLXN_128" />
         <signal name="XLXN_129(7:0)" />
         <signal name="XLXN_130(1:0)" />
         <port polarity="Input" name="Clk_50MHz" />
@@ -69,7 +60,7 @@
             <line x2="0" y1="160" y2="160" x1="64" />
         </blockdef>
         <blockdef name="InnerLogic">
-            <timestamp>2020-4-2T18:10:23</timestamp>
+            <timestamp>2020-4-5T18:7:10</timestamp>
             <rect width="256" x="64" y="-320" height="320" />
             <line x2="0" y1="-288" y2="-288" x1="64" />
             <rect width="64" x="0" y="-236" height="24" />
@@ -141,13 +132,13 @@
             <blockpin signalname="Clk_50MHz" name="Clk_Sys" />
         </block>
         <block symbolname="InnerLogic" name="XLXI_26">
-            <blockpin signalname="Reset" name="Reset" />
             <blockpin signalname="XLXN_116(7:0)" name="DI(7:0)" />
             <blockpin signalname="XLXN_118" name="DI_Rdy" />
             <blockpin signalname="XLXN_119" name="F0" />
             <blockpin signalname="Reset" name="Clk" />
-            <blockpin signalname="XLXN_114" name="DAC_Clock" />
+            <blockpin signalname="Reset" name="Reset" />
             <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
+            <blockpin signalname="XLXN_114" name="DAC_Clock" />
         </block>
         <block symbolname="SDC_FileReader" name="XLXI_27">
             <blockpin name="SDC_MISO" />
