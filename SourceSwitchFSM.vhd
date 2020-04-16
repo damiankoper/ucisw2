@@ -40,7 +40,9 @@ entity SourceSwitchFSM is
            Octave_Key : in  STD_LOGIC_VECTOR (7 downto 0);
            Octave_File : in  STD_LOGIC_VECTOR (7 downto 0);
            Tone : out  STD_LOGIC_VECTOR (7 downto 0);
-           Octave : out  STD_LOGIC_VECTOR (7 downto 0));
+           Octave : out  STD_LOGIC_VECTOR (7 downto 0);
+			  Key_Source_Selected : out STD_LOGIC;
+			  File_Source_Selected : out STD_LOGIC);
 end SourceSwitchFSM;
 
 architecture Behavioral of SourceSwitchFSM is
@@ -58,6 +60,14 @@ BEGIN
             ELSIF DI_Rdy = '1' THEN
                 state <= next_state;
             END IF;
+				 if state = Key_Source and next_state = File_Source then
+						File_Source_Selected <= '1';
+					elsif state = File_Source and next_state = Key_Source then
+						Key_Source_Selected <= '1';
+					else
+						File_Source_Selected <= '0';
+						Key_Source_Selected <= '0';
+					end if;
         END IF;
     END PROCESS;
 

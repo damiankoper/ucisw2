@@ -51,7 +51,9 @@ ARCHITECTURE behavior OF TB_SourceSwitchFSM IS
          Octave_Key : IN  std_logic_vector(7 downto 0);
          Octave_File : IN  std_logic_vector(7 downto 0);
          Tone : OUT  std_logic_vector(7 downto 0);
-         Octave : OUT  std_logic_vector(7 downto 0)
+         Octave : OUT  std_logic_vector(7 downto 0);
+			 Key_Source_Selected : out STD_LOGIC;
+			  File_Source_Selected : out STD_LOGIC
         );
     END COMPONENT;
     
@@ -66,9 +68,10 @@ ARCHITECTURE behavior OF TB_SourceSwitchFSM IS
    signal Tone_File : std_logic_vector(7 downto 0) := (others => '0');
    signal Octave_Key : std_logic_vector(7 downto 0) := (others => '0');
    signal Octave_File : std_logic_vector(7 downto 0) := (others => '0');
-
+   signal Key_Source_Selected : STD_LOGIC := '0';
+	signal File_Source_Selected : STD_LOGIC := '0';
  	--Outputs
-   signal Tone : std_logic_vector(7 downto 0);
+   signal Tone : std_logic_vector(7 downto 0) ;
    signal Octave : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
@@ -88,7 +91,9 @@ BEGIN
           Octave_Key => Octave_Key,
           Octave_File => Octave_File,
           Tone => Tone,
-          Octave => Octave
+          Octave => Octave,
+			 Key_Source_Selected=>Key_Source_Selected,
+			 File_Source_Selected => File_Source_Selected
         );
 
    -- Clock process definitions

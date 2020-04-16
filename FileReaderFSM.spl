@@ -1,0 +1,13 @@
+[Inputs]
+DI_Rdy
+DI_Busy
+Reset
+Clk
+=DI[7:0]=
+[Outputs]
+DI_Pop
+DI_Reset
+DI_Start
+=Tone[7:0]=
+=Octave[7:0]=
+[BiDir]

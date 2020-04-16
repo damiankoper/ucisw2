@@ -1,0 +1,16 @@
+[Inputs]
+Clk
+Reset
+DI_Rdy
+F0
+=DI[7:0]=
+=Tone_Key[7:0]=
+=Tone_File[7:0]=
+=Octave_Key[7:0]=
+=Octave_File[7:0]=
+[Outputs]
+Key_Source_Selected
+File_Source_Selected
+=Tone[7:0]=
+=Octave[7:0]=
+[BiDir]

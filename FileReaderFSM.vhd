@@ -35,6 +35,7 @@ ENTITY FileReaderFSM IS
 		DI_Rdy : IN STD_LOGIC;
 		DI_Busy : IN STD_LOGIC;
 		DI_Pop : OUT STD_LOGIC;
+		DI_Reset : OUT STD_LOGIC;
 		Reset : IN STD_LOGIC;
 		Clk : IN STD_LOGIC;
 		DI_Start : OUT STD_LOGIC;
@@ -71,7 +72,9 @@ BEGIN
 		next_state <= state;
 		CASE state IS
 			WHEN Init =>
-				next_state <= Tone_Request;
+				IF DI_BUSY = '0' THEN
+					next_state <= Tone_Request;
+				END IF;
 			WHEN Tone_Request =>
 				next_state <= Tone_Reading;
 			WHEN Tone_Reading =>
@@ -108,7 +111,7 @@ BEGIN
 		END CASE;
 	END PROCESS;
 
-	INPUT_HANDLER : PROCESS (state, DI_Rdy)
+	INPUT_HANDLER : PROCESS (state, DI_Rdy, Reset)
 	BEGIN
 		-- Defaults
 		DI_Pop <= '0';
@@ -120,8 +123,10 @@ BEGIN
 		
 		CASE state IS
 			WHEN Init =>
-				PLAYING_TIME <= X"0000";
-				DI_Start <= '1';
+				IF Reset = '0' then
+						PLAYING_TIME <= X"0000";
+						DI_Start <= '1';
+				end if;
 			WHEN Tone_Request =>
 				DI_Pop <= '1';
 			WHEN Tone_Reading =>
@@ -186,6 +191,18 @@ BEGIN
 		X"0C" WHEN X"6A",
 		X"00" WHEN OTHERS;
 
-	Octave <= std_logic_vector(unsigned(Octave_CHAR) - 48);
+	WITH Octave_CHAR SELECT Octave <=
+		X"00" WHEN X"34",
+		X"01" WHEN X"35",
+		X"02" WHEN X"36",
+		X"03" WHEN X"37",
+		X"04" WHEN X"38",
+		X"05" WHEN X"39",
+		X"06" WHEN X"3A",
+		X"07" WHEN X"3B",
+		X"07" WHEN X"3C",
+		X"00" WHEN OTHERS;
+	
+	DI_Reset <= Reset;
 
 END Behavioral;

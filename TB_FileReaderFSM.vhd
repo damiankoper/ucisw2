@@ -45,6 +45,7 @@ ARCHITECTURE behavior OF TB_FileReaderFSM IS
          DI_Rdy : IN  std_logic;
          DI_Busy : IN  std_logic;
          DI_Pop : OUT  std_logic;
+			DI_Reset : OUT std_logic;
          Reset : IN  std_logic;
          Clk : IN  std_logic;
          DI_Start : OUT  std_logic;
@@ -63,6 +64,7 @@ ARCHITECTURE behavior OF TB_FileReaderFSM IS
 
  	--Outputs
    signal DI_Pop : std_logic;
+	signal DI_Reset : std_logic;
    signal DI_Start : std_logic;
    signal Tone : std_logic_vector(7 downto 0);
    signal Octave : std_logic_vector(7 downto 0);
@@ -77,6 +79,7 @@ BEGIN
           DI => DI,
           DI_Rdy => DI_Rdy,
           DI_Busy => DI_Busy,
+			 DI_Reset => DI_Reset,
           DI_Pop => DI_Pop,
           Reset => Reset,
           Clk => Clk,
@@ -101,6 +104,10 @@ BEGIN
       file WAV : file_int is in "./song.txt";
       variable i : character;
    begin		
+		Reset<='1';
+		wait for 55 ns;
+		Reset<='0';
+		
       wait until rising_edge( Clk ) and DI_Start = '1';
       
       DI_Busy <= '1';

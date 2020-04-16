@@ -1,9 +1,1 @@
-select figure at 1906 2419 8 -branches -sn=1
-select figure at 2106 2488 8 -branches -sn=1
-select figure at 1913 2479 8 -branches -sn=1
-delete selection -sn=1
-select figure at 1646 2509 8 -branches -sn=1
-move wire at 1648 2480 1648 2544 to 1584 2480 1584 2544 -keepConn -sn=1
-move wire at 1648 2544 1648 2672 to 1584 2544 1584 2672 -keepConn -sn=1
-move wire at 1648 2448 1648 2480 to 1584 2448 1584 2480 -keepConn -sn=1
-add instance InnerLogic 1648 2384 R0 -sn=1
+select figure at 1168 2146 8 -branches -sn=1

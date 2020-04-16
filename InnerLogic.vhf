@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 04/06/2020 20:21:12
+-- /___/   /\     Timestamp : 04/16/2020 21:54:32
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -35,6 +35,7 @@ entity InnerLogic is
           SDC_DI_Busy  : in    std_logic; 
           SDC_DI_Rdy   : in    std_logic; 
           DAC_Clock    : out   std_logic; 
+          DI_Reset     : out   std_logic; 
           SDC_DI_Pop   : out   std_logic; 
           SDC_DI_Start : out   std_logic; 
           WaveOut      : out   std_logic_vector (11 downto 0));
@@ -44,16 +45,29 @@ architecture BEHAVIORAL of InnerLogic is
    signal XLXN_104                   : std_logic_vector (11 downto 0);
    signal XLXN_113                   : std_logic_vector (7 downto 0);
    signal XLXN_126                   : std_logic_vector (31 downto 0);
-   signal XLXN_136                   : std_logic_vector (7 downto 0);
    signal XLXN_137                   : std_logic_vector (7 downto 0);
    signal XLXN_138                   : std_logic_vector (7 downto 0);
    signal XLXN_139                   : std_logic_vector (7 downto 0);
    signal XLXN_157                   : std_logic_vector (7 downto 0);
-   signal XLXN_158                   : std_logic_vector (7 downto 0);
+   signal XLXN_162                   : std_logic;
+   signal XLXN_197                   : std_logic_vector (7 downto 0);
+   signal XLXN_224                   : std_logic_vector (7 downto 0);
    signal XLXI_24_Input_1_openSignal : std_logic_vector (11 downto 0);
    signal XLXI_24_Input_2_openSignal : std_logic_vector (11 downto 0);
    signal XLXI_24_Input_3_openSignal : std_logic_vector (11 downto 0);
-   signal XLXI_27_Reset_openSignal   : std_logic;
+   component FileReaderFSM
+      port ( DI_Rdy   : in    std_logic; 
+             DI_Busy  : in    std_logic; 
+             Reset    : in    std_logic; 
+             Clk      : in    std_logic; 
+             DI       : in    std_logic_vector (7 downto 0); 
+             DI_Pop   : out   std_logic; 
+             DI_Start : out   std_logic; 
+             Tone     : out   std_logic_vector (7 downto 0); 
+             Octave   : out   std_logic_vector (7 downto 0); 
+             DI_Reset : out   std_logic);
+   end component;
+   
    component ToneFSM
       port ( Clk    : in    std_logic; 
              F0     : in    std_logic; 
@@ -91,34 +105,36 @@ architecture BEHAVIORAL of InnerLogic is
    end component;
    
    component SourceSwitchFSM
-      port ( Clk         : in    std_logic; 
-             Reset       : in    std_logic; 
-             DI_Rdy      : in    std_logic; 
-             F0          : in    std_logic; 
-             DI          : in    std_logic_vector (7 downto 0); 
-             Tone_Key    : in    std_logic_vector (7 downto 0); 
-             Tone_File   : in    std_logic_vector (7 downto 0); 
-             Octave_Key  : in    std_logic_vector (7 downto 0); 
-             Octave_File : in    std_logic_vector (7 downto 0); 
-             Tone        : out   std_logic_vector (7 downto 0); 
-             Octave      : out   std_logic_vector (7 downto 0));
-   end component;
-   
-   component FileReaderFSM
-      port ( DI_Rdy   : in    std_logic; 
-             DI_Busy  : in    std_logic; 
-             Reset    : in    std_logic; 
-             Clk      : in    std_logic; 
-             DI       : in    std_logic_vector (7 downto 0); 
-             DI_Pop   : out   std_logic; 
-             DI_Start : out   std_logic; 
-             Tone     : out   std_logic_vector (7 downto 0); 
-             Octave   : out   std_logic_vector (7 downto 0));
+      port ( Clk                  : in    std_logic; 
+             Reset                : in    std_logic; 
+             DI_Rdy               : in    std_logic; 
+             F0                   : in    std_logic; 
+             DI                   : in    std_logic_vector (7 downto 0); 
+             Tone_Key             : in    std_logic_vector (7 downto 0); 
+             Tone_File            : in    std_logic_vector (7 downto 0); 
+             Octave_Key           : in    std_logic_vector (7 downto 0); 
+             Octave_File          : in    std_logic_vector (7 downto 0); 
+             Tone                 : out   std_logic_vector (7 downto 0); 
+             Octave               : out   std_logic_vector (7 downto 0); 
+             Key_Source_Selected  : out   std_logic; 
+             File_Source_Selected : out   std_logic);
    end component;
    
 begin
    XLXN_113(7 downto 0) <= x"00";
    XLXN_138(7 downto 0) <= x"04";
+   FileReader : FileReaderFSM
+      port map (Clk=>Clk,
+                DI(7 downto 0)=>SDC_DI(7 downto 0),
+                DI_Busy=>SDC_DI_Busy,
+                DI_Rdy=>SDC_DI_Rdy,
+                Reset=>XLXN_162,
+                DI_Pop=>SDC_DI_Pop,
+                DI_Reset=>DI_Reset,
+                DI_Start=>SDC_DI_Start,
+                Octave(7 downto 0)=>XLXN_224(7 downto 0),
+                Tone(7 downto 0)=>XLXN_157(7 downto 0));
+   
    XLXI_4 : ToneFSM
       port map (Clk=>Clk,
                 DI(7 downto 0)=>DI(7 downto 0),
@@ -133,7 +149,7 @@ begin
                 CLK_OUT=>DAC_Clock);
    
    XLXI_22 : FreqMapper
-      port map (OctaveNum(7 downto 0)=>XLXN_136(7 downto 0),
+      port map (OctaveNum(7 downto 0)=>XLXN_197(7 downto 0),
                 Tone(7 downto 0)=>XLXN_137(7 downto 0),
                 Period(31 downto 0)=>XLXN_126(31 downto 0));
    
@@ -155,24 +171,15 @@ begin
                 DI(7 downto 0)=>DI(7 downto 0),
                 DI_Rdy=>DI_Rdy,
                 F0=>F0,
-                Octave_File(7 downto 0)=>XLXN_158(7 downto 0),
+                Octave_File(7 downto 0)=>XLXN_224(7 downto 0),
                 Octave_Key(7 downto 0)=>XLXN_138(7 downto 0),
-                Reset=>XLXI_27_Reset_openSignal,
+                Reset=>Reset,
                 Tone_File(7 downto 0)=>XLXN_157(7 downto 0),
                 Tone_Key(7 downto 0)=>XLXN_139(7 downto 0),
-                Octave(7 downto 0)=>XLXN_136(7 downto 0),
+                File_Source_Selected=>XLXN_162,
+                Key_Source_Selected=>open,
+                Octave(7 downto 0)=>XLXN_197(7 downto 0),
                 Tone(7 downto 0)=>XLXN_137(7 downto 0));
-   
-   XLXI_29 : FileReaderFSM
-      port map (Clk=>Clk,
-                DI(7 downto 0)=>SDC_DI(7 downto 0),
-                DI_Busy=>SDC_DI_Busy,
-                DI_Rdy=>SDC_DI_Rdy,
-                Reset=>Reset,
-                DI_Pop=>SDC_DI_Pop,
-                DI_Start=>SDC_DI_Start,
-                Octave(7 downto 0)=>XLXN_158(7 downto 0),
-                Tone(7 downto 0)=>XLXN_157(7 downto 0));
    
 end BEHAVIORAL;
 

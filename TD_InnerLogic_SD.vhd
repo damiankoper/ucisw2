@@ -68,8 +68,6 @@ BEGIN
       SDC_DI_Start => SDC_DI_Start
    );
 
-   Reset <= '0';
-
    -- Clock process definitions
    Clk_process : PROCESS
    BEGIN
@@ -85,6 +83,14 @@ BEGIN
       -- X"3A" => select file source
       VARIABLE arrBytes : typeByteArray(0 TO 1) := (X"3A", X"44");
    BEGIN
+		DI <= X"00";
+		DI_Rdy <='0';
+		F0 <='0';
+	
+	   Reset<='1';
+		wait for 100 ns;
+		Reset<='0';
+	
       FOR i IN arrBytes'RANGE LOOP
          F0 <= '0';
          DI_Rdy <= '1';
@@ -98,10 +104,6 @@ BEGIN
          DI_Rdy <= '0';
          WAIT FOR Clk_period; 
       END LOOP;
-		
-		Reset <='1';
-		WAIT FOR Clk_period;
-		Reset <='0';
       
 		WAIT;
    END PROCESS;
@@ -112,10 +114,13 @@ BEGIN
       file WAV : file_int is in "./song.txt";
       variable i : character;
    begin		
-      wait until rising_edge( Clk ) and SDC_DI_Start = '1';
-      
-      SDC_DI_Busy <= '1';
-      
+		SDC_DI <= X"00";	
+		SDC_DI_Busy <= '0';
+      SDC_DI_Rdy <= '0';
+		
+		wait until rising_edge( Clk ) and SDC_DI_Start = '1';
+		SDC_DI_Busy <= '1';
+		
       while not endfile( WAV ) loop
         wait for 2*Clk_period;
         read( WAV, i );
