@@ -6,79 +6,30 @@
         <trait edittrait="all:0" />
     </attr>
     <netlist>
-        <signal name="XLXN_126(31:0)" />
-        <signal name="XLXN_227(7:0)" />
-        <signal name="XLXN_228" />
-        <signal name="XLXN_229(7:0)" />
-        <signal name="XLXN_234(7:0)" />
-        <signal name="XLXN_235(7:0)" />
-        <signal name="XLXN_236(7:0)" />
-        <signal name="XLXN_237" />
-        <signal name="XLXN_243(31:0)" />
-        <signal name="XLXN_244" />
-        <signal name="XLXN_245" />
-        <signal name="XLXN_246(31:0)" />
-        <signal name="XLXN_248(7:0)" />
-        <signal name="XLXN_252" />
-        <signal name="XLXN_253" />
-        <signal name="XLXN_257" />
-        <signal name="XLXN_258(31:0)" />
-        <signal name="XLXN_259" />
-        <signal name="XLXN_260(31:0)" />
-        <signal name="XLXN_261" />
-        <signal name="XLXN_262(31:0)" />
-        <signal name="XLXN_263" />
-        <signal name="XLXN_264" />
         <signal name="SDC_DI_Busy" />
         <signal name="SDC_DI_Pop" />
         <signal name="SDC_DI_Start" />
         <signal name="XLXN_157(7:0)" />
         <signal name="SDC_DI(7:0)" />
         <signal name="SDC_DI_Rdy" />
-        <signal name="XLXN_276" />
         <signal name="DI_Reset" />
         <signal name="XLXN_138(7:0)" />
         <signal name="XLXN_139(7:0)" />
         <signal name="DI(7:0)" />
-        <signal name="XLXN_282(7:0)" />
-        <signal name="XLXN_283" />
         <signal name="F0" />
-        <signal name="XLXN_285" />
         <signal name="DI_Rdy" />
         <signal name="XLXN_224(7:0)" />
         <signal name="XLXN_266" />
-        <signal name="XLXN_294" />
-        <signal name="XLXN_295" />
         <signal name="Reset" />
         <signal name="Clk" />
-        <signal name="XLXN_298(31:0)" />
-        <signal name="XLXN_299(31:0)" />
-        <signal name="XLXN_301" />
-        <signal name="XLXN_305(11:0)" />
-        <signal name="XLXN_309(11:0)" />
-        <signal name="XLXN_313(11:0)" />
-        <signal name="XLXN_317(11:0)" />
-        <signal name="XLXN_322(11:0)" />
-        <signal name="XLXN_326(11:0)" />
-        <signal name="XLXN_329(11:0)" />
-        <signal name="XLXN_334(7:0)" />
-        <signal name="XLXN_335(7:0)" />
-        <signal name="XLXN_338(11:0)" />
-        <signal name="XLXN_345(11:0)" />
-        <signal name="XLXN_352(11:0)" />
-        <signal name="XLXN_359(11:0)" />
         <signal name="XLXN_232(31:0)" />
         <signal name="XLXN_265(11:0)" />
-        <signal name="XLXN_366(11:0)" />
         <signal name="WaveOut(11:0)" />
         <signal name="XLXN_247(7:0)" />
         <signal name="DAC_Clock" />
         <signal name="XLXN_371(7:0)" />
         <signal name="XLXN_373(7:0)" />
-        <signal name="XLXN_374" />
-        <signal name="XLXN_375" />
-        <signal name="XLXN_376" />
-        <port polarity="Input" name="XLXN_126(31:0)" />
+        <signal name="XLXN_381" />
         <port polarity="Input" name="SDC_DI_Busy" />
         <port polarity="Output" name="SDC_DI_Pop" />
         <port polarity="Output" name="SDC_DI_Start" />
@@ -194,7 +145,7 @@
         <block symbolname="FileReaderFSM" name="FileReader">
             <blockpin signalname="SDC_DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="SDC_DI_Busy" name="DI_Busy" />
-            <blockpin signalname="XLXN_376" name="Reset" />
+            <blockpin signalname="XLXN_381" name="Reset" />
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="SDC_DI(7:0)" name="DI(7:0)" />
             <blockpin signalname="SDC_DI_Pop" name="DI_Pop" />
@@ -204,7 +155,7 @@
             <blockpin signalname="XLXN_224(7:0)" name="Octave(7:0)" />
         </block>
         <block symbolname="constant" name="XLXI_23">
-            <attr value="04" name="CValue">
+            <attr value="00" name="CValue">
                 <trait delete="all:1 sym:0" />
                 <trait editname="all:1 sch:0" />
                 <trait valuetype="BitVector 32 Hexadecimal" />
@@ -221,8 +172,8 @@
             <blockpin signalname="XLXN_157(7:0)" name="Tone_File(7:0)" />
             <blockpin signalname="XLXN_138(7:0)" name="Octave_Key(7:0)" />
             <blockpin signalname="XLXN_224(7:0)" name="Octave_File(7:0)" />
-            <blockpin name="Key_Source_Selected" />
-            <blockpin signalname="XLXN_376" name="File_Source_Selected" />
+            <blockpin signalname="XLXN_381" name="Key_Source_Selected" />
+            <blockpin name="File_Source_Selected" />
             <blockpin signalname="XLXN_371(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_373(7:0)" name="Octave(7:0)" />
         </block>
@@ -403,12 +354,12 @@
             <wire x2="400" y1="752" y2="1072" x1="400" />
             <wire x2="1120" y1="752" y2="752" x1="400" />
         </branch>
-        <branch name="XLXN_376">
-            <wire x2="608" y1="64" y2="384" x1="608" />
-            <wire x2="640" y1="384" y2="384" x1="608" />
-            <wire x2="1760" y1="64" y2="64" x1="608" />
-            <wire x2="1760" y1="64" y2="1328" x1="1760" />
-            <wire x2="1760" y1="1328" y2="1328" x1="1568" />
+        <branch name="XLXN_381">
+            <wire x2="1632" y1="48" y2="48" x1="576" />
+            <wire x2="1632" y1="48" y2="1264" x1="1632" />
+            <wire x2="576" y1="48" y2="384" x1="576" />
+            <wire x2="640" y1="384" y2="384" x1="576" />
+            <wire x2="1632" y1="1264" y2="1264" x1="1568" />
         </branch>
     </sheet>
 </drawing>

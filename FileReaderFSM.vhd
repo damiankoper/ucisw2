@@ -52,11 +52,6 @@ ARCHITECTURE Behavioral OF FileReaderFSM IS
 	SIGNAL Duration_Read_Counter : INTEGER := 0;
 	SIGNAL Playing_Time : unsigned(15 DOWNTO 0) := X"0000";
 
-	SIGNAL Next_Tone_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
-	SIGNAL Next_Octave_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
-	SIGNAL Next_Duration_Read_Counter : INTEGER := 0;
-	SIGNAL Next_Playing_Time : unsigned(15 DOWNTO 0) := X"0000";
-
 	SIGNAL Playing_Time_Counter : unsigned(15 DOWNTO 0) := X"0000";
 	SIGNAL Playing_Stop : STD_LOGIC := '0';
 	SIGNAL Playing_Clk_Div_Counter : INTEGER := 0;
@@ -66,10 +61,6 @@ BEGIN
 	BEGIN
 		IF rising_edge(Clk) THEN
 			State <= Next_State;
-			Tone_Char <= Next_Tone_Char;
-			Octave_Char <= Next_Octave_Char;
-			Duration_Read_Counter <= Next_Duration_Read_Counter;
-			Playing_Time <= Next_Playing_Time;
 			
 			IF (Reset = '1') THEN
 				State <= Init;
@@ -126,43 +117,41 @@ BEGIN
 		-- Defaults
 		DI_Pop <= '0';
 		DI_Start <= '0';
-		
-		IF State = Next_State THEN
-			CASE State IS
-				WHEN Init =>
-					IF Reset = '0' THEN
-						Next_Playing_Time <= X"0000";
-						DI_Start <= '1';
-					END IF;
-				WHEN Tone_Request =>
+
+		CASE State IS
+			WHEN Init =>
+				IF Reset = '0' THEN
+					Playing_Time <= X"0000";
+					DI_Start <= '1';
+				END IF;
+			WHEN Tone_Request =>
+				DI_Pop <= '1';
+			WHEN Tone_Reading =>
+				IF DI_Rdy = '1' THEN
+					Tone_Char <= DI;
+				END IF;
+			WHEN Octave_Request =>
+				DI_Pop <= '1';
+			WHEN Octave_Reading =>
+				IF DI_Rdy = '1' THEN
+					Octave_Char <= DI;
+					Duration_Read_Counter <= 16;
+				END IF;
+			WHEN Duration_Request =>
+				IF Duration_Read_Counter > 0 THEN
 					DI_Pop <= '1';
-				WHEN Tone_Reading =>
-					IF DI_Rdy = '1' THEN
-						Next_Tone_Char <= DI;
+				END IF;
+			WHEN Duration_Reading =>
+				IF DI_Rdy = '1' THEN
+					Duration_Read_Counter <= Duration_Read_Counter - 1;
+					IF DI = X"31" THEN
+						Playing_Time <= Playing_Time(14 DOWNTO 0) & '1';
+					ELSE
+						Playing_Time <= Playing_Time(14 DOWNTO 0) & '0';
 					END IF;
-				WHEN Octave_Request =>
-					DI_Pop <= '1';
-				WHEN Octave_Reading =>
-					IF DI_Rdy = '1' THEN
-						Next_Octave_Char <= DI;
-						Next_Duration_Read_Counter <= 16;
-					END IF;
-				WHEN Duration_Request =>
-					IF Duration_Read_Counter > 0 THEN
-						DI_Pop <= '1';
-					END IF;
-				WHEN Duration_Reading =>
-					IF DI_Rdy = '1' THEN
-						Next_Duration_Read_Counter <= Duration_Read_Counter - 1;
-						IF DI = X"31" THEN
-							Next_Playing_Time <= Playing_Time(14 DOWNTO 0) & '1';
-						ELSE
-							Next_Playing_Time <= Playing_Time(14 DOWNTO 0) & '0';
-						END IF;
-					END IF;
-				WHEN OTHERS =>
-			END CASE;
-		END IF;
+				END IF;
+			WHEN OTHERS =>
+		END CASE;
 	END PROCESS;
 
 	Playing_Timer : PROCESS (Clk)
@@ -175,6 +164,7 @@ BEGIN
 			ELSIF State = Playing THEN
 				IF Playing_Clk_Div_Counter = 0 THEN
 					Playing_Time_Counter <= Playing_Time_Counter - 1;
+					Playing_Clk_Div_Counter <= 50000 - 1;
 				ELSE
 					Playing_Clk_Div_Counter <= Playing_Clk_Div_Counter - 1;
 				END IF;
