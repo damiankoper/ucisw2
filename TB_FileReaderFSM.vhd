@@ -24,7 +24,7 @@
 -- that these types always be used for the top-level I/O of a design in order
 -- to guarantee that the testbench will bind correctly to the post-implementation 
 -- simulation model.
---------------------------------------------------------------------------------
+----------- ---------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
@@ -101,7 +101,7 @@ BEGIN
    -- Stimulus process
    stim_proc: process
 	   type file_int is file of character;
-      file WAV : file_int is in "./song.txt";
+      file WAV : file_int is in "./a.txt";
       variable i : character;
    begin		
 		Reset<='1';
