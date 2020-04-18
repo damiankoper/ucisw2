@@ -44,148 +44,154 @@ ENTITY FileReaderFSM IS
 END FileReaderFSM;
 
 ARCHITECTURE Behavioral OF FileReaderFSM IS
-	TYPE state_type IS (Init, Tone_Request, Tone_Reading, Octave_Request, Octave_Reading, Duration_Request, Duration_Reading, Load_Counter, Playing);
-	SIGNAL state, next_state : state_type;
+	TYPE State_type IS (Init, Tone_Request, Tone_Reading, Octave_Request, Octave_Reading, Duration_Request, Duration_Reading, Load_Counter, Playing);
+	SIGNAL State, Next_State : State_type;
 
-	SIGNAL Tone_CHAR : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
-	SIGNAL Octave_CHAR : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+	SIGNAL Tone_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+	SIGNAL Octave_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+	SIGNAL Duration_Read_Counter : INTEGER := 0;
+	SIGNAL Playing_Time : unsigned(15 DOWNTO 0) := X"0000";
 
-	SIGNAL DURATION_READ_COUNTER : INTEGER := 0;
-	SIGNAL PLAYING_TIME : unsigned(15 DOWNTO 0) := X"0000";
-	SIGNAL PLAYING_TIME_COUNTER : unsigned(15 DOWNTO 0) := X"0000";
+	SIGNAL Next_Tone_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+	SIGNAL Next_Octave_Char : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+	SIGNAL Next_Duration_Read_Counter : INTEGER := 0;
+	SIGNAL Next_Playing_Time : unsigned(15 DOWNTO 0) := X"0000";
 
-	SIGNAL PLAYING_STOP : STD_LOGIC := '0';
-	
-	SIGNAL PLAYING_CLK_DIV_COUNTER : INTEGER := 0;
+	SIGNAL Playing_Time_Counter : unsigned(15 DOWNTO 0) := X"0000";
+	SIGNAL Playing_Stop : STD_LOGIC := '0';
+	SIGNAL Playing_Clk_Div_Counter : INTEGER := 0;
 BEGIN
 
 	SYNC_PROC : PROCESS (Clk, DI_Rdy)
 	BEGIN
 		IF rising_edge(Clk) THEN
-			state <= next_state;
+			State <= Next_State;
+			Tone_Char <= Next_Tone_Char;
+			Octave_Char <= Next_Octave_Char;
+			Duration_Read_Counter <= Next_Duration_Read_Counter;
+			Playing_Time <= Next_Playing_Time;
+			
 			IF (Reset = '1') THEN
-				state <= Init;
+				State <= Init;
 			END IF;
 		END IF;
 	END PROCESS;
 
-	NEXT_STATE_DECODE : PROCESS (state, DI_Rdy, PLAYING_STOP)
+	Next_State_DECODE : PROCESS (State, DI_Rdy, Playing_Stop)
 	BEGIN
-		next_state <= state;
-		CASE state IS
+		Next_State <= State;
+		CASE State IS
 			WHEN Init =>
 				IF DI_BUSY = '0' THEN
-					next_state <= Tone_Request;
+					Next_State <= Tone_Request;
 				END IF;
 			WHEN Tone_Request =>
-				next_state <= Tone_Reading;
+				Next_State <= Tone_Reading;
 			WHEN Tone_Reading =>
 				IF DI_Rdy = '1' THEN
-					next_state <= Octave_Request;
+					Next_State <= Octave_Request;
 				END IF;
 			WHEN Octave_Request =>
-				next_state <= Octave_Reading;
+				Next_State <= Octave_Reading;
 			WHEN Octave_Reading =>
 				IF DI_Rdy = '1' THEN
-					next_state <= Duration_Request;
+					Next_State <= Duration_Request;
 				END IF;
 			WHEN Duration_Request =>
-				next_state <= Duration_Reading;
-				IF DURATION_READ_COUNTER = 0 THEN
-					next_state <= Load_Counter;
+				Next_State <= Duration_Reading;
+				IF Duration_Read_Counter = 0 THEN
+					Next_State <= Load_Counter;
 				END IF;
 			WHEN Duration_Reading =>
 				IF DI_Rdy = '1' THEN
-					IF DURATION_READ_COUNTER = 0 THEN
-						next_state <= Load_Counter;
+					IF Duration_Read_Counter = 0 THEN
+						Next_State <= Load_Counter;
 					ELSE
-						next_state <= Duration_Request;
+						Next_State <= Duration_Request;
 					END IF;
 				END IF;
 			WHEN Load_Counter =>
-				next_state <= Playing;
+				Next_State <= Playing;
 			WHEN Playing =>
-				IF PLAYING_STOP = '1' THEN
-					next_state <= Tone_Request;
+				IF Playing_Stop = '1' THEN
+					Next_State <= Tone_Request;
 				END IF;
 			WHEN OTHERS =>
-				next_state <= Init;
+				Next_State <= Init;
 		END CASE;
 	END PROCESS;
 
-	INPUT_HANDLER : PROCESS (state, DI_Rdy, Reset)
+	INPUT_HANDLER : PROCESS (State, DI_Rdy, Reset)
 	BEGIN
 		-- Defaults
 		DI_Pop <= '0';
 		DI_Start <= '0';
-		-- Tone_CHAR <= Tone_CHAR;
-		-- Octave_CHAR <= Octave_CHAR;
-		-- DURATION_READ_COUNTER <= DURATION_READ_COUNTER;
-		-- PLAYING_TIME <= PLAYING_TIME;
-
-		CASE state IS
-			WHEN Init =>
-				IF Reset = '0' THEN
-					PLAYING_TIME <= X"0000";
-					DI_Start <= '1';
-				END IF;
-			WHEN Tone_Request =>
-				DI_Pop <= '1';
-			WHEN Tone_Reading =>
-				IF DI_Rdy = '1' THEN
-					Tone_CHAR <= DI;
-				END IF;
-			WHEN Octave_Request =>
-				DI_Pop <= '1';
-			WHEN Octave_Reading =>
-				IF DI_Rdy = '1' THEN
-					Octave_CHAR <= DI;
-					DURATION_READ_COUNTER <= 16;
-				END IF;
-			WHEN Duration_Request =>
-				IF DURATION_READ_COUNTER > 0 THEN
-					DI_Pop <= '1';
-				END IF;
-			WHEN Duration_Reading =>
-				IF DI_Rdy = '1' THEN
-					DURATION_READ_COUNTER <= DURATION_READ_COUNTER - 1;
-					IF DI = X"31" THEN
-						PLAYING_TIME <= PLAYING_TIME(14 DOWNTO 0) & '1';
-					ELSE
-						PLAYING_TIME <= PLAYING_TIME(14 DOWNTO 0) & '0';
+		
+		IF State = Next_State THEN
+			CASE State IS
+				WHEN Init =>
+					IF Reset = '0' THEN
+						Next_Playing_Time <= X"0000";
+						DI_Start <= '1';
 					END IF;
-				END IF;
-			WHEN OTHERS =>
-		END CASE;
+				WHEN Tone_Request =>
+					DI_Pop <= '1';
+				WHEN Tone_Reading =>
+					IF DI_Rdy = '1' THEN
+						Next_Tone_Char <= DI;
+					END IF;
+				WHEN Octave_Request =>
+					DI_Pop <= '1';
+				WHEN Octave_Reading =>
+					IF DI_Rdy = '1' THEN
+						Next_Octave_Char <= DI;
+						Next_Duration_Read_Counter <= 16;
+					END IF;
+				WHEN Duration_Request =>
+					IF Duration_Read_Counter > 0 THEN
+						DI_Pop <= '1';
+					END IF;
+				WHEN Duration_Reading =>
+					IF DI_Rdy = '1' THEN
+						Next_Duration_Read_Counter <= Duration_Read_Counter - 1;
+						IF DI = X"31" THEN
+							Next_Playing_Time <= Playing_Time(14 DOWNTO 0) & '1';
+						ELSE
+							Next_Playing_Time <= Playing_Time(14 DOWNTO 0) & '0';
+						END IF;
+					END IF;
+				WHEN OTHERS =>
+			END CASE;
+		END IF;
 	END PROCESS;
 
-	PLAYING_TIMER : PROCESS (Clk)
+	Playing_Timer : PROCESS (Clk)
 	BEGIN
 		IF rising_edge(Clk) THEN
 			
-			IF state = Load_Counter THEN
-				PLAYING_TIME_COUNTER <= PLAYING_TIME;
-				PLAYING_CLK_DIV_COUNTER <= 50000 - 1;
-			ELSIF state = Playing THEN
-				IF PLAYING_CLK_DIV_COUNTER = 0 THEN
-					PLAYING_TIME_COUNTER <= PLAYING_TIME_COUNTER - 1;
+			IF State = Load_Counter THEN
+				Playing_Time_Counter <= Playing_Time;
+				Playing_Clk_Div_Counter <= 50000 - 1;
+			ELSIF State = Playing THEN
+				IF Playing_Clk_Div_Counter = 0 THEN
+					Playing_Time_Counter <= Playing_Time_Counter - 1;
 				ELSE
-					PLAYING_CLK_DIV_COUNTER <= PLAYING_CLK_DIV_COUNTER - 1;
+					Playing_Clk_Div_Counter <= Playing_Clk_Div_Counter - 1;
 				END IF;
 			ELSE
-				PLAYING_TIME_COUNTER <= PLAYING_TIME_COUNTER;
+				Playing_Time_Counter <= Playing_Time_Counter;
 			END IF;
 
-			IF state = Playing AND PLAYING_TIME_COUNTER = X"0000" THEN
-				PLAYING_STOP <= '1';
+			IF State = Playing AND Playing_Time_Counter = X"0000" THEN
+				Playing_Stop <= '1';
 			ELSE
-				PLAYING_STOP <= '0';
+				Playing_Stop <= '0';
 			END IF;
 		END IF;
 	END PROCESS;
 	
 	-- Maps QWERTY keyboard keys to an octave, starting from C
-	WITH Tone_CHAR SELECT Tone <=
+	WITH Tone_Char SELECT Tone <=
 		X"01" WHEN X"61", -- a
 		X"02" WHEN X"77", -- w
 		X"03" WHEN X"73", -- s
@@ -200,7 +206,7 @@ BEGIN
 		X"0C" WHEN X"6A", -- j
 		X"00" WHEN OTHERS;
 		
-	WITH Octave_CHAR SELECT Octave <=
+	WITH Octave_Char SELECT Octave <=
 		X"00" WHEN X"30", -- 0
 		X"01" WHEN X"31", -- 1
 		X"02" WHEN X"32", -- 2
