@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="GeneratorSaw">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2020-4-5T18:1:14</timestamp>
+    <timestamp>2020-4-18T19:11:26</timestamp>
     <pin polarity="Input" x="-48" y="-96" name="Clk" />
     <pin polarity="Input" x="-48" y="-48" name="Period(31:0)" />
-    <pin polarity="Output" x="528" y="-96" name="Sample(11:0)" />
     <pin polarity="Output" x="528" y="-48" name="Sample_Rdy" />
+    <pin polarity="Output" x="528" y="-96" name="Sample(11:0)" />
     <graph>
-        <rect width="448" x="16" y="-132" height="112" />
+        <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="252" y="-136" type="symbol" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="24" y="-96" type="pin Clk" />
-        <line x2="-48" y1="-96" y2="-96" x1="16" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="24" y="-48" type="pin Period(31:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="456" y="-48" type="pin Sample_Rdy" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="456" y="-96" type="pin Sample(11:0)" />
+        <rect width="448" x="16" y="-132" height="112" />
+        <line x2="-48" y1="-96" y2="-96" x1="16" />
         <rect width="64" x="-48" y="-60" height="24" />
         <line x2="-48" y1="-48" y2="-48" x1="16" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="456" y="-96" type="pin Sample(11:0)" />
         <rect width="64" x="464" y="-108" height="24" />
         <line x2="528" y1="-96" y2="-96" x1="464" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="456" y="-48" type="pin Sample_Rdy" />
         <line x2="528" y1="-48" y2="-48" x1="464" />
-        <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="252" y="-136" type="symbol" />
     </graph>
 </symbol>

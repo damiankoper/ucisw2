@@ -53,6 +53,15 @@ ARCHITECTURE Behavioral OF FreqMapper IS
 
 BEGIN
 
-    Period <= STD_LOGIC_VECTOR(to_unsigned(INTEGER(Cycles_Per_Wave_Period_Table(to_integer(unsigned(OctaveNum)))(to_integer(unsigned(Tone)))), 32));
+    Period <= STD_LOGIC_VECTOR(
+						to_unsigned(
+							INTEGER(
+								Cycles_Per_Wave_Period_Table(
+									to_integer(unsigned(OctaveNum)))(to_integer(unsigned(Tone))
+								)
+							),
+							32
+						)
+					);
 
 END Behavioral;

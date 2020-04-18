@@ -118,10 +118,10 @@ BEGIN
 		-- Defaults
 		DI_Pop <= '0';
 		DI_Start <= '0';
-		Tone_CHAR <= Tone_CHAR;
-		Octave_CHAR <= Octave_CHAR;
-		DURATION_READ_COUNTER <= DURATION_READ_COUNTER;
-		PLAYING_TIME <= PLAYING_TIME;
+		-- Tone_CHAR <= Tone_CHAR;
+		-- Octave_CHAR <= Octave_CHAR;
+		-- DURATION_READ_COUNTER <= DURATION_READ_COUNTER;
+		-- PLAYING_TIME <= PLAYING_TIME;
 
 		CASE state IS
 			WHEN Init =>
