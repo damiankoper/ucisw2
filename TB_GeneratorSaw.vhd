@@ -43,7 +43,8 @@ ARCHITECTURE behavior OF TB_GeneratorSaw IS
     PORT(
          Clk : IN  std_logic;
          Period  : IN  std_logic_vector(31 downto 0);
-         Sample : OUT  std_logic_vector(11 downto 0) := "000000111111"
+         Sample : OUT  std_logic_vector(11 downto 0) := "000000111111";
+			Sample_Rdy : OUT std_logic
         );
     END COMPONENT;
 
@@ -53,6 +54,7 @@ ARCHITECTURE behavior OF TB_GeneratorSaw IS
 
  	--Outputs
    signal Sample : std_logic_vector(11 downto 0);
+	signal Sample_Rdy : std_logic;
 	
    -- Clock definitions
    constant Clk_Half_Period : time := 10 ns;
@@ -63,8 +65,9 @@ BEGIN
    uut: GeneratorSaw PORT MAP (
           Clk => Clk,
           Period  =>Period ,
-          Sample => Sample
-        );
+          Sample => Sample,
+			 Sample_Rdy => Sample_Rdy
+	 );
 		  
 	Clk <= not Clk after Clk_Half_Period;
 	

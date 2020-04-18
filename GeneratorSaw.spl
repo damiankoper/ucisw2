@@ -2,5 +2,6 @@
 Clk
 =Period[31:0]=
 [Outputs]
+Sample_Rdy
 =Sample[11:0]=
 [BiDir]
