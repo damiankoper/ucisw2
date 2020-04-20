@@ -29,7 +29,7 @@
         <signal name="DAC_Clock" />
         <signal name="XLXN_371(7:0)" />
         <signal name="XLXN_373(7:0)" />
-        <signal name="XLXN_381" />
+        <signal name="XLXN_382" />
         <port polarity="Input" name="SDC_DI_Busy" />
         <port polarity="Output" name="SDC_DI_Pop" />
         <port polarity="Output" name="SDC_DI_Start" />
@@ -145,7 +145,7 @@
         <block symbolname="FileReaderFSM" name="FileReader">
             <blockpin signalname="SDC_DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="SDC_DI_Busy" name="DI_Busy" />
-            <blockpin signalname="XLXN_381" name="Reset" />
+            <blockpin signalname="XLXN_382" name="Reset" />
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="SDC_DI(7:0)" name="DI(7:0)" />
             <blockpin signalname="SDC_DI_Pop" name="DI_Pop" />
@@ -172,8 +172,8 @@
             <blockpin signalname="XLXN_157(7:0)" name="Tone_File(7:0)" />
             <blockpin signalname="XLXN_138(7:0)" name="Octave_Key(7:0)" />
             <blockpin signalname="XLXN_224(7:0)" name="Octave_File(7:0)" />
-            <blockpin signalname="XLXN_381" name="Key_Source_Selected" />
-            <blockpin name="File_Source_Selected" />
+            <blockpin name="Key_Source_Selected" />
+            <blockpin signalname="XLXN_382" name="File_Source_Selected" />
             <blockpin signalname="XLXN_371(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_373(7:0)" name="Octave(7:0)" />
         </block>
@@ -354,12 +354,12 @@
             <wire x2="400" y1="752" y2="1072" x1="400" />
             <wire x2="1120" y1="752" y2="752" x1="400" />
         </branch>
-        <branch name="XLXN_381">
-            <wire x2="1632" y1="48" y2="48" x1="576" />
-            <wire x2="1632" y1="48" y2="1264" x1="1632" />
-            <wire x2="576" y1="48" y2="384" x1="576" />
-            <wire x2="640" y1="384" y2="384" x1="576" />
-            <wire x2="1632" y1="1264" y2="1264" x1="1568" />
+        <branch name="XLXN_382">
+            <wire x2="560" y1="48" y2="384" x1="560" />
+            <wire x2="640" y1="384" y2="384" x1="560" />
+            <wire x2="1632" y1="48" y2="48" x1="560" />
+            <wire x2="1632" y1="48" y2="1328" x1="1632" />
+            <wire x2="1632" y1="1328" y2="1328" x1="1568" />
         </branch>
     </sheet>
 </drawing>

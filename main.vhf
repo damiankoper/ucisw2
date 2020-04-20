@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 04/19/2020 01:05:49
+-- /___/   /\     Timestamp : 04/20/2020 12:52:18
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -52,7 +52,7 @@ architecture BEHAVIORAL of InnerLogic_MUSER_main is
    signal XLXN_266                       : std_logic;
    signal XLXN_371                       : std_logic_vector (7 downto 0);
    signal XLXN_373                       : std_logic_vector (7 downto 0);
-   signal XLXN_381                       : std_logic;
+   signal XLXN_382                       : std_logic;
    signal XLXI_24_Input_1_openSignal     : std_logic_vector (11 downto 0);
    signal XLXI_24_Input_1_Rdy_openSignal : std_logic;
    signal XLXI_24_Input_2_openSignal     : std_logic_vector (11 downto 0);
@@ -132,7 +132,7 @@ begin
                 DI(7 downto 0)=>SDC_DI(7 downto 0),
                 DI_Busy=>SDC_DI_Busy,
                 DI_Rdy=>SDC_DI_Rdy,
-                Reset=>XLXN_381,
+                Reset=>XLXN_382,
                 DI_Pop=>SDC_DI_Pop,
                 DI_Reset=>DI_Reset,
                 DI_Start=>SDC_DI_Start,
@@ -181,8 +181,8 @@ begin
                 Reset=>Reset,
                 Tone_File(7 downto 0)=>XLXN_157(7 downto 0),
                 Tone_Key(7 downto 0)=>XLXN_139(7 downto 0),
-                File_Source_Selected=>open,
-                Key_Source_Selected=>XLXN_381,
+                File_Source_Selected=>XLXN_382,
+                Key_Source_Selected=>open,
                 Octave(7 downto 0)=>XLXN_373(7 downto 0),
                 Tone(7 downto 0)=>XLXN_371(7 downto 0));
    
