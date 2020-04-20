@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="SourceSwitchFSM">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2020-4-16T18:0:41</timestamp>
+    <timestamp>2020-4-18T19:11:51</timestamp>
     <pin polarity="Input" x="0" y="-544" name="Clk" />
     <pin polarity="Input" x="0" y="-480" name="Reset" />
     <pin polarity="Input" x="0" y="-416" name="DI_Rdy" />
@@ -11,10 +11,10 @@
     <pin polarity="Input" x="0" y="-160" name="Tone_File(7:0)" />
     <pin polarity="Input" x="0" y="-96" name="Octave_Key(7:0)" />
     <pin polarity="Input" x="0" y="-32" name="Octave_File(7:0)" />
-    <pin polarity="Output" x="448" y="-544" name="Tone(7:0)" />
-    <pin polarity="Output" x="448" y="-32" name="Octave(7:0)" />
     <pin polarity="Output" x="448" y="32" name="Key_Source_Selected" />
     <pin polarity="Output" x="448" y="96" name="File_Source_Selected" />
+    <pin polarity="Output" x="448" y="-544" name="Tone(7:0)" />
+    <pin polarity="Output" x="448" y="-32" name="Octave(7:0)" />
     <graph>
         <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="224" y="-584" type="symbol" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-544" type="pin Clk" />
@@ -26,11 +26,11 @@
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-160" type="pin Tone_File(7:0)" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-96" type="pin Octave_Key(7:0)" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-32" type="pin Octave_File(7:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="32" type="pin Key_Source_Selected" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="96" type="pin File_Source_Selected" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="-544" type="pin Tone(7:0)" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="-32" type="pin Octave(7:0)" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="32" type="pin Key_Source_Selected" />
         <line x2="448" y1="32" y2="32" x1="384" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="376" y="96" type="pin File_Source_Selected" />
         <line x2="448" y1="96" y2="96" x1="384" />
         <line x2="0" y1="-544" y2="-544" x1="64" />
         <line x2="0" y1="-480" y2="-480" x1="64" />

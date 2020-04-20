@@ -1,0 +1,9 @@
+[Inputs]
+Clk
+F0
+DI_Rdy
+Reset
+=DI[7:0]=
+[Outputs]
+=Tone[7:0]=
+[BiDir]

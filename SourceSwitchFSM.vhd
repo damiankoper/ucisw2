@@ -83,7 +83,7 @@ BEGIN
         END IF;
     END PROCESS;
 
-    OUTPUT_ENCODE : PROCESS (state, DI_Rdy)
+    OUTPUT_ENCODE : PROCESS (state, DI_Rdy, Tone_Key, Octave_Key, Tone_File, Octave_File)
     BEGIN
         CASE state IS
             WHEN Key_Source => 
