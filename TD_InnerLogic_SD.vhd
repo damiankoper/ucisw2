@@ -114,9 +114,6 @@ BEGIN
       file WAV : file_int is in "./b.txt";
       variable i : character;
    begin		
-		Reset<='1';
-		wait for 55 ns;
-		Reset<='0';
 		
 		SDC_DI <= X"00";	
 		SDC_DI_Busy <= '0';

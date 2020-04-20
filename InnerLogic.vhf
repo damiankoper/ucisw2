@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 04/20/2020 12:52:18
+-- /___/   /\     Timestamp : 04/20/2020 13:08:58
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -125,7 +125,7 @@ architecture BEHAVIORAL of InnerLogic is
    end component;
    
 begin
-   XLXN_138(7 downto 0) <= x"00";
+   XLXN_138(7 downto 0) <= x"02";
    XLXN_247(7 downto 0) <= x"00";
    FileReader : FileReaderFSM
       port map (Clk=>Clk,

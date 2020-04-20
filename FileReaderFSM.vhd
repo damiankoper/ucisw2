@@ -64,6 +64,7 @@ BEGIN
 			
 			IF (Reset = '1') THEN
 				State <= Init;
+				
 			END IF;
 		END IF;
 	END PROCESS;
