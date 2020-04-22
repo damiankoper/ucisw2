@@ -111,7 +111,7 @@ BEGIN
 	   -- Stimulus process
    stim_proc_sdc: process
 	   type file_int is file of character;
-      file WAV : file_int is in "./b.txt";
+      file WAV : file_int is in "./a.txt";
       variable i : character;
    begin		
 		

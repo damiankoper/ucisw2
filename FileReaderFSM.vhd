@@ -122,43 +122,92 @@ BEGIN
 		CASE State IS
 			WHEN Init =>
 				IF Reset = '0' THEN
-					Playing_Time <= X"0000";
 					DI_Start <= '1';
 				END IF;
 			WHEN Tone_Request =>
 				DI_Pop <= '1';
-			WHEN Tone_Reading =>
-				IF DI_Rdy = '1' THEN
-					Tone_Char <= DI;
-				END IF;
+			
 			WHEN Octave_Request =>
 				DI_Pop <= '1';
-			WHEN Octave_Reading =>
-				IF DI_Rdy = '1' THEN
-					Octave_Char <= DI;
-					Duration_Read_Counter <= 16;
-				END IF;
 			WHEN Duration_Request =>
 				IF Duration_Read_Counter > 0 THEN
 					DI_Pop <= '1';
 				END IF;
-			WHEN Duration_Reading =>
-				IF DI_Rdy = '1' THEN
-					Duration_Read_Counter <= Duration_Read_Counter - 1;
-					IF DI = X"31" THEN
-						Playing_Time <= Playing_Time(14 DOWNTO 0) & '1';
-					ELSE
-						Playing_Time <= Playing_Time(14 DOWNTO 0) & '0';
-					END IF;
-				END IF;
 			WHEN OTHERS =>
 		END CASE;
+	END PROCESS;
+	
+	Tone_Char_HANDLER : PROCESS (State, DI_Rdy, Reset, Clk)
+	BEGIN
+		IF rising_edge(Clk) THEN
+			CASE State IS
+				WHEN Tone_Reading =>
+					IF DI_Rdy = '1' THEN
+						Tone_Char <= DI;
+					END IF;
+				WHEN OTHERS =>
+					Tone_Char <= Tone_Char;
+			END CASE;
+		END IF;
+	END PROCESS;
+	
+	Octave_Char_HANDLER : PROCESS (State, DI_Rdy, Reset, Clk)
+	BEGIN
+		IF rising_edge(Clk) THEN
+			CASE State IS
+				WHEN Octave_Reading =>
+					IF DI_Rdy = '1' THEN
+						Octave_Char <= DI;
+					END IF;
+				WHEN OTHERS =>
+					Octave_Char <= Octave_Char;
+			END CASE;
+			END IF;
+	END PROCESS;
+	
+	Playing_Time_HANDLER : PROCESS (State, DI_Rdy, Reset, Clk)
+	BEGIN
+		IF rising_edge(Clk) THEN
+			CASE State IS
+					WHEN Init =>
+						IF Reset = '0' THEN
+							Playing_Time <= X"0000";
+						END IF;
+					WHEN Duration_Reading =>
+						IF DI_Rdy = '1' THEN
+							IF DI = X"31" THEN
+								Playing_Time <= Playing_Time(14 DOWNTO 0) & '1';
+							ELSE
+								Playing_Time <= Playing_Time(14 DOWNTO 0) & '0';
+							END IF;
+						END IF;
+					WHEN OTHERS =>
+						Playing_Time <= Playing_Time;
+				END CASE;
+			END IF;
+	END PROCESS;
+	
+	Duration_Read_Counter_HANDLER : PROCESS (State, DI_Rdy, Reset, Clk)
+	BEGIN
+		IF rising_edge(Clk) THEN
+			CASE State IS
+				WHEN Octave_Reading =>
+					IF DI_Rdy = '1' THEN
+						Duration_Read_Counter <= 16;
+					END IF;
+				WHEN Duration_Request =>
+					IF DI_Rdy = '1' THEN
+						Duration_Read_Counter <= Duration_Read_Counter - 1;
+					END IF;
+				WHEN OTHERS =>
+					Duration_Read_Counter <= Duration_Read_Counter;
+				END CASE;
+			END IF;
 	END PROCESS;
 
 	Playing_Timer : PROCESS (Clk)
 	BEGIN
 		IF rising_edge(Clk) THEN
-			
 			IF State = Load_Counter THEN
 				Playing_Time_Counter <= Playing_Time;
 				Playing_Clk_Div_Counter <= 50000 - 1;

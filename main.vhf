@@ -7,11 +7,11 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 04/20/2020 13:08:58
+-- /___/   /\     Timestamp : 04/22/2020 19:39:38
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/maja/Git/ucisw2/main.vhf -w /home/maja/Git/ucisw2/main.sch
+--Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/damian_koper/Documents/GitHub/ucisw2/main.vhf -w /home/damian_koper/Documents/GitHub/ucisw2/main.sch
 --Design Name: main
 --Device: spartan3e
 --Purpose:
