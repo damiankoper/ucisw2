@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 04/22/2020 19:39:38
+-- /___/   /\     Timestamp : 04/23/2020 08:31:50
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -125,7 +125,7 @@ architecture BEHAVIORAL of InnerLogic_MUSER_main is
    end component;
    
 begin
-   XLXN_138(7 downto 0) <= x"02";
+   XLXN_138(7 downto 0) <= x"04";
    XLXN_247(7 downto 0) <= x"00";
    FileReader : FileReaderFSM
       port map (Clk=>Clk,

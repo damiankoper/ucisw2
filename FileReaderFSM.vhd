@@ -60,12 +60,11 @@ BEGIN
 	SYNC_PROC : PROCESS (Clk, DI_Rdy)
 	BEGIN
 		IF rising_edge(Clk) THEN
-			State <= Next_State;
-			
 			IF (Reset = '1') THEN
 				State <= Init;
-				
-			END IF;
+			else
+				State <= Next_State;				
+			END IF;			
 		END IF;
 	END PROCESS;
 
