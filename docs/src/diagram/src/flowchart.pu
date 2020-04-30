@@ -1,5 +1,4 @@
 @startuml flow_chart
-title Signal Flow Chart
 left to right direction
 skinparam linetype ortho
 
@@ -159,13 +158,15 @@ class "PS2_Kbd" as ps2 {
     }
 
 
-    class "Clock 32kHz" as clock_32 {
+    class "DAC_Start" as clock_32 {
         <b>IN:</b>
         Clk
         ===
         <b>OUT:</b>
-        Clk_32
+        Start
     }
+
+    signal_switch -> clock_32
 
 
     ps2 -[#0000FF]-> tone_fsm
