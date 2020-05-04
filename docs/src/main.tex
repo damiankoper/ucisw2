@@ -104,7 +104,7 @@ Przykład zapisu dźwięku w pliku tekstowym:
 \end{align*}
 gdzie:
 \begin{align*}
-  a                & - Klawisz na klawiaturze QWERTY \\
+  a                & - Klawisz\;na\;klawiaturze\;QWERTY \\
   4                & - Oktawa                 \\
   0000000101001101 & - Czas\;trwania\;[x*3ms] \\
 \end{align*}
@@ -132,7 +132,6 @@ Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego, na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie, przedstawionym na rysunku \ref{base}.
 
-% TODO: Maja upodate zdemcie bo nie ma OctaveFSM
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{images/inner}
@@ -144,7 +143,7 @@ Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie 
 
 Moduł FileReaderFSM realizuje maszynę stanów, która jest odpowiedzialna za interakcjem z modułem \textit{SDC\_FileReader}. Odpowiada on za dostarczanie numeru tonu i oktawy przez określony czas, gdzie wszystkie te dane odczytywane są z karty SD.
 
-Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do kolejki FIFO. Moduł \textit{FileReaderFSM} w procesie odczytu danych jednego dźwięku najpierw odczytuje znak tonu, potem oktawy, a następnie czas jego trwania, wpisując tę wartość do licznika. Po zakończonym odczycie 18 znaków, licznik jest uruchamiany, a wartości zmapowanych kodów tonu i oktawy są obecne na wyjściach modułu, dopóki licznik się nie wyzeruje. Wczytanie tonu $1$ i oktawy $4$ przedstawia symulacja na rysynku \ref{sim:fileReader}.
+Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do kolejki FIFO. Moduł \textit{FileReaderFSM} w procesie odczytu danych jednego dźwięku najpierw odczytuje znak tonu, potem oktawy, a następnie czas jego trwania, wpisując tę wartość do licznika. Po zakończonym odczycie 18 znaków, licznik jest uruchamiany, a wartości zmapowanych kodów tonu i oktawy są obecne na wyjściach modułu, dopóki licznik się nie wyzeruje. Wczytanie tonu $1$ i oktawy $4$ przedstawia symulacja na rysunku \ref{sim:fileReader}.
 
 Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik uruchamiany jest po wczytaniu całego słowa określającego długość dźwięku. Skutkuje to pomijalnie małym wydłużeniem czasu trwania dźwięku.
 
@@ -174,12 +173,11 @@ OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, w
 
 \begin{figure}[H]
     \centering
-    \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octavefsm.png} % TODO zmienic image na octave_fsm
+    \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octavefsm.png} 
     \caption{Symulacja modułu OctaveFSM.}
     \label{sim:octavefsm}
 \end{figure}
 
-\clearpage
 
 \subsection{SourceSwitchFSM}
 Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za restartowanie odczytu dźwięków z karty pamięci w przypadku wyboru tego źródła. Klawisz M zmienia źródło na klawiaturę, a klawisz N na kartę pamięci. Na symulacji z rysunku \ref{sim:source} widać zmianę domyślnego źródła klawiatury na kartę pamięci i wysłanie impulsu wystąpienia zdarzenia zmiany źródła. Zdarzenie to obsługiwane jest przez moduł \textit{FileReaderFSM}, który restartuje proces odczytu.
@@ -206,7 +204,6 @@ Zależności pomiędzy liczbą okresów $P_{C3}$, a okresem oraz częstotliwośc
 \[ T_{C3} = P_{C3} * T_{clk} = 7645260ns \]
 \[ f_{C3} = \frac{1}{T_{C3}} \approx 130.81Hz \]
 
-\clearpage
 
 \subsection{GeneratorSaw}
 

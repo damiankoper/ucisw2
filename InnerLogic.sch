@@ -30,26 +30,6 @@
         <signal name="XLXN_371(7:0)" />
         <signal name="XLXN_373(7:0)" />
         <signal name="XLXN_382" />
-        <signal name="XLXN_383" />
-        <signal name="XLXN_384" />
-        <signal name="XLXN_385" />
-        <signal name="XLXN_386(7:0)" />
-        <signal name="XLXN_387" />
-        <signal name="XLXN_388" />
-        <signal name="XLXN_389" />
-        <signal name="XLXN_390(7:0)" />
-        <signal name="XLXN_391" />
-        <signal name="XLXN_392" />
-        <signal name="XLXN_393" />
-        <signal name="XLXN_394(7:0)" />
-        <signal name="XLXN_395" />
-        <signal name="XLXN_396" />
-        <signal name="XLXN_397" />
-        <signal name="XLXN_398(7:0)" />
-        <signal name="XLXN_399" />
-        <signal name="XLXN_400" />
-        <signal name="XLXN_401" />
-        <signal name="XLXN_402(7:0)" />
         <port polarity="Input" name="SDC_DI_Busy" />
         <port polarity="Output" name="SDC_DI_Pop" />
         <port polarity="Output" name="SDC_DI_Start" />
@@ -399,10 +379,10 @@
             <wire x2="1120" y1="752" y2="752" x1="400" />
         </branch>
         <branch name="XLXN_382">
-            <wire x2="560" y1="48" y2="384" x1="560" />
+            <wire x2="560" y1="128" y2="384" x1="560" />
             <wire x2="640" y1="384" y2="384" x1="560" />
-            <wire x2="1632" y1="48" y2="48" x1="560" />
-            <wire x2="1632" y1="48" y2="1328" x1="1632" />
+            <wire x2="1632" y1="128" y2="128" x1="560" />
+            <wire x2="1632" y1="128" y2="1328" x1="1632" />
             <wire x2="1632" y1="1328" y2="1328" x1="1568" />
         </branch>
         <instance x="624" y="1504" name="XLXI_28" orien="R0">
