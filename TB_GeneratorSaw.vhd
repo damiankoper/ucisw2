@@ -27,55 +27,67 @@
 --------------------------------------------------------------------------------
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
- 
+
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
 USE ieee.numeric_std.ALL;
- 
+
 ENTITY TB_GeneratorSaw IS
 END TB_GeneratorSaw;
- 
-ARCHITECTURE behavior OF TB_GeneratorSaw IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
- 
-    COMPONENT GeneratorSaw
-    PORT(
-         Clk : IN  std_logic;
-         Period  : IN  std_logic_vector(31 downto 0);
-         Sample : OUT  std_logic_vector(11 downto 0) := "000000111111";
-			Sample_Rdy : OUT std_logic
-        );
-    END COMPONENT;
+
+ARCHITECTURE behavior OF TB_GeneratorSaw IS
+
+   -- Component Declaration for the Unit Under Test (UUT)
+
+   COMPONENT GeneratorSaw
+      PORT (
+         Clk : IN std_logic;
+         Period : IN std_logic_vector(31 DOWNTO 0);
+         Sample : OUT std_logic_vector(11 DOWNTO 0) := "000000111111";
+         Sample_Rdy : OUT std_logic
+      );
+   END COMPONENT;
 
    --Inputs
-   signal Clk : std_logic := '0';
-   signal Period : std_logic_vector(31 downto 0) := std_logic_vector(to_unsigned(113636, 32));
+   SIGNAL Clk : std_logic := '0';
+   SIGNAL Period : std_logic_vector(31 DOWNTO 0) := std_logic_vector(to_unsigned(0, 32));
 
- 	--Outputs
-   signal Sample : std_logic_vector(11 downto 0);
-	signal Sample_Rdy : std_logic;
-	
+   --Outputs
+   SIGNAL Sample : std_logic_vector(11 DOWNTO 0);
+   SIGNAL Sample_Rdy : std_logic;
+
    -- Clock definitions
-   constant Clk_Half_Period : time := 10 ns;
- 
+   CONSTANT Clk_Half_Period : TIME := 10 ns;
+
 BEGIN
+
+   -- Instantiate the Unit Under Test (UUT)
+   uut : GeneratorSaw PORT MAP(
+      Clk => Clk,
+      Period => Period,
+      Sample => Sample,
+      Sample_Rdy => Sample_Rdy
+   );
+
+   Clk <= NOT Clk AFTER Clk_Half_Period;
+
+   PROCESS
+      TYPE typePeriodArray IS ARRAY (NATURAL RANGE <>) OF STD_LOGIC_VECTOR(31 DOWNTO 0);
+		-- Silence, C4, C5, C6, Silence
+      VARIABLE periods : typePeriodArray(0 TO 4) := (x"00000000",
+																		std_logic_vector(to_unsigned(382263, 32)),
+																		std_logic_vector(to_unsigned(191131, 32)),
+																		std_logic_vector(to_unsigned(95547, 32)),
+																		x"00000000");
+   BEGIN
+		
+		FOR i IN periods'RANGE LOOP
+         Period <= periods(i);
+         WAIT FOR 20 ms;
+			Period <= x"00000000";
+			WAIT FOR 1ms;
+      END LOOP;
 	
-	-- Instantiate the Unit Under Test (UUT)
-   uut: GeneratorSaw PORT MAP (
-          Clk => Clk,
-          Period  =>Period ,
-          Sample => Sample,
-			 Sample_Rdy => Sample_Rdy
-	 );
-		  
-	Clk <= not Clk after Clk_Half_Period;
-	
---	process begin
---		for I in 1 to 7 loop
---			Freq <= Freq + 10000;
---			wait for 100 ms;
---		end loop;
---	end process;
-	
+   END PROCESS;
+
 END;

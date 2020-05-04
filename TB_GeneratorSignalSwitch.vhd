@@ -104,7 +104,7 @@ BEGIN
 	Input_3_Rdy <= '0';
 	
 	process begin
-		  while (true) loop
+		  FOR i IN 0 TO 2 LOOP
 				wait for 100 ns;
 				Wave_Type <= std_logic_vector(to_unsigned(to_integer(unsigned( Wave_Type )) + 1, 8));
 		  end loop;

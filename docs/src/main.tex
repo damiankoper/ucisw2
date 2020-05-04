@@ -121,7 +121,7 @@ Schemat najwyższego poziomu, przedstawiony na rysunku \ref{sch:main}, zawiera w
 Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{images/main}
   \caption{Schemat najwyższego poziomu.}
@@ -133,7 +133,7 @@ Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego, na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie, przedstawionym na rysunku \ref{base}.
 
 % TODO: Maja upodate zdemcie bo nie ma OctaveFSM
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{images/inner}
   \caption{Schemat InnerLogic.}
@@ -148,7 +148,7 @@ Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do 
 
 Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik uruchamiany jest po wczytaniu całego słowa określającego długość dźwięku. Skutkuje to pomijalnie małym wydłużeniem czasu trwania dźwięku.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/filereader}
   \caption{Symulacja modułu FileReaderFSM.}
@@ -159,18 +159,26 @@ Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik urucham
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
 Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}.
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/tone}
   \caption{Symulacja modułu ToneFSM.}
   \label{sim:tone}
 \end{figure}
+
 \subsection{OctaveFSM}
-% Maja zrup
-xd
+
+
+% \begin{figure}[H]
+%   \centering
+%   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octave_fsm.png}
+%   \caption{Symulacja modułu OctaveFSM.}
+%   \label{sim:octave_fsm}
+% \end{figure}
+
 \subsection{SourceSwitchFSM}
 Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za restartowanie odczytu dźwięków z karty pamięci w przypadku wyboru tego źródła. Klawisz M zmienia źródło na klawiaturę, a klawisz N na kartę pamięci. Na symulacji z rysunku \ref{sim:source} widać zmianę domyślnego źródła klawiatury na kartę pamięci i wysłanie impulsu wystąpienia zdarzenia zmiany źródła. Zdarzenie to obsługiwane jest przez moduł \textit{FileReaderFSM}, który restartuje proces odczytu.
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/source}
   \caption{Symulacja modułu SourceSwitchFSM.}
@@ -178,7 +186,7 @@ Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za re
 \end{figure}
 \subsection{FreqMapper}
 FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o częstotliwości 50MHz, która odpowiada okresowi fali danego dźwięku. Ton 0 mapowany jest zawsze na wartość 0, co w dalszym procesie generowania sygnału oznacza ciszę. Symulację dla oktawy 0 oraz 3 przedstawia rysunek \ref{sim:mapper}.
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/mapper}
   \caption{Symulacja modułu FreqMapper.}
@@ -187,18 +195,48 @@ FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o c
 % TODO Maja weź tutaj jakieś przykłądowe przeliczenie z symulacji
 % czyli np 382263 -matma x 50Mhz-> xyz Hz => dźwięk c4, qmasz nie?
 
+\clearpage
+
 \subsection{GeneratorSaw}
-% MAja zrup
-xd
+
+Moduł \textit{GeneratorSaw} generuje falę piłokształtną dla zadanego okresu dostarczonego z modułu \textit{FreqMapper}. Skuteczna rozdzielczość generatora wynosi 8 bitów, jednak próbki na wyjściu są przesuwane o 4 bity w lewo, aby osiągnąć zgodność z rozmiarem próbki na wejściu modułu \textit{DACWrite}. 
+
+Kolejne próbki fali generowane są w oparciu o dwa liczniki. Jeden niskiej częstotliwości (\textit{low-freq}), który odpowiada za bity 0-3, oraz drugi, o okresie 16-krotnie krótszym (\textit{high-freq}), który odpowiada za bity 4-7 próbki wynikowej. Bity 8-11 pozostają zawsze wyzerowane. Zastosowanie dwóch liczników ma na celu osiągnięcie wyższej rozdzielczości generatora, przy zachowaniu niewielkiego błędu okresu fali, który wynika z niedokładności dzielenia. Licznik \textit{high-freq} podlega pod licznik \textit{low-freq}, tzn. wyzerowanie licznika \textit{low-freq} skutkuje wyzerowaniem licznika \textit{high-freq} oraz bitów 4-7. Dzięki temu błąd czasu trwania okresu fali zostaje zredukowany.
+
+Symulację dla modułu GeneratorSaw przedstawia rysunek \ref{sim:gen_saw}. Na wejście \textit{Period} podano następujące wartości: 
+\begin{equation}
+  0 (cisza) \rightarrow 382263 (C3) \rightarrow 191131 (C4) \rightarrow 95547 (C5) \rightarrow 0 (cisza).
+\end{equation}
+
+Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms, z odstępami ciszy trwającymi 1ms.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_saw.png}
+  \caption{Symulacja modułu GeneratorSaw.}
+  \label{sim:gen_saw}
+\end{figure}
+
+
 \subsection{GeneratorSignalSwitch}
-% MAja zrup
-xd
+
+Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z różnych generatorów fali. Rodzaj fali przekazywanej na wyjście określany jest sygnałem \textit{wave\_type}. Moduł ten przekazuje zarówno próbkę na wyjściu generatora, jak i impuls \textit{sample\_rdy}, generowany przy każdej zmianie wartości próbki. Wybór rodzaju fali X, gdzie X jest liczbą z przedziału 0-3, powoduje następujące zależności:
+\[output <= input\_X\]
+\[output\_rdy <= input\_X\_rdy\]
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_signal_switch.png}
+  \caption{Symulacja modułu GeneratorSignalSwitch.}
+  \label{sim:gen_signal_switch}
+\end{figure}
+
 
 \section{Symulacja InnerLogic}
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
 Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_kb}
   \caption{Symulacja modułu InnerLogic. Wejście z klawiatury.}
@@ -210,7 +248,7 @@ Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i fal�
  \begin{lstlisting}
   a40000000000000001w40000000000000001s40000000000000001 e40000000000000001d40000000000000001f40000000000000001 t40000000000000001g40000000000000001y40000000000000001 h40000000000000001u40000000000000001j40000000000000001
  \end{lstlisting}
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_sd}
   \caption{Symulacja modułu InnerLogic. Wejście z karty pamięci.}
