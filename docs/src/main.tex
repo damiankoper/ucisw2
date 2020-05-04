@@ -166,15 +166,20 @@ Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada cisz
   \label{sim:tone}
 \end{figure}
 
+\clearpage
+
 \subsection{OctaveFSM}
 
+OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom 1-9 lub inaczej, dźwiękom C1-H9. Reakcję modułu na wciśnięcia przycisków przedstawia rysunek \ref{sim:octavefsm}
 
-% \begin{figure}[H]
-%   \centering
-%   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octave_fsm.png}
-%   \caption{Symulacja modułu OctaveFSM.}
-%   \label{sim:octave_fsm}
-% \end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/tone.png} % TODO zmienic image na octave_fsm
+    \caption{Symulacja modułu OctaveFSM.}
+    \label{sim:octavefsm}
+\end{figure}
+
+\clearpage
 
 \subsection{SourceSwitchFSM}
 Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za restartowanie odczytu dźwięków z karty pamięci w przypadku wyboru tego źródła. Klawisz M zmienia źródło na klawiaturę, a klawisz N na kartę pamięci. Na symulacji z rysunku \ref{sim:source} widać zmianę domyślnego źródła klawiatury na kartę pamięci i wysłanie impulsu wystąpienia zdarzenia zmiany źródła. Zdarzenie to obsługiwane jest przez moduł \textit{FileReaderFSM}, który restartuje proces odczytu.
