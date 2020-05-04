@@ -7,11 +7,11 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : main.vhf
--- /___/   /\     Timestamp : 04/23/2020 08:31:50
+-- /___/   /\     Timestamp : 05/04/2020 20:26:05
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/damian_koper/Documents/GitHub/ucisw2/main.vhf -w /home/damian_koper/Documents/GitHub/ucisw2/main.sch
+--Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl /home/maja/Git/ucisw2/main.vhf -w /home/maja/Git/ucisw2/main.sch
 --Design Name: main
 --Device: spartan3e
 --Purpose:
@@ -124,8 +124,16 @@ architecture BEHAVIORAL of InnerLogic_MUSER_main is
              Octave               : out   std_logic_vector (7 downto 0));
    end component;
    
+   component OctaveFSM
+      port ( Clk    : in    std_logic; 
+             F0     : in    std_logic; 
+             DI_Rdy : in    std_logic; 
+             Reset  : in    std_logic; 
+             DI     : in    std_logic_vector (7 downto 0); 
+             Octave : out   std_logic_vector (7 downto 0));
+   end component;
+   
 begin
-   XLXN_138(7 downto 0) <= x"04";
    XLXN_247(7 downto 0) <= x"00";
    FileReader : FileReaderFSM
       port map (Clk=>Clk,
@@ -185,6 +193,14 @@ begin
                 Key_Source_Selected=>open,
                 Octave(7 downto 0)=>XLXN_373(7 downto 0),
                 Tone(7 downto 0)=>XLXN_371(7 downto 0));
+   
+   XLXI_28 : OctaveFSM
+      port map (Clk=>Clk,
+                DI(7 downto 0)=>DI(7 downto 0),
+                DI_Rdy=>DI_Rdy,
+                F0=>F0,
+                Reset=>Reset,
+                Octave(7 downto 0)=>XLXN_138(7 downto 0));
    
 end BEHAVIORAL;
 

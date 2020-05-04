@@ -1,0 +1,9 @@
+[Inputs]
+Clk
+F0
+DI_Rdy
+Reset
+=DI[7:0]=
+[Outputs]
+=Octave[7:0]=
+[BiDir]
