@@ -193,13 +193,12 @@ FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o c
   \label{sim:mapper}
 \end{figure}
 
-Zależności pomiędzy liczbą okresów $P_{C3}$, a okresem oraz częstotliwością tonu C3, opisują poniższe równania.
-
-\[ f_{clk} = 50MHz \]
-\[ T_{clk} = \frac{1}{50MHz} = 20ns \]
-\[ P_{C3} = 382263 \]
-\[ T_{C3} = P_{C3} * T_{clk} = 7645260ns \]
-\[ f_{C3} = \frac{1}{T_{C3}} \approx 130.81Hz \]
+  \[f_{clk} = 50MHz\]
+  \[T_{clk} = \frac{1}{50MHz} = 20ns\]
+  \[T_{A4} = 113636 * T_{clk} = 2272720ns\]
+  \[f_{A4} = \frac{1}{T_{A4}} \approx 440Hz\]
+% TODO Maja weź tutaj jakieś przykłądowe przeliczenie z symulacji
+% czyli np 382263 -matma x 50Mhz-> xyz Hz => dźwięk c4, qmasz nie?
 
 \clearpage
 
