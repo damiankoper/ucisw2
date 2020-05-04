@@ -73,19 +73,18 @@ Damian Koper,  241292\\
 
 \section{Cel projektu}
 
-Celem projektu było wykonanie układu realizujący działanie organów sterowanych za pomocą klawiszy klawiatury podłączonej z wykorzystaniem interfejsu PS2. Rozszerzeniem działania układu było odtwarzanie sekwencji dźwięków zapisanej w pliku tesktowym odczytanych z~karty pamięci SD.
+Celem projektu było wykonanie układu realizującego działanie organów, sterowanych za pomocą klawiszy klawiatury, podłączonej poprzez interfejs PS2. Rozszerzeniem działania układu było odtwarzanie sekwencji dźwięków odczytanej z pliku tekstowego, zapisanego na karcie pamięci typu SD. 
 
 \subsection{Założenia wstępne}
 
-Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na właściwe tony. Klawisze były przypisane w przybliżeniu zgodnie z układem klawiszy pianina.  Klawisze A -- J odpowiadały tonom C -- H, a klawisze W -- E i T -- U półtonom kolejno C\# -- D\# i F\# -- A\#. Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
+Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły, według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na odpowiadające im dźwięki. Klawisze były przypisane do dźwięków, zgodnie z układem przybliżonym do klawiszy jednej oktawy pianina.  Klawisze A -- J odpowiadały tonom C -- H, a klawisze W -- E i T -- U tonom kolejno C\# -- D\# i F\# -- A\#. Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
 
-Pierwotny projekt zawierał również podziała na wiele typów fal, których zmiana dokonywana być miała pomocą sygnałów z enkodera. Diagram przepływu danych wstępnego projektu przedstawia rysunek \ref{base}.
-% TODO: Może da się to ładniej napisać
+Pierwotny projekt zakładał również podział na wiele rodzajów fal. Rodzaj fali miał być wybierany poprzez obracanie enkodera cyfrowego w lewo (poprzedni) lub prawo (następny). Diagram przepływu danych wstępnej wersji projektu, został przedstawiony na rysunku \ref{base}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{./diagram/out/flow_chart}
-  \caption{Bazowy projekt organów. Niebieskimi strzałkami oznaczono podstawową i~wykonaną jako pierwszą funkcjonalność. }
+  \caption{Wstępny projekt organów. Niebieskimi strzałkami oznaczono podstawową i~wykonaną jako pierwszą funkcjonalność. }
   \label{base}
 \end{figure}
 
@@ -98,15 +97,15 @@ Przykład zapisu dźwięku w pliku tekstowym:
 \end{align*}
 gdzie:
 \begin{align*}
-  a                & - Ton                    \\
+  a                & - Klawisz na klawiaturze QWERTY \\
   4                & - Oktawa                 \\
   0000000101001101 & - Czas\;trwania\;[x*3ms] \\
 \end{align*}
-Jeden dźwięk jest definiowany zawsze z wykorzystaniem 18 znaków, więc zapis nie wymaga stosowania separatorów. Czas trwania dźwięku zapisany jest z wykorzystaniem liczby binarnej zapisanej tekstowo na 16 bitach i definiuje czas trwania jako wielokrotność $3ms$.
+Jeden dźwięk jest zawsze definiowany z wykorzystaniem 18 znaków, więc zapis nie wymaga stosowania separatorów. Czas trwania dźwięku zapisany jest z wykorzystaniem liczby binarnej zapisanej tekstowo na 16 bitach. Definiuje on czas trwania dźwięku, jako wielokrotność $3ms$.
 
 \section{Struktura układu}
 \subsection{Schemat najwyższego poziomu}
-Schemat najwyższego poziomu przedstawiony na rysunku \ref{sch:main} zawiera wszystkie zawnętrzne moduły odpowiedzialne za komunikację z urządzeniami peryferyjnymi. Są to:
+Schemat najwyższego poziomu, przedstawiony na rysunku \ref{sch:main}, zawiera wszystkie zewnętrzne moduły odpowiedzialne za komunikację z urządzeniami peryferyjnymi. Są to:
 \begin{itemize}[noitemsep]
   \item \textit{SDC\_FileReader}
   \item \textit{PS2\_Kbd}
@@ -124,7 +123,7 @@ Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 \subsection{InnerLogic}
 
-Schemat InnerLogic przedstawiony na rysunku \ref{sch:inner} zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie przedstawionym na rysunku \ref{base}.
+Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego, na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie, przedstawionym na rysunku \ref{base}.
 
 % TODO: Maja upodate zdemcie bo nie ma OctaveFSM
 \begin{figure}[h]
@@ -136,9 +135,9 @@ Schemat InnerLogic przedstawiony na rysunku \ref{sch:inner} zawiera wszystkie mo
 
 \subsection{FileReaderFSM}
 
-Moduł FileReaderFSM realizuje maszynę stanów, która odpowiedzialna jest za interakcje z modułem \textit{SDC\_FileReader}. Odpowiada on za dostarczanie numeru tonu i oktawy przez określony czas, gdzie wszystkie te dane odczytywane są z karty SD.
+Moduł FileReaderFSM realizuje maszynę stanów, która jest odpowiedzialna za interakcjem z modułem \textit{SDC\_FileReader}. Odpowiada on za dostarczanie numeru tonu i oktawy przez określony czas, gdzie wszystkie te dane odczytywane są z karty SD.
 
-Moduł \textit{SDC\_FileReader} umożliwia obsługę odczytu jako obsługę kolejki FIFO. Moduł \textit{FileReaderFSM} w procesie odczytu danych jednego dźwięku odczytuje najpierw znak tonu, potem oktawy, a następnie czas jego trwania wpisując tę wartość do licznika. Po zakończonym odczycie 18 znaków licznik jest uruchamiany, a zmapowane kody tonu i oktawy są widoczne na wyjściu dopóki licznik się nie wyzeruje. Wczytanie tonu $1$ i oktawy $4$ przedstawia symulacja na rysynku \ref{sim:fileReader}.
+Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do kolejki FIFO. Moduł \textit{FileReaderFSM} w procesie odczytu danych jednego dźwięku najpierw odczytuje znak tonu, potem oktawy, a następnie czas jego trwania, wpisując tę wartość do licznika. Po zakończonym odczycie 18 znaków, licznik jest uruchamiany, a wartości zmapowanych kodów tonu i oktawy są obecne na wyjściach modułu, dopóki licznik się nie wyzeruje. Wczytanie tonu $1$ i oktawy $4$ przedstawia symulacja na rysynku \ref{sim:fileReader}.
 
 Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik uruchamiany jest po wczytaniu całego słowa określającego długość dźwięku. Skutkuje to pomijalnie małym wydłużeniem czasu trwania dźwięku.
 
@@ -151,8 +150,7 @@ Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik urucham
 
 \subsection{ToneFSM}
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
-Kody od 1 do % TODO: ile xd
-xd odpowiadają wszystkim tonom i półtonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten następnie jest mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (a, w, s, e, d, r, f) przedstawia symulacja na rysunku \ref{sim:tone}.
+Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}.
 
 \begin{figure}[h]
   \centering
@@ -172,7 +170,7 @@ Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za re
   \label{sim:source}
 \end{figure}
 \subsection{FreqMapper}
-FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o częstotliwości 50MHz, która odpowiada okresowi fali danego dźwięku. Ton 0 mapowany jest zawsze na wartość 0, co w dalszym procesie generowania sygnału oznacza ciszę. Symulację dla oktawy 0 i 3 przedstawia rysunek \ref{sim:mapper}.
+FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o częstotliwości 50MHz, która odpowiada okresowi fali danego dźwięku. Ton 0 mapowany jest zawsze na wartość 0, co w dalszym procesie generowania sygnału oznacza ciszę. Symulację dla oktawy 0 oraz 3 przedstawia rysunek \ref{sim:mapper}.
 \begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/mapper}
@@ -192,7 +190,7 @@ xd
 \section{Symulacja InnerLogic}
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
-Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
+Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
 \begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_kb}
@@ -225,7 +223,6 @@ Design statistics:
 \end{lstlisting}
 
 \subsection{Zrealizowane założenia}
-Działanie poparte poprawnymi efektami symulacji pozwala sądzić, iż projekt został wykonany poprawnie zgodnie ze wstępnymi założeniami. Zrezygnowano jednak z pozostałych generatorów typów fal, pozostając tylko przy fali piłokształtnej, ponieważ proces generowania fali w pozostałych generatorach odbywałby się podobnie. Czy to poprzez użycie innego zachowania liczników, czy to poprzez podawanie na wyjście stablicowanych wartości.
-
+Działanie poparte poprawnymi efektami symulacji pozwala sądzić, iż projekt został wykonany poprawnie, zgodnie ze wstępnymi założeniami. Zrezygnowano jednak z pozostałych generatorów typów fal, pozostając tylko przy fali piłokształtnej. Proces generowania fali w pozostałych generatorach odbywałby się podobnie, poprzez użycie innego zachowania liczników lub podawanie na wyjście stablicowanych wartości.
 
 \end{document}
