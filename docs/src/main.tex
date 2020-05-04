@@ -77,7 +77,14 @@ Celem projektu było wykonanie układu realizującego działanie organów, stero
 
 \subsection{Założenia wstępne}
 
-Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły, według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na odpowiadające im dźwięki. Klawisze były przypisane do dźwięków, zgodnie z układem przybliżonym do klawiszy jednej oktawy pianina.  Klawisze A -- J odpowiadały tonom C -- H, a klawisze W -- E i T -- U tonom kolejno C\# -- D\# i F\# -- A\#. Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
+Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły, według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na odpowiadające im dźwięki. Klawisze były przypisane do dźwięków, zgodnie z układem przybliżonym do klawiszy jednej oktawy pianina.  Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{images/key_mapping.png}
+  \caption{Przypisanie tonów oktawy do klawiszy klawiatury QWERTY. Poniżej każdej litery klawisza znajduje się odpowiadający mu ton.}
+  \label{kay_mapping}
+\end{figure}
 
 Pierwotny projekt zakładał również podział na wiele rodzajów fal. Rodzaj fali miał być wybierany poprzez obracanie enkodera cyfrowego w lewo (poprzedni) lub prawo (następny). Diagram przepływu danych wstępnej wersji projektu, został przedstawiony na rysunku \ref{base}.
 
