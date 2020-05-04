@@ -157,7 +157,7 @@ Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik urucham
 
 \subsection{ToneFSM}
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
-Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}.
+Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}. Kod lewej strzałki to \textit{X"1d"}, natomiast prawej \textit{X"2d"}. Warto również zauważyć, że po wciśnięciu innego klawisza nie jest zmieniany stan.
 
 \begin{figure}[H]
   \centering
@@ -174,7 +174,7 @@ OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, w
 
 \begin{figure}[H]
     \centering
-    \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/tone.png} % TODO zmienic image na octave_fsm
+    \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octavefsm.png} % TODO zmienic image na octave_fsm
     \caption{Symulacja modułu OctaveFSM.}
     \label{sim:octavefsm}
 \end{figure}
