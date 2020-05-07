@@ -13,8 +13,8 @@
         <signal name="SDC_DI(7:0)" />
         <signal name="SDC_DI_Rdy" />
         <signal name="DI_Reset" />
-        <signal name="XLXN_138(7:0)" />
-        <signal name="XLXN_139(7:0)" />
+        <signal name="Octave(7:0)" />
+        <signal name="Tone(7:0)" />
         <signal name="DI(7:0)" />
         <signal name="F0" />
         <signal name="DI_Rdy" />
@@ -36,6 +36,8 @@
         <port polarity="Input" name="SDC_DI(7:0)" />
         <port polarity="Input" name="SDC_DI_Rdy" />
         <port polarity="Output" name="DI_Reset" />
+        <port polarity="Output" name="Octave(7:0)" />
+        <port polarity="Output" name="Tone(7:0)" />
         <port polarity="Input" name="DI(7:0)" />
         <port polarity="Input" name="F0" />
         <port polarity="Input" name="DI_Rdy" />
@@ -154,7 +156,7 @@
             <rect width="64" x="320" y="-300" height="24" />
             <line x2="384" y1="-288" y2="-288" x1="320" />
         </blockdef>
-        <block symbolname="FileReaderFSM" name="FileReader">
+        <block symbolname="FileReaderFSM" name="FileReaderFSM_1">
             <blockpin signalname="SDC_DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="SDC_DI_Busy" name="DI_Busy" />
             <blockpin signalname="XLXN_382" name="Reset" />
@@ -166,41 +168,41 @@
             <blockpin signalname="XLXN_157(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_224(7:0)" name="Octave(7:0)" />
         </block>
-        <block symbolname="SourceSwitchFSM" name="XLXI_27">
+        <block symbolname="SourceSwitchFSM" name="SourceSwitchFSM_1">
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="Reset" name="Reset" />
             <blockpin signalname="DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="F0" name="F0" />
             <blockpin signalname="DI(7:0)" name="DI(7:0)" />
-            <blockpin signalname="XLXN_139(7:0)" name="Tone_Key(7:0)" />
+            <blockpin signalname="Tone(7:0)" name="Tone_Key(7:0)" />
             <blockpin signalname="XLXN_157(7:0)" name="Tone_File(7:0)" />
-            <blockpin signalname="XLXN_138(7:0)" name="Octave_Key(7:0)" />
+            <blockpin signalname="Octave(7:0)" name="Octave_Key(7:0)" />
             <blockpin signalname="XLXN_224(7:0)" name="Octave_File(7:0)" />
             <blockpin name="Key_Source_Selected" />
             <blockpin signalname="XLXN_382" name="File_Source_Selected" />
             <blockpin signalname="XLXN_371(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_373(7:0)" name="Octave(7:0)" />
         </block>
-        <block symbolname="ToneFSM" name="XLXI_4">
+        <block symbolname="ToneFSM" name="ToneFSM_1">
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="F0" name="F0" />
             <blockpin signalname="DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="Reset" name="Reset" />
             <blockpin signalname="DI(7:0)" name="DI(7:0)" />
-            <blockpin signalname="XLXN_139(7:0)" name="Tone(7:0)" />
+            <blockpin signalname="Tone(7:0)" name="Tone(7:0)" />
         </block>
-        <block symbolname="FreqMapper" name="XLXI_22">
+        <block symbolname="FreqMapper" name="FreqMapper_1">
             <blockpin signalname="XLXN_371(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_373(7:0)" name="OctaveNum(7:0)" />
             <blockpin signalname="XLXN_232(31:0)" name="Period(31:0)" />
         </block>
-        <block symbolname="GeneratorSaw" name="XLXI_25">
+        <block symbolname="GeneratorSaw" name="GeneratorSaw_1">
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="XLXN_232(31:0)" name="Period(31:0)" />
             <blockpin signalname="XLXN_266" name="Sample_Rdy" />
             <blockpin signalname="XLXN_265(11:0)" name="Sample(11:0)" />
         </block>
-        <block symbolname="GeneratorSignalSwitch" name="XLXI_24">
+        <block symbolname="GeneratorSignalSwitch" name="GeneratorSignalSwitch_1">
             <blockpin signalname="XLXN_266" name="Input_0_Rdy" />
             <blockpin name="Input_1_Rdy" />
             <blockpin name="Input_2_Rdy" />
@@ -221,13 +223,13 @@
             </attr>
             <blockpin signalname="XLXN_247(7:0)" name="O" />
         </block>
-        <block symbolname="OctaveFSM" name="XLXI_28">
+        <block symbolname="OctaveFSM" name="OctaveFSM_1">
             <blockpin signalname="Clk" name="Clk" />
             <blockpin signalname="F0" name="F0" />
             <blockpin signalname="DI_Rdy" name="DI_Rdy" />
             <blockpin signalname="Reset" name="Reset" />
             <blockpin signalname="DI(7:0)" name="DI(7:0)" />
-            <blockpin signalname="XLXN_138(7:0)" name="Octave(7:0)" />
+            <blockpin signalname="Octave(7:0)" name="Octave(7:0)" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="5440" height="3520">
@@ -251,25 +253,31 @@
         <branch name="SDC_DI_Rdy">
             <wire x2="640" y1="256" y2="256" x1="320" />
         </branch>
-        <instance x="640" y="544" name="FileReader" orien="R0">
+        <instance x="640" y="544" name="FileReaderFSM_1" orien="R0">
         </instance>
         <branch name="DI_Reset">
             <wire x2="1168" y1="576" y2="576" x1="1024" />
             <wire x2="1168" y1="416" y2="576" x1="1168" />
             <wire x2="1296" y1="416" y2="416" x1="1168" />
         </branch>
-        <branch name="XLXN_138(7:0)">
+        <branch name="Octave(7:0)">
             <wire x2="1024" y1="1216" y2="1216" x1="1008" />
+            <wire x2="1024" y1="1216" y2="1472" x1="1024" />
+            <wire x2="1200" y1="1472" y2="1472" x1="1024" />
+            <wire x2="1280" y1="1472" y2="1472" x1="1200" />
             <wire x2="1120" y1="1136" y2="1136" x1="1024" />
             <wire x2="1024" y1="1136" y2="1216" x1="1024" />
         </branch>
-        <branch name="XLXN_139(7:0)">
+        <branch name="Tone(7:0)">
             <wire x2="1104" y1="1760" y2="1760" x1="1008" />
+            <wire x2="1200" y1="1760" y2="1760" x1="1104" />
             <wire x2="1120" y1="1008" y2="1008" x1="1104" />
             <wire x2="1104" y1="1008" y2="1760" x1="1104" />
+            <wire x2="1200" y1="1520" y2="1760" x1="1200" />
+            <wire x2="1280" y1="1520" y2="1520" x1="1200" />
         </branch>
         <branch name="DI(7:0)">
-            <wire x2="480" y1="1648" y2="1648" x1="288" />
+            <wire x2="480" y1="1648" y2="1648" x1="320" />
             <wire x2="480" y1="1648" y2="2016" x1="480" />
             <wire x2="624" y1="2016" y2="2016" x1="480" />
             <wire x2="1120" y1="944" y2="944" x1="480" />
@@ -278,7 +286,7 @@
             <wire x2="624" y1="1472" y2="1472" x1="480" />
         </branch>
         <branch name="F0">
-            <wire x2="512" y1="1456" y2="1456" x1="288" />
+            <wire x2="512" y1="1456" y2="1456" x1="320" />
             <wire x2="512" y1="1456" y2="1824" x1="512" />
             <wire x2="624" y1="1824" y2="1824" x1="512" />
             <wire x2="1120" y1="880" y2="880" x1="512" />
@@ -287,7 +295,7 @@
             <wire x2="624" y1="1280" y2="1280" x1="512" />
         </branch>
         <branch name="DI_Rdy">
-            <wire x2="448" y1="1520" y2="1520" x1="288" />
+            <wire x2="448" y1="1520" y2="1520" x1="320" />
             <wire x2="448" y1="1520" y2="1888" x1="448" />
             <wire x2="624" y1="1888" y2="1888" x1="448" />
             <wire x2="1120" y1="816" y2="816" x1="448" />
@@ -295,7 +303,7 @@
             <wire x2="448" y1="1344" y2="1520" x1="448" />
             <wire x2="624" y1="1344" y2="1344" x1="448" />
         </branch>
-        <instance x="1120" y="1232" name="XLXI_27" orien="R0">
+        <instance x="1120" y="1232" name="SourceSwitchFSM_1" orien="R0">
         </instance>
         <branch name="XLXN_224(7:0)">
             <wire x2="1056" y1="496" y2="496" x1="1024" />
@@ -303,7 +311,7 @@
             <wire x2="1120" y1="1200" y2="1200" x1="1056" />
         </branch>
         <branch name="Clk">
-            <wire x2="560" y1="1392" y2="1392" x1="288" />
+            <wire x2="560" y1="1392" y2="1392" x1="320" />
             <wire x2="560" y1="1392" y2="1760" x1="560" />
             <wire x2="560" y1="1760" y2="2096" x1="560" />
             <wire x2="2528" y1="2096" y2="2096" x1="560" />
@@ -317,16 +325,12 @@
             <wire x2="2608" y1="1216" y2="1216" x1="2528" />
             <wire x2="2528" y1="1216" y2="2096" x1="2528" />
         </branch>
-        <iomarker fontsize="28" x="288" y="1520" name="DI_Rdy" orien="R180" />
-        <iomarker fontsize="28" x="288" y="1456" name="F0" orien="R180" />
-        <iomarker fontsize="28" x="288" y="1648" name="DI(7:0)" orien="R180" />
-        <iomarker fontsize="28" x="288" y="1392" name="Clk" orien="R180" />
         <branch name="XLXN_232(31:0)">
             <wire x2="2608" y1="1264" y2="1264" x1="2464" />
         </branch>
-        <instance x="2032" y="1232" name="XLXI_22" orien="R0">
+        <instance x="2032" y="1232" name="FreqMapper_1" orien="R0">
         </instance>
-        <instance x="2656" y="1312" name="XLXI_25" orien="R0">
+        <instance x="2656" y="1312" name="GeneratorSaw_1" orien="R0">
         </instance>
         <branch name="XLXN_265(11:0)">
             <wire x2="3200" y1="1216" y2="1216" x1="3184" />
@@ -341,7 +345,7 @@
             <wire x2="3728" y1="944" y2="1216" x1="3728" />
             <wire x2="3808" y1="1216" y2="1216" x1="3728" />
         </branch>
-        <instance x="3264" y="1232" name="XLXI_24" orien="R0">
+        <instance x="3264" y="1232" name="GeneratorSignalSwitch_1" orien="R0">
         </instance>
         <branch name="XLXN_247(7:0)">
             <wire x2="3152" y1="800" y2="944" x1="3152" />
@@ -364,13 +368,12 @@
         <iomarker fontsize="28" x="320" y="320" name="SDC_DI_Busy" orien="R180" />
         <iomarker fontsize="28" x="320" y="256" name="SDC_DI_Rdy" orien="R180" />
         <iomarker fontsize="28" x="320" y="512" name="SDC_DI(7:0)" orien="R180" />
-        <iomarker fontsize="28" x="256" y="1072" name="Reset" orien="R180" />
         <iomarker fontsize="28" x="1296" y="256" name="SDC_DI_Pop" orien="R0" />
         <iomarker fontsize="28" x="1296" y="336" name="SDC_DI_Start" orien="R0" />
         <iomarker fontsize="28" x="3808" y="1264" name="DAC_Clock" orien="R0" />
         <iomarker fontsize="28" x="3808" y="1216" name="WaveOut(11:0)" orien="R0" />
         <branch name="Reset">
-            <wire x2="400" y1="1072" y2="1072" x1="256" />
+            <wire x2="400" y1="1072" y2="1072" x1="320" />
             <wire x2="400" y1="1072" y2="1408" x1="400" />
             <wire x2="624" y1="1408" y2="1408" x1="400" />
             <wire x2="400" y1="1408" y2="1952" x1="400" />
@@ -385,9 +388,16 @@
             <wire x2="1632" y1="128" y2="1328" x1="1632" />
             <wire x2="1632" y1="1328" y2="1328" x1="1568" />
         </branch>
-        <instance x="624" y="1504" name="XLXI_28" orien="R0">
+        <instance x="624" y="1504" name="OctaveFSM_1" orien="R0">
         </instance>
-        <instance x="624" y="2048" name="XLXI_4" orien="R0">
+        <instance x="624" y="2048" name="ToneFSM_1" orien="R0">
         </instance>
+        <iomarker fontsize="28" x="1280" y="1472" name="Octave(7:0)" orien="R0" />
+        <iomarker fontsize="28" x="1280" y="1520" name="Tone(7:0)" orien="R0" />
+        <iomarker fontsize="28" x="320" y="1072" name="Reset" orien="R180" />
+        <iomarker fontsize="28" x="320" y="1392" name="Clk" orien="R180" />
+        <iomarker fontsize="28" x="320" y="1456" name="F0" orien="R180" />
+        <iomarker fontsize="28" x="320" y="1520" name="DI_Rdy" orien="R180" />
+        <iomarker fontsize="28" x="320" y="1648" name="DI(7:0)" orien="R180" />
     </sheet>
 </drawing>

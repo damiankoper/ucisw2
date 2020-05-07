@@ -1,0 +1,183 @@
+------------------------------------------------------------------------------------------------------------------------------
+|                                                   Xilinx XPower Analyzer                                                   |
+------------------------------------------------------------------------------------------------------------------------------
+| Release                | 14.7 - P.20131013 (lin64)                                                                         |
+| Command Line           | /opt/Xilinx/14.7/ISE_DS/ISE/bin/lin64/unwrapped/xpwr -intstyle ise main.ncd main.pcf -o main.pwr  |
+------------------------------------------------------------------------------------------------------------------------------
+
+--------------------------------
+|      Table of Contents       |
+--------------------------------
+| 1.  Settings                 |
+| 1.1.  Project                |
+| 1.2.  Device                 |
+| 1.3.  Environment            |
+| 1.4.  Default Activity Rates |
+| 2.  Summary                  |
+| 2.1.  On-Chip Power Summary  |
+| 2.2.  Thermal Summary        |
+| 2.3.  Power Supply Summary   |
+| 2.4.  Confidence Level       |
+| 3.  Detailed Reports         |
+| 3.1.  By Hierarchy           |
+| 4.  Warnings                 |
+--------------------------------
+
+1.  Settings
+1.1.  Project
+----------------------------------------
+|               Project                |
+----------------------------------------
+| Design File               | main.ncd |
+| Settings File             | NA       |
+| Physical Constraints File | main.pcf |
+| Simulation Activity File  | NA       |
+| Design Nets Matched       | NA       |
+| Simulation Nets Matched   | NA       |
+----------------------------------------
+
+1.2.  Device
+-----------------------------------------------
+|                   Device                    |
+-----------------------------------------------
+| Family           | Spartan3e                |
+| Part             | xc3s500e                 |
+| Package          | fg320                    |
+| Temp Grade       | Commercial               |
+| Process          | Typical                  |
+| Speed Grade      | -5                       |
+| Characterization | PRODUCTION,v1.2,06-23-09 |
+-----------------------------------------------
+
+1.3.  Environment
+---------------------------
+|       Environment       |
+---------------------------
+| Ambient Temp (C) | 25.0 |
+| Use custom TJA?  | No   |
+| Custom TJA (C/W) | NA   |
+| Airflow (LFM)    | 0    |
+---------------------------
+
+1.4.  Default Activity Rates
+----------------------------------
+|     Default Activity Rates     |
+----------------------------------
+| FF Toggle Rate (%)     | 12.5  |
+| I/O Toggle Rate (%)    | 12.5  |
+| Output Load (pF)       | 5.0   |
+| I/O Enable Rate (%)    | 100.0 |
+| BRAM Write Rate (%)    | 50.0  |
+| BRAM Enable Rate (%)   | 50.0  |
+----------------------------------
+
+2.  Summary
+2.1.  On-Chip Power Summary
+-----------------------------------------------------------------------------
+|                           On-Chip Power Summary                           |
+-----------------------------------------------------------------------------
+|        On-Chip        | Power (mW) |  Used  | Available | Utilization (%) |
+-----------------------------------------------------------------------------
+| Clocks                |       0.00 |      1 |    ---    |       ---       |
+| Logic                 |       0.00 |   1909 |      9312 |              21 |
+| Signals               |       0.02 |   2318 |    ---    |       ---       |
+| IOs                   |       0.11 |     29 |       232 |              12 |
+| BRAMs                 |       0.00 |      1 |        20 |               5 |
+| MULTs                 |       0.00 |      5 |        20 |              25 |
+| Static Power          |      87.67 |        |           |                 |
+| Total                 |      87.80 |        |           |                 |
+-----------------------------------------------------------------------------
+
+2.2.  Thermal Summary
+------------------------------
+|      Thermal Summary       |
+------------------------------
+| Effective TJA (C/W) | 26.1 |
+| Max Ambient (C)     | 82.7 |
+| Junction Temp (C)   | 27.3 |
+------------------------------
+
+2.3.  Power Supply Summary
+---------------------------------------------------------
+|                 Power Supply Summary                  |
+---------------------------------------------------------
+|                      | Total | Dynamic | Static Power |
+---------------------------------------------------------
+| Supply Power (mW)    | 87.80 | 0.13    | 87.67        |
+---------------------------------------------------------
+
+---------------------------------------------------------------------------------------------------------------
+|                                            Power Supply Currents                                            |
+---------------------------------------------------------------------------------------------------------------
+|     Supply Source     | Supply Voltage | Total Current (mA) | Dynamic Current (mA) | Quiescent Current (mA) |
+---------------------------------------------------------------------------------------------------------------
+| Vccint                |          1.200 |              26.00 |                 0.11 |                  25.89 |
+| Vccaux                |          2.500 |              18.00 |                 0.00 |                  18.00 |
+| Vcco33                |          3.300 |               2.00 |                 0.00 |                   2.00 |
+| Vcco25                |          2.500 |               2.00 |                 0.00 |                   2.00 |
+---------------------------------------------------------------------------------------------------------------
+
+2.4.  Confidence Level
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                                                                                                Confidence Level                                                                                                |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|       User Input Data       | Confidence |                        Details                         |                                                   Action                                                   |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Design implementation state | High       | Design is completely routed                            |                                                                                                            |
+| Clock nodes activity        | High       | User specified more than 95% of clocks                 |                                                                                                            |
+| I/O nodes activity          | Low        | More than 75% of inputs are missing user specification | Provide missing input activity with simulation results or by editing the "By Resource Type -> I/Os" view   |
+| Internal nodes activity     | Medium     | User specified less than 25% of internal nodes         | Provide missing internal nodes activity with simulation results or by editing the "By Resource Type" views |
+| Device models               | High       | Device models are Production                           |                                                                                                            |
+|                             |            |                                                        |                                                                                                            |
+| Overall confidence level    | Low        |                                                        |                                                                                                            |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+3.  Details
+3.1.  By Hierarchy
+------------------------------------------------------------------------------------------------------------------------------------------------------
+|   By Hierarchy    |   Power (mW)    | Logic Power (mW) | Signal Power (mW) |      # FFs      |     # LUTs      |     # BRAMs     |     # MULTs     |
+------------------------------------------------------------------------------------------------------------------------------------------------------
+| Hierarchy total   |   0.02          |   0.00           |   0.02            |    702          |   1753          |      2          |      5          |
+|   main            |   0.02 /   0.02 |   0.00 /   0.00  |   0.02 /   0.02   |      0 /    702 |      0 /   1753 |      0 /      2 |      0 /      5 |
+|     XLXI_34       |   0.00          |   0.00           |   0.00            |     32 /     35 |     27 /     28 |      0          |      0          |
+|       ResDORdy    |   0.00          |   0.00           |   0.00            |      3          |      1          |      0          |      0          |
+|     XLXI_33       |   0.00          |   0.00           |   0.00            |     34 /     39 |     34 /     35 |      0          |      0          |
+|       ResStart    |   0.00          |   0.00           |   0.00            |      5          |      1          |      0          |      0          |
+|     XLXI_31       |   0.00 /   0.00 |   0.00 /   0.00  |   0.00 /   0.00   |      0 /    245 |      0 /    796 |      0          |      0 /      5 |
+|       XLXI_4      |   0.00          |   0.00           |   0.00            |     12          |     25          |      0          |      0          |
+|       XLXI_28     |   0.00          |   0.00           |   0.00            |     32          |     53          |      0          |      0          |
+|       XLXI_27     |   0.00          |   0.00           |   0.00            |      2          |     31          |      0          |      0          |
+|       XLXI_25     |   0.00          |   0.00           |   0.00            |    107          |    182          |      0          |      0          |
+|       XLXI_22     |   0.00          |   0.00           |   0.00            |      0          |    322          |      0          |      0          |
+|       FileReader  |   0.00          |   0.00           |   0.00            |     92          |    183          |      0          |      5          |
+|     XLXI_27       |   0.00          |   0.00           |   0.00            |      0 /    383 |      1 /    894 |      0 /      2 |      0          |
+|       XLXI_90     |   0.00          |   0.00           |   0.00            |    225 /    239 |    719 /    723 |      0          |      0          |
+|         Res_Go    |   0.00          |   0.00           |   0.00            |      5          |      2          |      0          |      0          |
+|         Res_DO_CE |   0.00          |   0.00           |   0.00            |      5          |      1          |      0          |      0          |
+|         Res_Busy  |   0.00          |   0.00           |   0.00            |      4          |      1          |      0          |      0          |
+|       XLXI_89     |   0.00          |   0.00           |   0.00            |     36          |     32          |      2          |      0          |
+|       XLXI_86     |   0.00          |   0.00           |   0.00            |      0 /    108 |      0 /    138 |      0          |      0          |
+|         XLXI_2    |   0.00          |   0.00           |   0.00            |     36          |     76          |      0          |      0          |
+|         XLXI_1    |   0.00          |   0.00           |   0.00            |     72          |     62          |      0          |      0          |
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+4.  Warnings
+--------------------------------------------------------------------------------
+WARNING:PowerEstimator:270 - Power estimate is considered inaccurate. To see details, generate an advanced report with the "-v" switch.
+WARNING:Power:1337 - Clock frequency for clock net "Clk_50MHz_BUFGP" is zero.
+WARNING:Power:1369 - Clock frequency for one or more clocks was not found through
+timing constraints (PCF file) or simulation data.  Without knowing the
+clock frequency of all clocks, dynamic power information for those clock
+domains will default to zero which may under-estimate the power for this
+design.  To avoid this warning, provide at least one of the following:
+  1. The proper timing constraints (PERIOD) for clocks (re-implement design
+     and load the newly generated PCF file into XPower Analyzer)
+  2. A post PAR simulation-generated VCD or SAIF file indicating clock
+     frequencies
+  3. The clock frequency for clocks in the "By Type -> Clocks" view in the
+     XPower Analyzer GUI and then applying "Update Power Analysis"
+--------------------------------------------------------------------------------
+
+Analysis completed: Thu May  7 19:20:42 2020
+----------------------------------------------------------------

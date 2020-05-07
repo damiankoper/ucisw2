@@ -52,7 +52,6 @@ ARCHITECTURE Behavioral OF FreqMapper IS
 	 (0, 11945, 11274, 10641, 10044, 9480, 8948, 8446, 7972, 7525, 7102, 6704, 6327));
 
 BEGIN
-
     Period <= STD_LOGIC_VECTOR(
 						to_unsigned(
 							INTEGER(
@@ -63,5 +62,4 @@ BEGIN
 							32
 						)
 					);
-
 END Behavioral;

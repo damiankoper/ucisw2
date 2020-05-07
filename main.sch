@@ -32,8 +32,8 @@
         <signal name="DAC_CLR" />
         <signal name="XLXN_165" />
         <signal name="SPI_SCK" />
-        <signal name="XLXN_176" />
-        <signal name="XLXN_177" />
+        <signal name="Tone(7:0)" />
+        <signal name="Octave(7:0)" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="PS2_Data" />
@@ -47,6 +47,8 @@
         <port polarity="Output" name="DAC_CS" />
         <port polarity="Output" name="DAC_CLR" />
         <port polarity="Output" name="SPI_SCK" />
+        <port polarity="Output" name="Tone(7:0)" />
+        <port polarity="Output" name="Octave(7:0)" />
         <blockdef name="SDC_FileReader">
             <timestamp>2008-9-15T21:33:52</timestamp>
             <line x2="0" y1="160" y2="160" x1="64" />
@@ -77,7 +79,11 @@
             <line x2="112" y1="32" y2="32" x1="144" />
         </blockdef>
         <blockdef name="InnerLogic">
-            <timestamp>2020-4-18T19:38:51</timestamp>
+            <timestamp>2020-5-7T15:31:18</timestamp>
+            <rect width="64" x="400" y="340" height="24" />
+            <line x2="464" y1="352" y2="352" x1="400" />
+            <rect width="64" x="400" y="404" height="24" />
+            <line x2="464" y1="416" y2="416" x1="400" />
             <rect width="64" x="0" y="212" height="24" />
             <line x2="0" y1="224" y2="224" x1="64" />
             <line x2="0" y1="96" y2="96" x1="64" />
@@ -88,13 +94,13 @@
             <line x2="0" y1="-160" y2="-160" x1="64" />
             <line x2="0" y1="-96" y2="-96" x1="64" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
-            <rect width="336" x="64" y="-320" height="640" />
             <line x2="464" y1="288" y2="288" x1="400" />
             <line x2="464" y1="32" y2="32" x1="400" />
             <line x2="464" y1="96" y2="96" x1="400" />
             <line x2="464" y1="-288" y2="-288" x1="400" />
             <rect width="64" x="400" y="-44" height="24" />
             <line x2="464" y1="-32" y2="-32" x1="400" />
+            <rect width="336" x="64" y="-320" height="768" />
         </blockdef>
         <blockdef name="DACWrite">
             <timestamp>2020-4-2T18:3:41</timestamp>
@@ -134,7 +140,7 @@
             <rect width="256" x="64" y="-256" height="256" />
             <line x2="0" y1="-32" y2="-32" x1="64" />
         </blockdef>
-        <block symbolname="InnerLogic" name="XLXI_31">
+        <block symbolname="InnerLogic" name="InnerLogic_1">
             <blockpin signalname="XLXN_154" name="SDC_DI_Busy" />
             <blockpin signalname="XLXN_155(7:0)" name="SDC_DI(7:0)" />
             <blockpin signalname="XLXN_153" name="SDC_DI_Rdy" />
@@ -148,6 +154,8 @@
             <blockpin signalname="XLXN_165" name="DI_Reset" />
             <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
             <blockpin signalname="XLXN_114" name="DAC_Clock" />
+            <blockpin signalname="Octave(7:0)" name="Octave(7:0)" />
+            <blockpin signalname="Tone(7:0)" name="Tone(7:0)" />
         </block>
         <block symbolname="SDC_FileReader" name="XLXI_27">
             <blockpin signalname="SDC_MISO" name="SDC_MISO" />
@@ -168,7 +176,7 @@
             <blockpin signalname="Clk_50MHz" name="Clk_Sys" />
         </block>
         <block symbolname="constant" name="XLXI_29">
-            <attr value="61" name="CValue">
+            <attr value="30" name="CValue">
                 <trait delete="all:1 sym:0" />
                 <trait editname="all:1 sch:0" />
                 <trait valuetype="BitVector 32 Hexadecimal" />
@@ -356,7 +364,7 @@
         <iomarker fontsize="28" x="2992" y="2080" name="SPI_MOSI" orien="R0" />
         <instance x="624" y="2336" name="XLXI_34" orien="R0">
         </instance>
-        <instance x="1696" y="2336" name="XLXI_31" orien="R0">
+        <instance x="1696" y="2336" name="InnerLogic_1" orien="R0">
         </instance>
         <branch name="XLXN_154">
             <wire x2="1376" y1="1696" y2="1696" x1="1360" />
@@ -369,5 +377,18 @@
         <instance x="608" y="1312" name="XLXI_29" orien="R0">
         </instance>
         <iomarker fontsize="28" x="352" y="2112" name="PS2_Clk" orien="R180" />
+        <branch name="Tone(7:0)">
+            <wire x2="2176" y1="2752" y2="2752" x1="2160" />
+            <wire x2="2320" y1="2752" y2="2752" x1="2176" />
+            <wire x2="2320" y1="2752" y2="3072" x1="2320" />
+            <wire x2="2480" y1="3072" y2="3072" x1="2320" />
+        </branch>
+        <branch name="Octave(7:0)">
+            <wire x2="2176" y1="2688" y2="2688" x1="2160" />
+            <wire x2="2176" y1="2688" y2="3120" x1="2176" />
+            <wire x2="2480" y1="3120" y2="3120" x1="2176" />
+        </branch>
+        <iomarker fontsize="28" x="2480" y="3120" name="Octave(7:0)" orien="R0" />
+        <iomarker fontsize="28" x="2480" y="3072" name="Tone(7:0)" orien="R0" />
     </sheet>
 </drawing>

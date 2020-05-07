@@ -17,8 +17,8 @@
 -- Additional Comments: 
 --
 ----------------------------------------------------------------------------------
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -29,27 +29,28 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity SourceSwitchFSM is
-    Port ( Clk : in  STD_LOGIC;
-           Reset : in  STD_LOGIC;
-           DI_Rdy : in  STD_LOGIC;
-           F0 : in  STD_LOGIC;
-           DI : in  STD_LOGIC_VECTOR (7 downto 0);
-           Tone_Key : in  STD_LOGIC_VECTOR (7 downto 0);
-           Tone_File : in  STD_LOGIC_VECTOR (7 downto 0);
-           Octave_Key : in  STD_LOGIC_VECTOR (7 downto 0);
-           Octave_File : in  STD_LOGIC_VECTOR (7 downto 0);
-           Tone : out  STD_LOGIC_VECTOR (7 downto 0);
-           Octave : out  STD_LOGIC_VECTOR (7 downto 0);
-			  Key_Source_Selected : out STD_LOGIC;
-			  File_Source_Selected : out STD_LOGIC);
-end SourceSwitchFSM;
+ENTITY SourceSwitchFSM IS
+    PORT (
+        Clk : IN STD_LOGIC;
+        Reset : IN STD_LOGIC;
+        DI_Rdy : IN STD_LOGIC;
+        F0 : IN STD_LOGIC;
+        DI : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Tone_Key : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Tone_File : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Octave_Key : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Octave_File : IN STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Tone : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Octave : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
+        Key_Source_Selected : OUT STD_LOGIC;
+        File_Source_Selected : OUT STD_LOGIC);
+END SourceSwitchFSM;
 
-architecture Behavioral of SourceSwitchFSM is
-	 TYPE state_type IS (Key_Source, File_Source);
+ARCHITECTURE Behavioral OF SourceSwitchFSM IS
+    TYPE state_type IS (Key_Source, File_Source);
     SIGNAL state, next_state : state_type;
     SIGNAL Tone_DUMMY : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
-	 SIGNAL Octave_DUMMY : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
+    SIGNAL Octave_DUMMY : STD_LOGIC_VECTOR(7 DOWNTO 0) := X"00";
 BEGIN
 
     SYNC_PROC : PROCESS (clk)
@@ -60,14 +61,14 @@ BEGIN
             ELSIF DI_Rdy = '1' THEN
                 state <= next_state;
             END IF;
-				 if state = Key_Source and next_state = File_Source then
-						File_Source_Selected <= '1';
-					elsif state = File_Source and next_state = Key_Source then
-						Key_Source_Selected <= '1';
-					else
-						File_Source_Selected <= '0';
-						Key_Source_Selected <= '0';
-					end if;
+            IF state = Key_Source AND next_state = File_Source THEN
+                File_Source_Selected <= '1';
+            ELSIF state = File_Source AND next_state = Key_Source THEN
+                Key_Source_Selected <= '1';
+            ELSE
+                File_Source_Selected <= '0';
+                Key_Source_Selected <= '0';
+            END IF;
         END IF;
     END PROCESS;
 
@@ -86,16 +87,15 @@ BEGIN
     OUTPUT_ENCODE : PROCESS (state, DI_Rdy, Tone_Key, Octave_Key, Tone_File, Octave_File)
     BEGIN
         CASE state IS
-            WHEN Key_Source => 
-					Tone_DUMMY <= Tone_Key;
-					Octave_DUMMY <= Octave_Key;
-            WHEN File_Source => 
-					Tone_DUMMY <= Tone_File;
-					Octave_DUMMY <= Octave_File;
+            WHEN Key_Source =>
+                Tone_DUMMY <= Tone_Key;
+                Octave_DUMMY <= Octave_Key;
+            WHEN File_Source =>
+                Tone_DUMMY <= Tone_File;
+                Octave_DUMMY <= Octave_File;
         END CASE;
     END PROCESS;
 
     Tone <= Tone_DUMMY;
-	 Octave <= Octave_DUMMY;
+    Octave <= Octave_DUMMY;
 END Behavioral;
-

@@ -61,6 +61,7 @@ begin
 	 
 	 NEXT_MOVE_DECODE : PROCESS (DI, F0)
     BEGIN
+		  Next_Oct_Num <= Current_Oct_Num;
         IF F0 = '0' THEN
 				-- Left arrow
             IF (DI = X"1D" AND Current_Oct_Num > 0) THEN
