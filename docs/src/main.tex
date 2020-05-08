@@ -135,9 +135,9 @@ Jeden dźwięk jest zawsze definiowany z wykorzystaniem 4 znaków, więc zapis n
 \subsection{Schemat najwyższego poziomu}
 Schemat najwyższego poziomu, przedstawiony na rysunku \ref{sch:main}, zawiera wszystkie zewnętrzne moduły odpowiedzialne za komunikację z urządzeniami peryferyjnymi. Są to:
 \begin{itemize}[noitemsep]
-  \item \textit{SDC\_FileReader}
-  \item \textit{PS2\_Kbd}
-  \item \textit{DACWrite}
+  \item \textit{SDC\_FileReader\cite{web:sdcfilereader}}
+  \item \textit{PS2\_Kbd\cite{web:ps2kbd}}
+  \item \textit{DACWrite\cite{web:dacwrite}}
 \end{itemize}
 Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
@@ -191,10 +191,12 @@ Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada cisz
   \label{sim:tone}
 \end{figure}
 
-
+\clearpage
 \subsection{OctaveFSM}
 
-OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. Reakcję modułu na wciśnięcia przycisków przedstawia rysunek \ref{sim:octavefsm}
+OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. 
+
+Reakcję modułu na wciśnięcia przycisków przedstawia symulacja na rysunku \ref{sim:octavefsm}. W chwili 0ms, numer oktawy jest równy wartości domyślnej modułu, czyli 3. Następnie, w odstępach 11ms wciskana jest lewa strzałka, do chwili 55ms. Widać, że numer oktawy początkowo maleje, jednak od chwili 33ms pozostaje na wartości 0. Spowodowane jest to ograniczeniem zakresu oktaw. W zakresie czasu 66-165ms, wielokrotnie wciskany jest klawisz strzałki prawej, co skutkuje zwiększaniem numeru oktawy, jednak ponownie wystepuje ograniczenie, tym razem górne, w chwili 154ms.
 
 \begin{figure}[H]
   \centering
@@ -202,6 +204,9 @@ OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, w
   \caption{Symulacja modułu OctaveFSM.}
   \label{sim:octavefsm}
 \end{figure}
+
+Istotnym procesem tego modułu jest \say{NEXT\_MOVE\_DECODE}, który interpretuje naciśnięcia klawiszy i odpowiednio zmienia numer oktawy.
+Opis architektury przedstawia listing \ref{lst:octaveFsm}.
 
 
 \subsection{SourceSwitchFSM}
@@ -240,14 +245,15 @@ Zależności pomiędzy liczbą okresów $P_{C3}$, a okresem oraz częstotliwośc
 
 Moduł \textit{GeneratorSaw} generuje falę piłokształtną dla zadanego okresu dostarczonego z modułu \textit{FreqMapper}. Skuteczna rozdzielczość generatora wynosi 8 bitów, jednak próbki na wyjściu są przesuwane o 4 bity w lewo, aby osiągnąć zgodność z rozmiarem próbki na wejściu modułu \textit{DACWrite}.
 
-Kolejne próbki fali generowane są w oparciu o dwa liczniki. Jeden niskiej częstotliwości (\textit{low-freq}), który odpowiada za bity 0-3, oraz drugi, o okresie 16-krotnie krótszym (\textit{high-freq}), który odpowiada za bity 4-7 próbki wynikowej. Bity 8-11 pozostają zawsze wyzerowane. Zastosowanie dwóch liczników ma na celu osiągnięcie wyższej rozdzielczości generatora, przy zachowaniu niewielkiego błędu okresu fali, który wynika z niedokładności dzielenia. Licznik \textit{high-freq} podlega pod licznik \textit{low-freq}, tzn. wyzerowanie licznika \textit{low-freq} skutkuje wyzerowaniem licznika \textit{high-freq} oraz bitów 4-7. Dzięki temu błąd czasu trwania okresu fali zostaje zredukowany.
+Kolejne próbki fali generowane są na podstawie zadanego okresu, w oparciu o dwa liczniki. Jeden niskiej częstotliwości (\textit{low-freq}), który odpowiada za bity 0-3, oraz drugi, o okresie 16-krotnie krótszym (\textit{high-freq}), który odpowiada za bity 4-7 próbki wynikowej. Bity 8-11 pozostają zawsze wyzerowane. Zastosowanie dwóch liczników ma na celu osiągnięcie wyższej rozdzielczości generatora, przy zachowaniu niewielkiego błędu okresu fali, który wynika z niedokładności dzielenia. Licznik \textit{high-freq} podlega pod licznik \textit{low-freq}, tzn. wyzerowanie licznika \textit{low-freq} skutkuje wyzerowaniem licznika \textit{high-freq} oraz bitów 4-7. Dzięki temu błąd czasu trwania okresu fali zostaje zredukowany.
+Podanie wartości 0 na wejście \textit{Period} skutkuje ciszą. Próbka wyjściowa ma wtedy wartość 0, dopóki okres fali nie zostanie zmieniony na wartość niezerową.
 
 Symulację dla modułu GeneratorSaw przedstawia rysunek \ref{sim:gen_saw}. Na wejście \textit{Period} podano następujące wartości:
 \begin{equation}
   0 (cisza) \rightarrow 382263 (C3) \rightarrow 191131 (C4) \rightarrow 95547 (C5) \rightarrow 0 (cisza).
 \end{equation}
 
-Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms, z odstępami ciszy trwającymi 1ms.
+Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms, z odstępami ciszy trwającymi 1ms. Warto zauważyć, że impuls Sample\_Rdy, jest generowany wraz z wyznaczaniem kolejnych nowych próbek. Dzięki temu każda z nich wczytywana jest przez moduł DACWrite\cite{web:dacwrite}.
 
 \begin{figure}[H]
   \centering
@@ -256,6 +262,8 @@ Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms
   \label{sim:gen_saw}
 \end{figure}
 
+Moduł GeneratorSaw zawiera jeden proces, wyzwalany dla wschodzącego zbocza zegara 50MHz. Wartość licznika \textit{low-freq} przechowywana jest w sygnale \textit{Counter\_A}, natomiast \textit{high-freq} w sygnale \textit{Counter\_B}. Zmiana stanu \textit{Counter\_A}, powoduje wyzerowanie licznika \textit{Counter\_B}. Podanie nowej wartości okresu fali na wejscie \textit{Period} powoduje wyzerowanie obu liczników, wyzerowanie próbki oraz rozpoczecie przebiegu fali od początku, z odpowiednio zmienionymi liczbami cykli dla każdego licznika.
+Opis architektury przedstawia listing \ref{lst:generatorSaw}.
 
 \subsection{GeneratorSignalSwitch}
 
@@ -270,6 +278,7 @@ Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z r�
   \label{sim:gen_signal_switch}
 \end{figure}
 
+Moduł GeneratorSignalSwitch nie zawiera procesów. W opisie behawioralnym, za pomocą klauzuli \say{with ... select}, wybierane są wartości wyjściowe \textit{Output} oraz \textit{Output\_Rdy}, na podstawie wartości na wejściu \textit{Wave\_Type}.
 
 \section{Symulacja InnerLogic}
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
@@ -396,6 +405,10 @@ Kolejnym etapem rozwoju projektu może być dodanie innych typów generatorów f
 \lstinputlisting[language=VHDL, firstline=49, lastline=101, caption={Opis architektury modułu SourceSwitchFSM}, label={lst:SourceSwitchFSM}]{../../SourceSwitchFSM.vhd}
 
 \lstinputlisting[language=VHDL, firstline=54, lastline=67, caption={Opis architektury modułu FreqMapper}, label={lst:freqMapper}]{../../FreqMapper.vhd}
+
+\lstinputlisting[language=VHDL, firstline=45, lastline=74, caption={Opis architektury modułu OctaveFSM}, label={lst:octaveFsm}]{../../OctaveFSM.vhd}
+
+\lstinputlisting[language=VHDL, firstline=60, lastline=107, caption={Opis architektury modułu GeneratorSaw}, label={lst:generatorSaw}]{../../GeneratorSaw.vhd}
 
 \clearpage
 

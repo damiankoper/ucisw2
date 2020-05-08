@@ -43,7 +43,6 @@ architecture Behavioral of OctaveFSM is
 	SIGNAL Next_Oct_Num : INTEGER := 4; -- 4th octave by default
 	SIGNAL Current_Oct_Num : INTEGER := 4;
 begin
-
 	SYNC_PROC : PROCESS (clk)
 	BEGIN
         IF rising_edge(Clk) THEN
@@ -54,28 +53,23 @@ begin
             END IF;
         END IF;
     END PROCESS;
-	 
-	 -- PS2 scan codes:
-	 -- Left arrow: 0x1D
-	 -- Right arrow: 0x2D
-	 
-	 NEXT_MOVE_DECODE : PROCESS (DI, F0)
+
+	NEXT_MOVE_DECODE : PROCESS (DI, F0)
     BEGIN
-		  Next_Oct_Num <= Current_Oct_Num;
+		Next_Oct_Num <= Current_Oct_Num;
         IF F0 = '0' THEN
-				-- Left arrow
+			-- Left arrow: 0x1D
             IF (DI = X"1D" AND Current_Oct_Num > 0) THEN
-					Next_Oct_Num <= Current_Oct_Num - 1;
-				-- Right arrow
-				ELSIF (DI = X"2D" AND Current_Oct_Num < 8) THEN
-					Next_Oct_Num <= Current_Oct_Num + 1;
-				ELSE
-					Next_Oct_Num <= Current_Oct_Num;
-				END IF;
+				Next_Oct_Num <= Current_Oct_Num - 1;
+			-- Right arrow: 0x1D
+			ELSIF (DI = X"2D" AND Current_Oct_Num < 8) THEN
+				Next_Oct_Num <= Current_Oct_Num + 1;
+			ELSE
+				Next_Oct_Num <= Current_Oct_Num;
 			END IF;
+		END IF;
     END PROCESS;
 	
 	Octave <= std_logic_vector(to_unsigned(Current_Oct_Num, 8));
-
 end Behavioral;
 

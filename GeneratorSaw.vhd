@@ -58,14 +58,12 @@ ARCHITECTURE Behavioral OF GeneratorSaw IS
 	SIGNAL Last_Period : STD_LOGIC_VECTOR (31 DOWNTO 0) := (OTHERS => '0');
 	
 BEGIN
-
 	Cycles_Per_Period_Counter_A <= to_integer(unsigned(Period)) / 2 ** (Effective_Wave_Resolution - Counter_B_To_A_Resolution_Ratio);
 	Cycles_Per_Period_Counter_B <= to_integer(unsigned(Period)) / 2 ** (Effective_Wave_Resolution);
 
 	PROCESS (Clk) BEGIN
 		-- New Period value on input, clear counters and samples.
 		IF (rising_edge(Clk)) THEN
-
 			IF (Period /= Last_Period) THEN
 				Last_Period <= Period;
 				Next_8b_Sample <= x"00";
@@ -75,18 +73,15 @@ BEGIN
 				Next_8b_Sample_B <= x"00";
 				Sample_Rdy <= '0';
 			END IF;
-			
 			-- Calculate next sample only if the target period is > 0 (tone not silent).
 			IF (Period /= x"00000000") THEN
 				Counter_A <= Counter_A + 1;
 				Counter_B <= Counter_B + 1;
-
 				IF (Counter_A > Cycles_Per_Period_Counter_A) THEN
 					-- Low frequency counter (A) rolled over. Takes priority over high freq counter (counter B).
 					Next_8b_Sample_A <= Next_8b_Sample_A + 2 ** Counter_B_To_A_Resolution_Ratio;
 					Next_8b_Sample_B <= Next_8b_Sample_A;
 					Next_8b_Sample <= Next_8b_Sample_A;
-
 					Counter_A <= 1;
 					Counter_B <= 1;
 					Sample_Rdy <= '1';
@@ -94,7 +89,6 @@ BEGIN
 					-- High frequency counter (B) rolled over
 					Next_8b_Sample_B <= Next_8b_Sample_B + 1;
 					Next_8b_Sample <= Next_8b_Sample_B;
-
 					Counter_B <= 1;
 					Sample_Rdy <= '1';
 				ELSE
@@ -105,5 +99,4 @@ BEGIN
 	END PROCESS;
 	
 	Sample <= std_logic_vector(Next_8b_Sample) & x"0";
-
 END Behavioral;
