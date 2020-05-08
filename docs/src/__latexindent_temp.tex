@@ -1,7 +1,6 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{./common/karnaugh-map}
-\usepackage{hyperref}
 \usepackage{scrextend}
 \usepackage[utf8]{inputenc}
 \usepackage[polish]{babel}
@@ -20,17 +19,12 @@
 \newgeometry{lmargin=2.5cm, rmargin=2.5cm, tmargin=2.5cm, bmargin=2.5cm}
 \usepackage{tikz}
 \usepackage[bf]{caption}
-\usepackage{dirtytalk}
 \usepackage{subcaption}
 \usepackage{amsmath}
 \usepackage{listings}
 \usepackage{tikz}
 \usepackage{tikz-timing}
-\usepackage[
-  backend=bibtex,
-  style=numeric
-]{biblatex}   % bibliography
-
+\usepackage[nottoc]{tocbibind}
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -73,8 +67,6 @@ Damian Koper,  241292\\
 
 \date{\today}
 
-\bibliography{literature} % literature.bib
-
 \begin{document}
 
 \maketitle
@@ -94,20 +86,21 @@ Celem projektu było wykonanie układu realizującego działanie organów, stero
 
 Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły, według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na odpowiadające im dźwięki. Klawisze były przypisane do dźwięków, zgodnie z układem przybliżonym do klawiszy jednej oktawy pianina.  Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/key_mapping.png}
   \caption{Przypisanie tonów oktawy do klawiszy klawiatury QWERTY. Poniżej każdej litery klawisza znajduje się odpowiadający mu ton.}
-  \label{key_mapping}
+  \label{kay_mapping}
 \end{figure}
 
-Skala organów opiera się na dwunastotonowym systemie równomiernie temperowanym. Zakłada on podział oktawy na 12 równych części. Skutkuje to stosunkiem częstotliwości dwóch kolejnych dźwięków wynoszącym \(\sqrt[12]{2}\). Poniżej przedstawiona została relacja pomiędzy użytymi identyfikatorami dźwięków (id), a odpowiadającą im częstotliwością fali (f).
+Skala organów opiera się na dwunastotonowym systemie równomiernie temperowanym. Zakłada on podział oktawy na 12 równych części. Skutkuje to stosunkiem częstotliwości dwóch kolejnych dźwięków wynoszącym \(\sqrt[12]{2}\).
+% Todo finish 
 
-\input{freqchart.tex}
+\input{freq_chart.tex}
 
 Pierwotny projekt zakładał również podział na wiele rodzajów fal. Rodzaj fali miał być wybierany poprzez obracanie enkodera cyfrowego w lewo (poprzedni) lub prawo (następny). Diagram przepływu danych wstępnej wersji projektu, został przedstawiony na rysunku \ref{base}.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{./diagram/out/flow_chart}
   \caption{Wstępny projekt organów. Niebieskimi strzałkami oznaczono podstawową i~wykonaną jako pierwszą funkcjonalność. }
@@ -126,7 +119,7 @@ Przykład zapisu dźwięku w pliku tekstowym:
 gdzie:
 \begin{align*}
   a                & - Klawisz\;na\;klawiaturze\;QWERTY \\
-  4                & - Numer\;oktawy                   \\
+  4                & - Oktawa                           \\
   01 & - Czas\;trwania\;[x*10ms]           \\
 \end{align*}
 Jeden dźwięk jest zawsze definiowany z wykorzystaniem 4 znaków, więc zapis nie wymaga stosowania separatorów. Czas trwania dźwięku zapisany jest z wykorzystaniem liczby dziesiętnej zapisanej tekstowo na 2 znakach. Definiuje ona czas trwania dźwięku, jako wielokrotność $10ms$.
@@ -142,7 +135,7 @@ Schemat najwyższego poziomu, przedstawiony na rysunku \ref{sch:main}, zawiera w
 Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/main}
   \caption{Schemat najwyższego poziomu.}
@@ -153,7 +146,7 @@ Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego, na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie, przedstawionym na rysunku \ref{base}.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/inner}
   \caption{Schemat InnerLogic.}
@@ -170,7 +163,7 @@ Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do 
 
 Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik uruchamiany jest po wczytaniu całego słowa określającego długość dźwięku. Skutkuje to pomijalnie małym wydłużeniem czasu trwania dźwięku.
 \subsubsection{Symulacja}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/filereader}
   \caption{Symulacja modułu FileReaderFSM.}
@@ -184,7 +177,7 @@ Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału re
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
 Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}. Kod lewej strzałki to \textit{X"1d"}, natomiast prawej \textit{X"2d"}. Warto również zauważyć, że po wciśnięciu innego klawisza nie jest zmieniany stan.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/tone}
   \caption{Symulacja modułu ToneFSM.}
@@ -196,7 +189,7 @@ Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada cisz
 
 OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. Reakcję modułu na wciśnięcia przycisków przedstawia rysunek \ref{sim:octavefsm}
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octavefsm.png}
   \caption{Symulacja modułu OctaveFSM.}
@@ -206,7 +199,7 @@ OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, w
 
 \subsection{SourceSwitchFSM}
 Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za restartowanie odczytu dźwięków z karty pamięci w przypadku wyboru tego źródła. Klawisz M zmienia źródło na klawiaturę, a klawisz N na kartę pamięci. Na symulacji z rysunku \ref{sim:source} w chwili $t=320ns$ widać zmianę domyślnego źródła klawiatury na kartę pamięci i wysłanie impulsu wystąpienia zdarzenia zmiany źródła. Zdarzenie to obsługiwane jest przez moduł \textit{FileReaderFSM}, który restartuje proces odczytu.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/source}
   \caption{Symulacja modułu SourceSwitchFSM.}
@@ -218,7 +211,7 @@ Działanie omawianego modułu zrealizowane jest za pomocą trzech procesów. Pro
 
 \subsection{FreqMapper}
 FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o częstotliwości 50MHz, która odpowiada okresowi fali danego dźwięku. Ton 0 mapowany jest zawsze na wartość 0, co w dalszym procesie generowania sygnału oznacza ciszę. Symulację dla oktawy 0 oraz 3 przedstawia rysunek \ref{sim:mapper}. Sam proces mapowania opisuje kod z listingu \ref{lst:freqMapper} i sprowadza się on do odczytania wartości z dwuwymiarowej tablicy \lstinline{Cycles_Per_Wave_Period_Table}.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/mapper}
   \caption{Symulacja modułu FreqMapper.}
@@ -249,7 +242,7 @@ Symulację dla modułu GeneratorSaw przedstawia rysunek \ref{sim:gen_saw}. Na we
 
 Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms, z odstępami ciszy trwającymi 1ms.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_saw.png}
   \caption{Symulacja modułu GeneratorSaw.}
@@ -263,7 +256,7 @@ Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z r�
 \[output <= input\_X\]
 \[output\_rdy <= input\_X\_rdy\]
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_signal_switch.png}
   \caption{Symulacja modułu GeneratorSignalSwitch.}
@@ -275,7 +268,7 @@ Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z r�
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
 Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_kb}
   \caption{Symulacja modułu InnerLogic. Wejście z klawiatury.}
@@ -287,7 +280,7 @@ Symulacja obejmuje odtworzenie melodii zdefiniowanej w pliku na karcie pamięci.
 \begin{lstlisting}
 a403w403s403e403d403f403t403g403y403h403u403j403
 \end{lstlisting}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_sd}
   \caption{Symulacja modułu InnerLogic. Wejście z karty pamięci.}
@@ -308,80 +301,15 @@ Design statistics:
 \end{lstlisting}
 
 \subsection{Analiza zajętości zasobów}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/area}
   \caption{Raport zajętości zasobów.}
   \label{hardware}
 \end{figure}
 
-\clearpage
 \section{Podręcznik użytkowania}
-Urządzenie jest prostym instrumentem muzycznym, zbliżonym w działaniu do elektronicznych organów z klawiaturą fortepianową.
 
-Oferowane są dwa tryby działania: 
-\begin{itemize}
-  \item tryb organów, w którym użytkownik odgrywa dźwięki z wykorzystaniem klawiatury komputerowej.
-  \item Tryb pozytywki, w którym urządzenie odgrywa melodię umieszczoną na karcie pamięci typu SD.
-\end{itemize}
- 
-Szczegółowy opis działania powyższych trybów został omówiony w kolejnych podrozdziałach podręcznika.
-
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=0.6\linewidth]{images/discrete_leds.png}
-  \caption{Diody na płytce UG230\cite{web:ug230}.}
-  \label{led_mapping}
-\end{figure}
-
-Stan urządzenia sygnalizowany jest za pomocą diod. Numer oktawy wyświetlany jest na diodach LED3-LED0, zakodowany w systemie dwójkowym, przy czym LED0 jest najmłodszym bitem. Dioda LED7 sygnalizuje tryb, zapalona oznacza tryb pozytywki, natomiast zgaszona, tryb organów. 
-
-Tryb urządzenia może zostać zmieniony wciskając odpowiedni klawisz klawiatury:
-\begin{itemize}
-  \item klawisz 'M' - tryb organów,
-  \item klawisz 'N' - tryb pozytywki.
-\end{itemize}
-
-\subsection{Tryb organów}
-
-Klawiatura umożliwia granie dźwięków w zakresie jednej oktawy. 
-Przypisanie klawiszy do dźwięków jest zbliżone do ułożenia klawiszy jednej oktawy fortepianu, rozpoczynającej się od dźwięku C.
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\linewidth]{images/key_mapping.png}
-  \caption{Przypisanie dźwięków oktawy do klawiszy klawiatury QWERTY. Poniżej każdej litery klawisza znajduje się odpowiadający mu dźwięk.}
-  \label{key_mapping_user_manual}
-\end{figure}
-
-Numer obecnej oktawy można zmienić strzałkami na klawiaturze. Strzałka lewa ($\leftarrow$) zmniejsza numer oktawy o jeden, natomiast strzałka prawa ($\rightarrow$), podwyższa go o jeden. Zakres dostępnych oktaw to 0-8, co w kontekście dźwięków, oznacza zakres od C0 (16.35Hz) do H8 (7902.13Hz).
-
-\clearpage
-\subsection{Tryb pozytywki}
-
-W trybie pozytywki, urządzenie odtwarza melodię zapisaną na karcie pamięci. Plik zawerający melodię powinien mieć nazwę \say{0.txt}, a jego zawartość musi być zgodna z przewidzianym formatem, który określa sposób zapisu melodii.
-
-Pojedynczy dźwięk melodii zapisany jest na 4 znakach ASCII i składa się z następujących informacji:
-\begin{align*}
-  a401
-\end{align*}
-gdzie:
-\begin{align*}
-  a                & - Klawisz\;na\;klawiaturze\;QWERTY \\
-  4                & - Numer\;oktawy                           \\
-  01 & - Czas\;trwania\;[x*10ms]           \\
-\end{align*}
-Pauza (cisza) realizowana jest poprzez określenie litery dźwięku na klawiaturze, która nie jest przypisana do żadnego dźwięku w trybie organów (rysunek \ref{key_mapping_user_manual}). Numer oktawy w tym przypadku nie jest istotny, jednak wciąż konieczny. Przykładowo, \say{x050} określa pauzę o długości 500ms.
-
-Melodia składa się z wielu dźwięków, opisanych kolejno w powyższy sposób, bez separatorów. Liczba dźwięków w melodii ograniczona jest maksymalnym rozmiarem pliku, dopuszczalnym na karcie pamięci. 
-Przykładowa melodia, składająca się z 8 dźwięków, w tym jednosekundowej pauzy:
-
-\begin{align*}
-  a475d450g425x050x050g475d450a425
-\end{align*}
-
-\clearpage
 \section{Podsumowanie}
 
 \subsection{Zrealizowane założenia}
@@ -398,11 +326,12 @@ Kolejnym etapem rozwoju projektu może być dodanie innych typów generatorów f
 \lstinputlisting[language=VHDL, firstline=54, lastline=67, caption={Opis architektury modułu FreqMapper}, label={lst:freqMapper}]{../../FreqMapper.vhd}
 
 \clearpage
-
-\nocite{*}
+\bibliographystyle{unsrt}
+\cite{einstein}
+\cite{web:freqchart}
 \newpage
+\bibliography{literature}
 
-\printbibliography
 
 
 \end{document}
