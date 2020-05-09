@@ -94,7 +94,7 @@ Celem projektu było wykonanie układu realizującego działanie organów, stero
 
 Początkowy projekt układu zakładał podział kolejnych funkcjonalności na możliwie małe moduły, według zasady pojedynczej odpowiedzialności. Układ mapował klawisze klawiatury na odpowiadające im dźwięki. Klawisze były przypisane do dźwięków, zgodnie z układem przybliżonym do klawiszy jednej oktawy pianina.  Oktawa zmieniana była za pomocą klawiszy strzałek w zakresie od 0 do 8.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/key_mapping.png}
   \caption{Przypisanie tonów oktawy do klawiszy klawiatury QWERTY. Poniżej każdej litery klawisza znajduje się odpowiadający mu ton.}
@@ -107,7 +107,7 @@ Skala organów opiera się na dwunastotonowym systemie równomiernie temperowany
 
 Pierwotny projekt zakładał również podział na wiele rodzajów fal. Rodzaj fali miał być wybierany poprzez obracanie enkodera cyfrowego w lewo (poprzedni) lub prawo (następny). Diagram przepływu danych wstępnej wersji projektu, został przedstawiony na rysunku \ref{base}.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{./diagram/out/flow_chart}
   \caption{Wstępny projekt organów. Niebieskimi strzałkami oznaczono podstawową i~wykonaną jako pierwszą funkcjonalność. }
@@ -118,7 +118,7 @@ Pierwotny projekt zakładał również podział na wiele rodzajów fal. Rodzaj f
 
 \subsection{Założenia rozszerzone}
 
-Rozszerzeniem funkcjonalności organów sterowanych za pomocą klawiatury było uzyskanie możliwości odtwarzania wcześniej zapisanej sekwencji dźwięków o~zmiennej długości. Wykorzystano do tego możliwość wczytania danych z karty pamięci i moduł \textit{SDC\_FileReader}.
+Rozszerzeniem funkcjonalności organów sterowanych za pomocą klawiatury było uzyskanie możliwości odtwarzania wcześniej zapisanej sekwencji dźwięków o~zmiennej długości. Wykorzystano do tego możliwość wczytania danych z karty pamięci i moduł \textit{SDC\_FileReader}\cite{web:sdcfilereader}.
 Przykład zapisu dźwięku w pliku tekstowym:
 \begin{align*}
   a401
@@ -142,7 +142,7 @@ Schemat najwyższego poziomu, przedstawiony na rysunku \ref{sch:main}, zawiera w
 Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/main}
   \caption{Schemat najwyższego poziomu.}
@@ -153,52 +153,52 @@ Wszystkie moduły komunikują się z modułem \textit{InnerLogic}.
 
 Schemat InnerLogic, przedstawiony na rysunku \ref{sch:inner}, zawiera wszystkie moduły odpowiedzialne za generowanie sygnału wyjściowego, na podstawie danych wejściowych zebranych z klawiatury i karty SD. Przedstawione tutaj moduły mają swoje częściowe odwzorowanie we wstępnym projekcie, przedstawionym na rysunku \ref{base}.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/inner}
   \caption{Schemat InnerLogic.}
   \label{sch:inner}
 \end{figure}
 
-W celach debugowania jednymi z wyjść modułu InnerLogic są numery aktualnie odtwarzanego tonu oraz oktawy. Zostały one podłączone do diod LED układu, gdzie pierwsze cztery (7-4) pokazują zakodowany binarnie numer tonu, a ostatnie trzy (2-0) kod oktawy. 
+W celach debugowania jednymi z wyjść modułu InnerLogic są numery aktualnie odtwarzanej oktawy i źródła dźwięku. Zostały one podłączone do diod LED układu, gdzie pierwsza z nich (7) pokazuje źródło dźwięku (zapalona oznacza wejście z karty pamięci), a ostatnie trzy (2-0) kod oktawy. 
 
 \subsection{FileReaderFSM}
 
-Moduł FileReaderFSM realizuje maszynę stanów, która jest odpowiedzialna za interakcjem z modułem \textit{SDC\_FileReader}. Odpowiada on za dostarczanie numeru tonu i oktawy przez określony czas, gdzie wszystkie te dane odczytywane są z karty SD.
+Moduł FileReaderFSM realizuje maszynę stanów, która jest odpowiedzialna za interakcje z modułem \textit{SDC\_FileReader}. Odpowiada on za dostarczanie numeru tonu i oktawy przez określony czas, gdzie wszystkie te dane odczytywane są z karty SD.
 
 Moduł \textit{SDC\_FileReader} umożliwia odczyt wartości z pliku podobnie do kolejki FIFO. Moduł \textit{FileReaderFSM} w procesie odczytu danych jednego dźwięku najpierw odczytuje znak tonu, potem oktawy, a następnie czas jego trwania, wpisując tę wartość do licznika. Po zakończonym odczycie 4 znaków, licznik jest uruchamiany, a wartości zmapowanych kodów tonu i oktawy są obecne na wyjściach modułu, dopóki licznik się nie wyzeruje. Wczytanie tonu $1$ i oktawy $4$ przedstawia symulacja na rysunku \ref{sim:fileReader}.
 
 Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik uruchamiany jest po wczytaniu całego słowa określającego długość dźwięku. Skutkuje to pomijalnie małym wydłużeniem czasu trwania dźwięku.
 \subsubsection{Symulacja}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/filereader}
   \caption{Symulacja modułu FileReaderFSM.}
   \label{sim:fileReader}
 \end{figure}
 
-Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału reset i podanie sygnału start do modułu \textit{SDC\_FileReader}. Następnie moduł przechodzi przez stany na zmianę \textit{<subject>\_Request} i \textit{<subject>\_Reading}, w których kolejno popycha kolejkę odczytu z karty pamięci i zapisuje dane dostarczone przez sygnał \textit{DI}. Na końcu, w chwili $t=380ns$ moduł przechodzi do procesu dekrementowania licznika, który odlicza czas trwania dźwięku.
+Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału reset i podanie sygnału start do modułu \textit{SDC\_FileReader}. Następnie moduł przechodzi przez stany na zmianę \textit{<subject>\_Request} i \textit{<subject>\_Reading}, w których kolejno popycha kolejkę odczytu z karty pamięci i zapisuje dane dostarczone przez sygnał \textit{DI}. Na końcu, w chwili $t=380ns$ moduł przechodzi do procesu dekrementowania liczników, które odliczają czas trwania dźwięku. Zastosowano dwa liczniki. Jeden, który odlicza okresy $10ms$ i drugi, który odlicza cykle zegara, które wystąpią w tym okresie. W procesie optymalizacji maksymalnej częstotliwości zrezygonowano z pojedynczego licznika, ponieważ wymagałoby to wykonania mnożenia, które przez swoją złożoność angażowałoby użycie dwustopniowego mnożenia (rejestry AREG i BREG\cite{web:datasheet}), co drastycznie zwiększa czas Clock-to-Output.
+
 
 
 \subsection{ToneFSM}
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
 Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}. Kod lewej strzałki to \textit{X"1d"}, natomiast prawej \textit{X"2d"}. Warto również zauważyć, że po wciśnięciu innego klawisza nie jest zmieniany stan.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/tone}
   \caption{Symulacja modułu ToneFSM.}
   \label{sim:tone}
 \end{figure}
 
-\clearpage
 \subsection{OctaveFSM}
 
 OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. 
 
 Reakcję modułu na wciśnięcia przycisków przedstawia symulacja na rysunku \ref{sim:octavefsm}. W chwili 0ms, numer oktawy jest równy wartości domyślnej modułu, czyli 3. Następnie, w odstępach 11ms wciskana jest lewa strzałka, do chwili 55ms. Widać, że numer oktawy początkowo maleje, jednak od chwili 33ms pozostaje na wartości 0. Spowodowane jest to ograniczeniem zakresu oktaw. W zakresie czasu 66-165ms, wielokrotnie wciskany jest klawisz strzałki prawej, co skutkuje zwiększaniem numeru oktawy, jednak ponownie wystepuje ograniczenie, tym razem górne, w chwili 154ms.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/octavefsm.png}
   \caption{Symulacja modułu OctaveFSM.}
@@ -211,7 +211,7 @@ Opis architektury przedstawia listing \ref{lst:octaveFsm}.
 
 \subsection{SourceSwitchFSM}
 Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za restartowanie odczytu dźwięków z karty pamięci w przypadku wyboru tego źródła. Klawisz M zmienia źródło na klawiaturę, a klawisz N na kartę pamięci. Na symulacji z rysunku \ref{sim:source} w chwili $t=320ns$ widać zmianę domyślnego źródła klawiatury na kartę pamięci i wysłanie impulsu wystąpienia zdarzenia zmiany źródła. Zdarzenie to obsługiwane jest przez moduł \textit{FileReaderFSM}, który restartuje proces odczytu.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/source}
   \caption{Symulacja modułu SourceSwitchFSM.}
@@ -223,7 +223,7 @@ Działanie omawianego modułu zrealizowane jest za pomocą trzech procesów. Pro
 
 \subsection{FreqMapper}
 FreqMapper obsługuje proces mapowania oktawy i tonu na liczbę cykli zegara o częstotliwości 50MHz, która odpowiada okresowi fali danego dźwięku. Ton 0 mapowany jest zawsze na wartość 0, co w dalszym procesie generowania sygnału oznacza ciszę. Symulację dla oktawy 0 oraz 3 przedstawia rysunek \ref{sim:mapper}. Sam proces mapowania opisuje kod z listingu \ref{lst:freqMapper} i sprowadza się on do odczytania wartości z dwuwymiarowej tablicy \lstinline{Cycles_Per_Wave_Period_Table}.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/mapper}
   \caption{Symulacja modułu FreqMapper.}
@@ -235,7 +235,7 @@ Zależności pomiędzy liczbą okresów $P_{C3}$, a okresem oraz częstotliwośc
 \[ f_{clk} = 50MHz \]
 \[ T_{clk} = \frac{1}{50MHz} = 20ns \]
 \[ P_{C3} = 382263 \]
-\[ T_{C3} = P_{C3} * T_{clk} = 7645260ns \]
+\[ T_{C3} = P_{C3} \cdot T_{clk} = 7645260ns \]
 \[ f_{C3} = \frac{1}{T_{C3}} \approx 130.81Hz \]
 
 
@@ -255,7 +255,7 @@ Symulację dla modułu GeneratorSaw przedstawia rysunek \ref{sim:gen_saw}. Na we
 
 Dla każdej z powyższych wartości była generowana fala w symulacji przez 20ms, z odstępami ciszy trwającymi 1ms. Warto zauważyć, że impuls Sample\_Rdy, jest generowany wraz z wyznaczaniem kolejnych nowych próbek. Dzięki temu każda z nich wczytywana jest przez moduł DACWrite\cite{web:dacwrite}.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_saw.png}
   \caption{Symulacja modułu GeneratorSaw.}
@@ -271,7 +271,7 @@ Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z r�
 \[output <= input\_X\]
 \[output\_rdy <= input\_X\_rdy\]
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_signal_switch.png}
   \caption{Symulacja modułu GeneratorSignalSwitch.}
@@ -284,7 +284,7 @@ Moduł GeneratorSignalSwitch nie zawiera procesów. W opisie behawioralnym, za p
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
 Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_kb}
   \caption{Symulacja modułu InnerLogic. Wejście z klawiatury.}
@@ -296,13 +296,12 @@ Symulacja obejmuje odtworzenie melodii zdefiniowanej w pliku na karcie pamięci.
 \begin{lstlisting}
 a403w403s403e403d403f403t403g403y403h403u403j403
 \end{lstlisting}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_sd}
   \caption{Symulacja modułu InnerLogic. Wejście z karty pamięci.}
   \label{sim:sd}
 \end{figure}
-\clearpage
 
 \section{Implementacja}
 \subsection{Analiza czasów}
@@ -316,8 +315,13 @@ Design statistics:
     Minimum period:  18.392ns{1}   (Maximum frequency:  54.371MHz) 
 \end{lstlisting}
 
+
+
 \subsection{Analiza zajętości zasobów}
-\begin{figure}[H]
+
+Zrzut ekranu pokazany na rysunku \ref{hardware} dostarcza informacji o użyciu zasobów sprzętowych przez projekt co jego implementacji przez narzędzie ISE. Widzimy, że łącznie użyto 1268 plastrów, 734 rejestry i 2113 generatory look-up-table. Mniej niż połowę zasobów zużywa sama logika projektu bez obsługi urządzeń WE/WY. Najwięcej generatorów look-up-table używa moduł \textit{FreqMapper}. Narzędzie ISE zaimplementowało mapowanie kodów tonu i oktawy na okres fali jako funkcję kombinatoryczną.
+
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/area}
   \caption{Raport zajętości zasobów.}
@@ -330,14 +334,13 @@ Urządzenie jest prostym instrumentem muzycznym, zbliżonym w działaniu do elek
 
 Oferowane są dwa tryby działania: 
 \begin{itemize}
-  \item tryb organów, w którym użytkownik odgrywa dźwięki z wykorzystaniem klawiatury komputerowej.
-  \item Tryb pozytywki, w którym urządzenie odgrywa melodię umieszczoną na karcie pamięci typu SD.
+  \item tryb organów, w którym użytkownik odgrywa dźwięki z wykorzystaniem klawiatury komputerowej,
+  \item tryb pozytywki, w którym urządzenie odgrywa melodię umieszczoną na karcie pamięci typu SD.
 \end{itemize}
  
 Szczegółowy opis działania powyższych trybów został omówiony w kolejnych podrozdziałach podręcznika.
 
-
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=0.6\linewidth]{images/discrete_leds.png}
   \caption{Diody na płytce UG230\cite{web:ug230}.}
@@ -357,7 +360,7 @@ Tryb urządzenia może zostać zmieniony wciskając odpowiedni klawisz klawiatur
 Klawiatura umożliwia granie dźwięków w zakresie jednej oktawy. 
 Przypisanie klawiszy do dźwięków jest zbliżone do ułożenia klawiszy jednej oktawy fortepianu, rozpoczynającej się od dźwięku C.
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[width=\linewidth]{images/key_mapping.png}
   \caption{Przypisanie dźwięków oktawy do klawiszy klawiatury QWERTY. Poniżej każdej litery klawisza znajduje się odpowiadający mu dźwięk.}
@@ -399,7 +402,7 @@ Działanie poparte poprawnymi efektami symulacji pozwala sądzić, iż projekt z
 \subsection{Możliwości dalszego rozwoju}
 Kolejnym etapem rozwoju projektu może być dodanie innych typów generatorów fal, oraz możliwości przełączania się pomiędzy nimi z użyciem sygnałów wejściowych, czy to z klawiatury, czy na przykład z enkodera. W następnej kolejności zrealizować można obsługę polifonii, czyli odgrywania wielu dźwięków jednocześnie.
 
-\clearpage
+\clearpage 
 \section{Listingi}
 
 \lstinputlisting[language=VHDL, firstline=49, lastline=101, caption={Opis architektury modułu SourceSwitchFSM}, label={lst:SourceSwitchFSM}]{../../SourceSwitchFSM.vhd}
@@ -410,7 +413,7 @@ Kolejnym etapem rozwoju projektu może być dodanie innych typów generatorów f
 
 \lstinputlisting[language=VHDL, firstline=60, lastline=107, caption={Opis architektury modułu GeneratorSaw}, label={lst:generatorSaw}]{../../GeneratorSaw.vhd}
 
-\clearpage
+\clearpage 
 
 \nocite{*}
 \newpage

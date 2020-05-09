@@ -11,6 +11,7 @@ F0
 [Outputs]
 Key_Source_Selected
 File_Source_Selected
+Is_File
 =Tone[7:0]=
 =Octave[7:0]=
 [BiDir]

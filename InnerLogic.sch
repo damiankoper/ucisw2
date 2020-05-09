@@ -30,6 +30,9 @@
         <signal name="XLXN_371(7:0)" />
         <signal name="XLXN_373(7:0)" />
         <signal name="XLXN_382" />
+        <signal name="XLXN_383" />
+        <signal name="Is_File" />
+        <signal name="XLXN_385" />
         <port polarity="Input" name="SDC_DI_Busy" />
         <port polarity="Output" name="SDC_DI_Pop" />
         <port polarity="Output" name="SDC_DI_Start" />
@@ -45,6 +48,7 @@
         <port polarity="Input" name="Clk" />
         <port polarity="Output" name="WaveOut(11:0)" />
         <port polarity="Output" name="DAC_Clock" />
+        <port polarity="Output" name="Is_File" />
         <blockdef name="ToneFSM">
             <timestamp>2020-4-18T19:11:44</timestamp>
             <rect width="256" x="64" y="-320" height="320" />
@@ -104,7 +108,8 @@
             <rect width="320" x="64" y="-320" height="576" />
         </blockdef>
         <blockdef name="SourceSwitchFSM">
-            <timestamp>2020-4-18T19:11:51</timestamp>
+            <timestamp>2020-5-9T13:38:23</timestamp>
+            <line x2="448" y1="160" y2="160" x1="384" />
             <line x2="448" y1="32" y2="32" x1="384" />
             <line x2="448" y1="96" y2="96" x1="384" />
             <line x2="0" y1="-544" y2="-544" x1="64" />
@@ -125,7 +130,7 @@
             <line x2="448" y1="-544" y2="-544" x1="384" />
             <rect width="64" x="384" y="-44" height="24" />
             <line x2="448" y1="-32" y2="-32" x1="384" />
-            <rect width="320" x="64" y="-576" height="704" />
+            <rect width="320" x="64" y="-576" height="768" />
         </blockdef>
         <blockdef name="FileReaderFSM">
             <timestamp>2020-4-18T19:11:57</timestamp>
@@ -182,6 +187,7 @@
             <blockpin signalname="XLXN_382" name="File_Source_Selected" />
             <blockpin signalname="XLXN_371(7:0)" name="Tone(7:0)" />
             <blockpin signalname="XLXN_373(7:0)" name="Octave(7:0)" />
+            <blockpin signalname="Is_File" name="Is_File" />
         </block>
         <block symbolname="ToneFSM" name="ToneFSM_1">
             <blockpin signalname="Clk" name="Clk" />
@@ -262,19 +268,18 @@
         </branch>
         <branch name="Octave(7:0)">
             <wire x2="1024" y1="1216" y2="1216" x1="1008" />
-            <wire x2="1024" y1="1216" y2="1472" x1="1024" />
-            <wire x2="1200" y1="1472" y2="1472" x1="1024" />
-            <wire x2="1280" y1="1472" y2="1472" x1="1200" />
+            <wire x2="1024" y1="1216" y2="1456" x1="1024" />
+            <wire x2="1600" y1="1456" y2="1456" x1="1024" />
             <wire x2="1120" y1="1136" y2="1136" x1="1024" />
             <wire x2="1024" y1="1136" y2="1216" x1="1024" />
         </branch>
         <branch name="Tone(7:0)">
             <wire x2="1104" y1="1760" y2="1760" x1="1008" />
-            <wire x2="1200" y1="1760" y2="1760" x1="1104" />
+            <wire x2="1344" y1="1760" y2="1760" x1="1104" />
             <wire x2="1120" y1="1008" y2="1008" x1="1104" />
             <wire x2="1104" y1="1008" y2="1760" x1="1104" />
-            <wire x2="1200" y1="1520" y2="1760" x1="1200" />
-            <wire x2="1280" y1="1520" y2="1520" x1="1200" />
+            <wire x2="1344" y1="1520" y2="1760" x1="1344" />
+            <wire x2="1600" y1="1520" y2="1520" x1="1344" />
         </branch>
         <branch name="DI(7:0)">
             <wire x2="480" y1="1648" y2="1648" x1="320" />
@@ -392,12 +397,16 @@
         </instance>
         <instance x="624" y="2048" name="ToneFSM_1" orien="R0">
         </instance>
-        <iomarker fontsize="28" x="1280" y="1472" name="Octave(7:0)" orien="R0" />
-        <iomarker fontsize="28" x="1280" y="1520" name="Tone(7:0)" orien="R0" />
         <iomarker fontsize="28" x="320" y="1072" name="Reset" orien="R180" />
         <iomarker fontsize="28" x="320" y="1392" name="Clk" orien="R180" />
         <iomarker fontsize="28" x="320" y="1456" name="F0" orien="R180" />
         <iomarker fontsize="28" x="320" y="1520" name="DI_Rdy" orien="R180" />
         <iomarker fontsize="28" x="320" y="1648" name="DI(7:0)" orien="R180" />
+        <branch name="Is_File">
+            <wire x2="1600" y1="1392" y2="1392" x1="1568" />
+        </branch>
+        <iomarker fontsize="28" x="1600" y="1392" name="Is_File" orien="R0" />
+        <iomarker fontsize="28" x="1600" y="1456" name="Octave(7:0)" orien="R0" />
+        <iomarker fontsize="28" x="1600" y="1520" name="Tone(7:0)" orien="R0" />
     </sheet>
 </drawing>

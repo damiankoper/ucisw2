@@ -34,6 +34,7 @@
         <signal name="SPI_SCK" />
         <signal name="Tone(7:0)" />
         <signal name="Octave(7:0)" />
+        <signal name="Is_File" />
         <port polarity="Input" name="Clk_50MHz" />
         <port polarity="Input" name="Reset" />
         <port polarity="Input" name="PS2_Data" />
@@ -49,6 +50,7 @@
         <port polarity="Output" name="SPI_SCK" />
         <port polarity="Output" name="Tone(7:0)" />
         <port polarity="Output" name="Octave(7:0)" />
+        <port polarity="Output" name="Is_File" />
         <blockdef name="SDC_FileReader">
             <timestamp>2008-9-15T21:33:52</timestamp>
             <line x2="0" y1="160" y2="160" x1="64" />
@@ -79,7 +81,8 @@
             <line x2="112" y1="32" y2="32" x1="144" />
         </blockdef>
         <blockdef name="InnerLogic">
-            <timestamp>2020-5-7T15:31:18</timestamp>
+            <timestamp>2020-5-9T13:39:25</timestamp>
+            <line x2="464" y1="480" y2="480" x1="400" />
             <rect width="64" x="400" y="340" height="24" />
             <line x2="464" y1="352" y2="352" x1="400" />
             <rect width="64" x="400" y="404" height="24" />
@@ -100,7 +103,7 @@
             <line x2="464" y1="-288" y2="-288" x1="400" />
             <rect width="64" x="400" y="-44" height="24" />
             <line x2="464" y1="-32" y2="-32" x1="400" />
-            <rect width="336" x="64" y="-320" height="768" />
+            <rect width="336" x="64" y="-320" height="832" />
         </blockdef>
         <blockdef name="DACWrite">
             <timestamp>2020-4-2T18:3:41</timestamp>
@@ -152,10 +155,11 @@
             <blockpin signalname="XLXN_152" name="SDC_DI_Pop" />
             <blockpin signalname="XLXN_151" name="SDC_DI_Start" />
             <blockpin signalname="XLXN_165" name="DI_Reset" />
-            <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
-            <blockpin signalname="XLXN_114" name="DAC_Clock" />
             <blockpin signalname="Octave(7:0)" name="Octave(7:0)" />
             <blockpin signalname="Tone(7:0)" name="Tone(7:0)" />
+            <blockpin signalname="XLXN_115(11:0)" name="WaveOut(11:0)" />
+            <blockpin signalname="XLXN_114" name="DAC_Clock" />
+            <blockpin signalname="Is_File" name="Is_File" />
         </block>
         <block symbolname="SDC_FileReader" name="XLXI_27">
             <blockpin signalname="SDC_MISO" name="SDC_MISO" />
@@ -229,8 +233,7 @@
             <wire x2="624" y1="2176" y2="2176" x1="368" />
         </branch>
         <branch name="PS2_Clk">
-            <wire x2="608" y1="2112" y2="2112" x1="352" />
-            <wire x2="624" y1="2112" y2="2112" x1="608" />
+            <wire x2="624" y1="2112" y2="2112" x1="352" />
         </branch>
         <iomarker fontsize="28" x="384" y="2240" name="Clk_50MHz" orien="R180" />
         <branch name="XLXN_115(11:0)">
@@ -331,20 +334,16 @@
             <wire x2="2224" y1="2624" y2="2624" x1="2160" />
         </branch>
         <branch name="SPI_MOSI">
-            <wire x2="2928" y1="2080" y2="2080" x1="2912" />
-            <wire x2="2992" y1="2080" y2="2080" x1="2928" />
+            <wire x2="2992" y1="2080" y2="2080" x1="2912" />
         </branch>
         <branch name="SPI_MISO">
-            <wire x2="2928" y1="2144" y2="2144" x1="2912" />
-            <wire x2="2992" y1="2144" y2="2144" x1="2928" />
+            <wire x2="2992" y1="2144" y2="2144" x1="2912" />
         </branch>
         <branch name="DAC_CS">
-            <wire x2="2928" y1="2272" y2="2272" x1="2912" />
-            <wire x2="2992" y1="2272" y2="2272" x1="2928" />
+            <wire x2="2992" y1="2272" y2="2272" x1="2912" />
         </branch>
         <branch name="SPI_SCK">
-            <wire x2="2928" y1="2208" y2="2208" x1="2912" />
-            <wire x2="2992" y1="2208" y2="2208" x1="2928" />
+            <wire x2="2992" y1="2208" y2="2208" x1="2912" />
         </branch>
         <instance x="2464" y="2624" name="XLXI_33" orien="R0">
         </instance>
@@ -354,8 +353,7 @@
             <wire x2="2464" y1="2080" y2="2080" x1="2448" />
         </branch>
         <branch name="DAC_CLR">
-            <wire x2="2928" y1="2336" y2="2336" x1="2912" />
-            <wire x2="2992" y1="2336" y2="2336" x1="2928" />
+            <wire x2="2992" y1="2336" y2="2336" x1="2912" />
         </branch>
         <iomarker fontsize="28" x="2992" y="2272" name="DAC_CS" orien="R0" />
         <iomarker fontsize="28" x="2992" y="2336" name="DAC_CLR" orien="R0" />
@@ -378,8 +376,7 @@
         </instance>
         <iomarker fontsize="28" x="352" y="2112" name="PS2_Clk" orien="R180" />
         <branch name="Tone(7:0)">
-            <wire x2="2176" y1="2752" y2="2752" x1="2160" />
-            <wire x2="2320" y1="2752" y2="2752" x1="2176" />
+            <wire x2="2320" y1="2752" y2="2752" x1="2160" />
             <wire x2="2320" y1="2752" y2="3072" x1="2320" />
             <wire x2="2480" y1="3072" y2="3072" x1="2320" />
         </branch>
@@ -390,5 +387,11 @@
         </branch>
         <iomarker fontsize="28" x="2480" y="3120" name="Octave(7:0)" orien="R0" />
         <iomarker fontsize="28" x="2480" y="3072" name="Tone(7:0)" orien="R0" />
+        <branch name="Is_File">
+            <wire x2="2400" y1="2816" y2="2816" x1="2160" />
+            <wire x2="2400" y1="2816" y2="3008" x1="2400" />
+            <wire x2="2480" y1="3008" y2="3008" x1="2400" />
+        </branch>
+        <iomarker fontsize="28" x="2480" y="3008" name="Is_File" orien="R0" />
     </sheet>
 </drawing>

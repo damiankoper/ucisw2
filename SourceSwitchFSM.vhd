@@ -43,7 +43,8 @@ ENTITY SourceSwitchFSM IS
         Tone : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
         Octave : OUT STD_LOGIC_VECTOR (7 DOWNTO 0);
         Key_Source_Selected : OUT STD_LOGIC;
-        File_Source_Selected : OUT STD_LOGIC);
+        File_Source_Selected : OUT STD_LOGIC;
+		  Is_File : OUT STD_LOGIC);
 END SourceSwitchFSM;
 
 ARCHITECTURE Behavioral OF SourceSwitchFSM IS
@@ -98,4 +99,8 @@ BEGIN
 
     Tone <= Tone_DUMMY;
     Octave <= Octave_DUMMY;
+	 
+    WITH Key_Source SELECT Is_File <=
+		 '1' WHEN File_Source,
+		 '0' WHEN OTHERS;
 END Behavioral;

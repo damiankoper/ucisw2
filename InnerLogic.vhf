@@ -7,7 +7,7 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : InnerLogic.vhf
--- /___/   /\     Timestamp : 05/07/2020 19:51:30
+-- /___/   /\     Timestamp : 05/09/2020 15:40:44
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
@@ -36,6 +36,7 @@ entity InnerLogic is
           SDC_DI_Rdy   : in    std_logic; 
           DAC_Clock    : out   std_logic; 
           DI_Reset     : out   std_logic; 
+          Is_File      : out   std_logic; 
           Octave       : out   std_logic_vector (7 downto 0); 
           SDC_DI_Pop   : out   std_logic; 
           SDC_DI_Start : out   std_logic; 
@@ -135,7 +136,8 @@ architecture BEHAVIORAL of InnerLogic is
              Key_Source_Selected  : out   std_logic; 
              File_Source_Selected : out   std_logic; 
              Tone                 : out   std_logic_vector (7 downto 0); 
-             Octave               : out   std_logic_vector (7 downto 0));
+             Octave               : out   std_logic_vector (7 downto 0); 
+             Is_File              : out   std_logic);
    end component;
    
    component ToneFSM
@@ -209,6 +211,7 @@ begin
                 Tone_File(7 downto 0)=>XLXN_157(7 downto 0),
                 Tone_Key(7 downto 0)=>Tone_DUMMY(7 downto 0),
                 File_Source_Selected=>XLXN_382,
+                Is_File=>Is_File,
                 Key_Source_Selected=>open,
                 Octave(7 downto 0)=>XLXN_373(7 downto 0),
                 Tone(7 downto 0)=>XLXN_371(7 downto 0));

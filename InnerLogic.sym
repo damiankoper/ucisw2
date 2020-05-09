@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="InnerLogic">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2020-5-7T15:31:18</timestamp>
+    <timestamp>2020-5-9T13:39:25</timestamp>
     <pin polarity="Input" x="0" y="96" name="SDC_DI_Busy" />
     <pin polarity="Input" x="0" y="224" name="SDC_DI(7:0)" />
     <pin polarity="Input" x="0" y="160" name="SDC_DI_Rdy" />
@@ -13,10 +13,11 @@
     <pin polarity="Output" x="464" y="96" name="SDC_DI_Pop" />
     <pin polarity="Output" x="464" y="32" name="SDC_DI_Start" />
     <pin polarity="Output" x="464" y="288" name="DI_Reset" />
-    <pin polarity="Output" x="464" y="-32" name="WaveOut(11:0)" />
-    <pin polarity="Output" x="464" y="-288" name="DAC_Clock" />
     <pin polarity="Output" x="464" y="352" name="Octave(7:0)" />
     <pin polarity="Output" x="464" y="416" name="Tone(7:0)" />
+    <pin polarity="Output" x="464" y="-32" name="WaveOut(11:0)" />
+    <pin polarity="Output" x="464" y="-288" name="DAC_Clock" />
+    <pin polarity="Output" x="464" y="480" name="Is_File" />
     <graph>
         <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="236" y="-328" type="symbol" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="96" type="pin SDC_DI_Busy" />
@@ -30,12 +31,14 @@
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="96" type="pin SDC_DI_Pop" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="32" type="pin SDC_DI_Start" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="288" type="pin DI_Reset" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="352" type="pin Octave(7:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="416" type="pin Tone(7:0)" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-32" type="pin WaveOut(11:0)" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="-288" type="pin DAC_Clock" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="352" type="pin Octave(7:0)" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="480" type="pin Is_File" />
+        <line x2="464" y1="480" y2="480" x1="400" />
         <rect width="64" x="400" y="340" height="24" />
         <line x2="464" y1="352" y2="352" x1="400" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="392" y="416" type="pin Tone(7:0)" />
         <rect width="64" x="400" y="404" height="24" />
         <line x2="464" y1="416" y2="416" x1="400" />
         <rect width="64" x="0" y="212" height="24" />
@@ -54,6 +57,6 @@
         <line x2="464" y1="-288" y2="-288" x1="400" />
         <rect width="64" x="400" y="-44" height="24" />
         <line x2="464" y1="-32" y2="-32" x1="400" />
-        <rect width="336" x="64" y="-320" height="768" />
+        <rect width="336" x="64" y="-320" height="832" />
     </graph>
 </symbol>
