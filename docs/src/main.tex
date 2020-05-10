@@ -183,7 +183,7 @@ Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału re
 
 \subsection{ToneFSM}
 ToneFSM realizuje maszynę stanów, której stan określa aktualnie odtwarzany ton.
-Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}. Kod lewej strzałki to \textit{X"1d"}, natomiast prawej \textit{X"2d"}. Warto również zauważyć, że po wciśnięciu innego klawisza nie jest zmieniany stan.
+Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada ciszy, czyli stanowi, kiedy żaden przycisk nie jest wciśnięty. Stan maszyny zmieniany jest w momencie naciśnięcia lub puszczenia przycisku na klawiaturze i stan ten jest następnie mapowany na odpowiedni kod tonu. Kolejne wciśnięcia przycisków (A, W, S, E, D, R, F) przedstawia symulacja na rysunku \ref{sim:tone}. Warto również zauważyć, że po wciśnięciu innego klawisza nie jest zmieniany stan.
 
 \begin{figure}[h]
   \centering
@@ -193,8 +193,7 @@ Kody od 1 do 12 odpowiadają wszystkim tonom jednej oktawy. Kod 0 odpowiada cisz
 \end{figure}
 
 \subsection{OctaveFSM}
-
-OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$) lub prawej ($\rightarrow$). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. 
+OctaveFSM realizuje maszynę stanów, której stan określa aktualną oktawę, względem której określane są okresy fali, dla aktualnego tonu (przez ton rozumiane są tutaj wartości całkowite, z przedziału 0-12). Stan maszyny zmieniany jest w momencie naciśnięcia strzałki lewej ($\leftarrow$, kod \textit{X"1d"}) lub prawej ($\rightarrow$, kod \textit{X"2d"}). Strzałka lewa zmniejsza numer oktawy o jeden, a strzałka prawa podwyższa o jeden. Zakres wartości wyjścia \textit{OctaveNum} ograniczony jest do przedziału 0-8, co odpowiada oktawom nr 0-8 lub inaczej, dźwiękom C0-H8. 
 
 Reakcję modułu na wciśnięcia przycisków przedstawia symulacja na rysunku \ref{sim:octavefsm}. W chwili 0ms, numer oktawy jest równy wartości domyślnej modułu, czyli 3. Następnie, w odstępach 11ms wciskana jest lewa strzałka, do chwili 55ms. Widać, że numer oktawy początkowo maleje, jednak od chwili 33ms pozostaje na wartości 0. Spowodowane jest to ograniczeniem zakresu oktaw. W zakresie czasu 66-165ms, wielokrotnie wciskany jest klawisz strzałki prawej, co skutkuje zwiększaniem numeru oktawy, jednak ponownie wystepuje ograniczenie, tym razem górne, w chwili 154ms.
 
@@ -218,7 +217,9 @@ Moduł SourceSwitchFSM odpowiedzialny jest za wybór źródła dźwięku i za re
   \label{sim:source}
 \end{figure}
 
-Działanie omawianego modułu zrealizowane jest za pomocą trzech procesów. Proces SYNC\_PROC odpowiada za przejścia pomiędzy stanami maszyny stanów oraz za wysyłanie jednotaktowych impulsów informujących o zmiania stanu. Proces NEXT\_STATE\_DECODE odpowiada za dekodowanie następnego stanu na podstawie wciśniętego klawisza, a proces OUTPUT\_ENCODE steruje sygnałami wyjściowymi przekierowyjąc odpowiednie źródło w zależności od stanu. Opis architektury przedstawia listing \ref{lst:SourceSwitchFSM}.
+Działanie omawianego modułu zrealizowane jest za pomocą trzech procesów. Proces SYNC\_PROC odpowiada za przejścia pomiędzy stanami maszyny stanów oraz za wysyłanie jednotaktowych impulsów informujących o zmiania stanu. 
+
+Proces NEXT\_STATE\_DECODE odpowiada za dekodowanie następnego stanu na podstawie wciśniętego klawisza, a proces OUTPUT\_ENCODE steruje sygnałami wyjściowymi przekierowyjąc odpowiednie źródło w zależności od stanu. Opis architektury przedstawia listing \ref{lst:SourceSwitchFSM}.
 
 
 \subsection{FreqMapper}
@@ -243,7 +244,7 @@ Zależności pomiędzy liczbą okresów $P_{C3}$, a okresem oraz częstotliwośc
 
 \subsection{GeneratorSaw}
 
-Moduł \textit{GeneratorSaw} generuje falę piłokształtną dla zadanego okresu dostarczonego z modułu \textit{FreqMapper}. Skuteczna rozdzielczość generatora wynosi 8 bitów, jednak próbki na wyjściu są przesuwane o 4 bity w lewo, aby osiągnąć zgodność z rozmiarem próbki na wejściu modułu \textit{DACWrite}.
+Moduł \textit{GeneratorSaw} generuje falę piłokształtną dla zadanego okresu, dostarczonego z modułu \textit{FreqMapper}. Skuteczna rozdzielczość generatora wynosi 8 bitów, jednak próbki na wyjściu są przesuwane o 4 bity w lewo, aby osiągnąć zgodność z rozmiarem 12-bitowej próbki na wejściu modułu \textit{DACWrite}.
 
 Kolejne próbki fali generowane są na podstawie zadanego okresu, w oparciu o dwa liczniki. Jeden niskiej częstotliwości (\textit{low-freq}), który odpowiada za bity 0-3, oraz drugi, o okresie 16-krotnie krótszym (\textit{high-freq}), który odpowiada za bity 4-7 próbki wynikowej. Bity 8-11 pozostają zawsze wyzerowane. Zastosowanie dwóch liczników ma na celu osiągnięcie wyższej rozdzielczości generatora, przy zachowaniu niewielkiego błędu okresu fali, który wynika z niedokładności dzielenia. Licznik \textit{high-freq} podlega pod licznik \textit{low-freq}, tzn. wyzerowanie licznika \textit{low-freq} skutkuje wyzerowaniem licznika \textit{high-freq} oraz bitów 4-7. Dzięki temu błąd czasu trwania okresu fali zostaje zredukowany.
 Podanie wartości 0 na wejście \textit{Period} skutkuje ciszą. Próbka wyjściowa ma wtedy wartość 0, dopóki okres fali nie zostanie zmieniony na wartość niezerową.
@@ -268,10 +269,12 @@ Opis architektury przedstawia listing \ref{lst:generatorSaw}.
 \subsection{GeneratorSignalSwitch}
 
 Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z różnych generatorów fali. Rodzaj fali przekazywanej na wyjście określany jest sygnałem \textit{wave\_type}. Moduł ten przekazuje zarówno próbkę na wyjściu generatora, jak i impuls \textit{sample\_rdy}, generowany przy każdej zmianie wartości próbki. Wybór rodzaju fali X, gdzie X jest liczbą z przedziału 0-3, powoduje następujące zależności:
+\clearpage
+
 \[output <= input\_X\]
 \[output\_rdy <= input\_X\_rdy\]
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_signal_switch.png}
   \caption{Symulacja modułu GeneratorSignalSwitch.}
@@ -281,7 +284,7 @@ Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z r�
 Moduł GeneratorSignalSwitch nie zawiera procesów. W opisie behawioralnym, za pomocą klauzuli \say{with ... select}, wybierane są wartości wyjściowe \textit{Output} oraz \textit{Output\_Rdy}, na podstawie wartości na wejściu \textit{Wave\_Type}.
 
 \section{Symulacja InnerLogic}
-Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysuneki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
+Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysunki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
 Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
 \begin{figure}[h]
@@ -347,7 +350,7 @@ Szczegółowy opis działania powyższych trybów został omówiony w kolejnych 
   \label{led_mapping}
 \end{figure}
 
-Stan urządzenia sygnalizowany jest za pomocą diod. Numer oktawy wyświetlany jest na diodach LED3-LED0, zakodowany w systemie dwójkowym, przy czym LED0 jest najmłodszym bitem. Dioda LED7 sygnalizuje tryb, zapalona oznacza tryb pozytywki, natomiast zgaszona, tryb organów. 
+Stan urządzenia sygnalizowany jest za pomocą diod. Numer oktawy wyświetlany jest na diodach LED2-LED0, zakodowany w systemie dwójkowym, przy czym LED0 jest najmłodszym bitem. Dioda LED7 sygnalizuje tryb, zapalona oznacza tryb pozytywki, natomiast zgaszona, tryb organów. 
 
 Tryb urządzenia może zostać zmieniony wciskając odpowiedni klawisz klawiatury:
 \begin{itemize}
