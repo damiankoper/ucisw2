@@ -26,6 +26,7 @@
 \usepackage{listings}
 \usepackage{tikz}
 \usepackage{tikz-timing}
+\usepackage{amsmath}
 \usepackage[
   backend=bibtex,
   style=numeric
@@ -177,7 +178,7 @@ Ton i oktawa podawane są na wyjście zaraz po ich odczytaniu, a licznik urucham
   \label{sim:fileReader}
 \end{figure}
 
-Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału reset i podanie sygnału start do modułu \textit{SDC\_FileReader}. Następnie moduł przechodzi przez stany na zmianę \textit{<subject>\_Request} i \textit{<subject>\_Reading}, w których kolejno popycha kolejkę odczytu z karty pamięci i zapisuje dane dostarczone przez sygnał \textit{DI}. Na końcu, w chwili $t=380ns$ moduł przechodzi do procesu dekrementowania liczników, które odliczają czas trwania dźwięku. Zastosowano dwa liczniki. Jeden, który odlicza okresy $10ms$ i drugi, który odlicza cykle zegara, które wystąpią w tym okresie. W procesie optymalizacji maksymalnej częstotliwości zrezygonowano z pojedynczego licznika, ponieważ wymagałoby to wykonania mnożenia, które przez swoją złożoność angażowałoby użycie dwustopniowego mnożenia (rejestry AREG i BREG\cite{web:datasheet}), co drastycznie zwiększa czas Clock-to-Output.
+Na rysunku \ref{sim:fileReader} w chwili $t=55ns$ widzimy zwolnienie sygnału reset i podanie sygnału start do modułu \textit{SDC\_FileReader}. Następnie moduł przechodzi przez stany na zmianę \textit{<subject>\_Request} i \textit{<subject>\_Reading}, w których kolejno popycha kolejkę odczytu z karty pamięci i zapisuje dane dostarczone przez sygnał \textit{DI}. Odczytywane wartości \textit{<subject>} to kolejno: \textit{Tone}, \textit{Octave}, \textit{Duration1}, \textit{Duration2}. Na końcu, w chwili $t=380ns$ moduł przechodzi do procesu dekrementowania liczników, które odliczają czas trwania dźwięku. Zastosowano dwa liczniki. Jeden, który odlicza okresy $10ms$ i drugi, który odlicza cykle zegara, które wystąpią w tym okresie. W procesie optymalizacji maksymalnej częstotliwości zrezygonowano z pojedynczego licznika, ponieważ wymagałoby to wykonania mnożenia, które przez swoją złożoność angażowałoby użycie dwustopniowego mnożenia (rejestry AREG i BREG), co drastycznie zwiększa czas Clock-to-Output \cite[s. 43, 138]{web:datasheet}.
 
 
 
@@ -271,10 +272,12 @@ Opis architektury przedstawia listing \ref{lst:generatorSaw}.
 Moduł GeneratorSignalSwitch jest multiplekserem sygnałów przychodzących z różnych generatorów fali. Rodzaj fali przekazywanej na wyjście określany jest sygnałem \textit{wave\_type}. Moduł ten przekazuje zarówno próbkę na wyjściu generatora, jak i impuls \textit{sample\_rdy}, generowany przy każdej zmianie wartości próbki. Wybór rodzaju fali X, gdzie X jest liczbą z przedziału 0-3, powoduje następujące zależności:
 \clearpage
 
-\[output <= input\_X\]
-\[output\_rdy <= input\_X\_rdy\]
+\begin{gather*}
+output <= input\_X \\
+output\_rdy <= input\_X\_rdy
+\end{gather*}
 
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/generator_signal_switch.png}
   \caption{Symulacja modułu GeneratorSignalSwitch.}
@@ -287,7 +290,7 @@ Moduł GeneratorSignalSwitch nie zawiera procesów. W opisie behawioralnym, za p
 Oba warianty wejść zostały odpowiednio przetestowane w symulacji. Rysunki \ref{sim:kb} i \ref{sim:sd} przedstawiają symulacje działania modułu InnerLogic i falę generowaną przez ten moduł.
 \subsection{Wejście z klawiatury}
 Rysunek \ref{sim:kb} przedstawia symulację działania modułu InnerLogic i falę generowaną przez ten moduł. Symulacja obejmuje odtworzenie wszystkich tonów w jednej oktawie, poprzez wciśnięcie odpowiadających im klawiszy. Przeplatane jest to chwilą ciszy, co widać na symulacji.
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_kb}
   \caption{Symulacja modułu InnerLogic. Wejście z klawiatury.}
@@ -299,13 +302,14 @@ Symulacja obejmuje odtworzenie melodii zdefiniowanej w pliku na karcie pamięci.
 \begin{lstlisting}
 a403w403s403e403d403f403t403g403y403h403u403j403
 \end{lstlisting}
+
 \begin{figure}[h]
   \centering
   \includegraphics[decodearray={1 0 1 0 1 0}, width=\linewidth]{images/inner_sim_sd}
   \caption{Symulacja modułu InnerLogic. Wejście z karty pamięci.}
   \label{sim:sd}
 \end{figure}
-
+\clearpage
 \section{Implementacja}
 \subsection{Analiza czasów}
 Narzędzie ISE w wygenerowanym raporcie z procesu implementacji zapewnił, że wymagania czasowe związane z częstotliwością taktowania zegara 50MHz zostaną spełnione.
